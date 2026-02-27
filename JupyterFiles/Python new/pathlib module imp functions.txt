@@ -1,0 +1,91 @@
+------------------------------
+# iterate over directory contents
+
+>>> from pathlib import Path
+>>> p=Path()
+>>> p
+PosixPath('.')
+>>> for i in p.iterdir():
+...   print(i)
+...
+dir1
+dir4
+err.txt
+demo.py
+.demo.py.swp
+dir2
+args.txt
+abc.txt
+out.txt
+test.py
+subout.txt
+-----------------------
+# use filename globbing
+
+
+>>> for i in p.glob('*.py'):
+...    print(i)
+...
+demo.py
+test.py
+
+
+# get the full path
+
+>>> p.absolute()
+PosixPath('/root/python')
+
+
+# name of the parent directory
+>>> p.parent
+PosixPath('.')
+
+
+# split path into its parts.
+>>> p.parts
+
+
+>>> # do some tests about what the path is or isn't.
+>>> p.is_dir()
+True
+>>> p.is_file()
+False
+
+>>> # more detailed file stats.
+>>> p.stat()
+
+--------------------------------
+Replacing sed, grep, awk, etc: with Python 
+
+grep : =>
+
+$ grep -i error: /var/log/some_service.log
+
+in python :
+
+with open('/var/log/some_service.log') as log:
+    matches = (line for line in log if 'error:' in line.lower())
+    # line.lower() is a substitute for -i in grep, in this case
+
+
+sed :=>
+
+>>> # sed 's/a string/another string/g' -- i.e. doesn't regex
+>>> replaced = (s.replace('a string', 'another string') for s in ics)
+>>> # sed 's/pattern/replacement/g' -- needs regex
+>>> replaced = (re.sub(r'pattern', r'replacement', s) for s in ics)
+
+
+awk : =>
+
+>>> # awk '{print $1}'
+>>> field1 = (f[0] for f in (s.split() for s in ics))
+>>> # awk -F : '{print $1}'
+>>> field1 = (f[0] for f in (s.split(':') for s in ics))
+>>> # awk -F '[^a-zA-Z]' '{print $1}'
+>>> field1 = (f[0] for f in (re.split(r'[^a-zA-Z]', s) for s in ics))
+
+
+
+
+

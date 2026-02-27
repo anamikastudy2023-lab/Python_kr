@@ -1,0 +1,266 @@
+Testing :
+
+QA Team(Testing Team)
+
+1. Unit Testing :  each individual units of source code are tested to 
+                   determine if they are working properly or not.
+                   devlopers are responsible for unit testing
+
+2. Integration Testing : It is a software testing technique where 
+                         individual units of a program are combined and 
+                         tested as a group.
+                         or
+                         The process of testing total application(end-to-end testing)
+ 
+
+
+-------------------------------------------------------------------------
+Test Scenario 
+Test Case
+Test Suite
+
+gmail Application:
+
+testing login functionality --> Test Scenario:
+----------------------------------------
+1. valid username and valid password-->Test Case1
+2. valid username and Invalid password-->Test Case2
+3. Invalid username and valid password-->Test Case3
+4. Invalid username and Invalid password-->Test Case4
+
+
+A Test Scenario can contain multiple test case
+
+
+
+
+
+-------------------------------
+How to perform unittesting in pyhton:
+
+module name :unittest
+class name : TestCase
+
+instance method:
+
+1. setUp() : to perform setup for required environment
+2. test() : to test some functionality 
+3. tearDown() : to perform clean activity
+
+----------------------------
+import unittest
+
+class TestCaseDemo(unittest.TestCase):
+  def setUp(self):
+    print('setup method execution...')
+  def test(self):
+    print('test method execution..')
+    #print(10/0)
+  def tearDown(self):
+    print('tearDown mehod execution...')
+
+
+unittest.main()
+
+----------------------------------------
+now :
+
+import unittest
+
+class TestCaseDemo(unittest.TestCase):
+  def setUp(self):
+    print('setup method execution...')
+  def test_method1(self):
+    print('test method1 execution..')
+  def test_method2(self):
+    print('test method2 execution..')
+  def tearDown(self):
+    print('tearDown mehod execution...')
+
+
+unittest.main()  
+    
+
+Note :
+
+for every test method first  setup method will be call
+then test method will be call and then tearDown will be call.
+
+--------------------
+class Method :
+
+1. setUpClass() :setup for all test method. call only once
+2. tearDownClass() : tear down for all test method. call only once
+
+import unittest
+
+class TestCaseDemo(unittest.TestCase):
+  @classmethod
+  def setUpClass(cls):
+    print('setup class method execution...')
+  def setUp(self):
+    print('setup method execution...')
+  def test_method1(self):
+    print('test method1 execution..')
+  def test_method2(self):
+    print('test method2 execution..')
+  def tearDown(self):
+    print('tearDown mehod execution...')
+  @classmethod
+  def tearDownClass(cls):
+    print('tearDownclass method execution..')
+
+
+unittest.main() 
+
+
+
+------------------------------------------
+Method	Equivalent to
+.assertEqual(a, b)	a == b
+.assertTrue(x)	        bool(x) is True
+.assertFalse(x)	        bool(x) is False
+.assertIs(a, b)	        a is b
+.assertIsNone(x)	x is None
+.assertIn(a, b)	        a in b
+.assertIsInstance(a, b)	isinstance(a, b)
+
+------------------------------------
+import unittest 
+  
+class SimpleTest(unittest.TestCase): 
+  
+    # Returns True or False.  
+    def test(self):         
+        self.assertTrue(True) 
+
+unittest.main()
+-------------------------
+import unittest 
+  
+class TestStringMethods(unittest.TestCase): 
+      
+    def setUp(self): 
+        pass
+  
+    # Returns True if the string contains 4 a. 
+    def test_strings_a(self): 
+        self.assertEqual( 'a'*4, 'aaaa') 
+  
+    # Returns True if the string is in upper case. 
+    def test_upper(self):         
+        self.assertEqual('foo'.upper(), 'FOO') 
+  
+    # Returns TRUE if the string is in uppercase 
+    # else returns False. 
+    def test_isupper(self):         
+        self.assertTrue('FOO'.isupper()) 
+        self.assertFalse('Foo'.isupper()) 
+  
+    # Returns true if the string is stripped and  
+    # matches the given output. 
+    def test_strip(self):         
+        s = 'welcometokr'
+        self.assertEqual(s.strip('wel'), 'cometokr') 
+  
+    # Returns true if the string splits and matches 
+    # the given output. 
+    def test_split(self):         
+        s = 'hello world'
+        self.assertEqual(s.split(), ['hello', 'world']) 
+        with self.assertRaises(TypeError): 
+            s.split(2) 
+
+----------------------------------
+from math import pi
+
+
+def circle_area(r):
+    if type(r) not in [int,float]:
+        raise TypeError('The radious must be non-negative real number.')
+    if r < 0:
+        raise ValueError('The radius cannot be negative.')
+    return pi*(r**2)
+
+
+'''#Test function
+
+radii=[2,0,-3,2+5j,True,'radius']
+message='Area of cercle with r ={radius} is {area}.'
+
+for r in radii:
+    A=circle_area(r)
+    print(message.format(radius=r, area=A))'''
+ 
+
+
+
+--------------------------------------------
+
+import unittest
+from Test import circle_area
+from math import pi
+
+
+class TestCircleArea(unittest.TestCase):
+  def test_area(self):
+    #Test areas when radius>=0
+    self.assertAlmostEqual(circle_area(1),pi)
+    self.assertAlmostEqual(circle_area(0),0)
+    self.assertAlmostEqual(circle_area(2.1),pi*2.1**2)
+  def test_values(self):
+    #make sure value  error are  raised when necessary
+    self.assertRaises(ValueError ,circle_area,-2) 
+  def test_type(self):
+    #Make sure type errors are raised when necessary
+    self.assertRaises(TypeError,circle_area,3+5j)
+    self.assertRaises(TypeError,circle_area,True)
+    self.assertRaises(TypeError,circle_area,'radius')
+    
+unittest.main() 
+
+--------------------------------------
+import unittest
+from selenium import webdriver
+import time
+driver=None
+class GoogleSearch(unittest.TestCase):
+
+  def setUp(self):
+    global driver
+    driver=webdriver.Chrome(executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe')
+    driver.get('http://google.co.in')
+    driver.maximize_window()
+
+  def test(self):
+    driver.find_element_by_name('q').send_keys('Mahesh Babu')
+    time.sleep(5)
+    driver.find_element_by_name('btnK').click()
+    driver.find_element_by_class_name('LC20lb').click()
+
+  def tearDown(self):
+    time.sleep(10)
+    driver.close()
+
+unittest.main()
+    
+----------------------------
+import unittest
+
+
+def add(x,y):
+   
+ return x + y
+
+
+
+class MyTest(unittest.TestCase):
+    
+         def test(self):
+        
+            self.assertEqual(add(3,4), 8)
+
+
+
+
+unittest.main()

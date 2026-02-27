@@ -1,0 +1,49 @@
+netifaces :
+
+It’s been annoying me for some time that there’s no easy way to get the address(es) of the machine’s network interfaces from Python.
+
+pip3 install netifaces 
+
+
+
+=>see the list of interface identifiers for your machine. 
+
+>>> import netifaces
+>>> netifaces.interfaces()
+['lo', 'eth0']
+
+
+=>You can ask for the addresses of a particular interface by doing
+
+>>> netifaces.ifaddresses('eth0')
+{17: [{'addr': '06:f1:77:a1:cf:40', 'broadcast': 'ff:ff:ff:ff:ff:ff'}], 2: [{'addr': '172.31.21.154', 'netmask': '255.255.240.0', 'broadcast': '172.31.31.255'}], 10: [{'addr': 'fe80::4f1:77ff:fea1:cf40%eth0', 'netmask': 'ffff:ffff:ffff:ffff::/64'}]}
+
+
+=>the hardware address of the Ethernet adapter running this interface. We can do
+
+
+>>> addrs = netifaces.ifaddresses('eth0')
+>>> addrs[netifaces.AF_LINK]
+[{'addr': '06:f1:77:a1:cf:40', 'broadcast': 'ff:ff:ff:ff:ff:ff'}]
+
+
+No, that isn’t an exceptionally long Ethernet MAC address—it’s a FireWire address.
+
+
+=>As of version 0.10.0, you can also obtain a list of gateways on your machine:
+
+>>> netifaces.gateways()
+{'default': {2: ('172.31.16.1', 'eth0')}, 2: [('172.31.16.1', 'eth0', True)]}
+
+
+Notice that here we have two separate gateways for IPv4 (AF_INET); some operating systems support configurations like this and can either route packets based on their source, or based on administratively configured routing tables.
+
+=>
+For convenience, we also allow you to index the dictionary with the special value 'default', which returns a dictionary mapping address families to the default gateway in each case. Thus you can get the default IPv4 gateway with
+
+
+>>> gws = netifaces.gateways()
+>>> gws['default'][netifaces.AF_INET]
+('172.31.16.1', 'eth0')
+
+

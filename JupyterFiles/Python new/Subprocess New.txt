@@ -1,0 +1,342 @@
+Subprocess Module :
+
+The subprocess module supports three APIs for working with processes.
+
+
+1 .call() : With suprocess.call() you pass an array of commands and parameters.
+returns the return code(exit status) of the called process.
+
+
+Examples :
+
+>>> import subprocess as sb
+>>> sb.call(['ls'])
+abc.txt  demo.py  dir1  dir2  dir4
+0
+>>> sb.call(['ls','-l'])
+total 20
+-r--r--r-- 1 root root   14 May  5 04:38 abc.txt
+-rw-r--r-- 1 root root  296 May  5 05:35 demo.py
+drwxr-xr-x 2 root root 4096 May  5 04:30 dir1
+drwxr-xr-x 3 root root 4096 May  3 04:52 dir2
+drwxr-xr-x 2 root root 4096 May  5 05:35 dir4
+0
+>>> sb.call(['ls','-l','abc.txt'])
+-r--r--r-- 1 root root 14 May  5 04:38 abc.txt
+0
+-------------------------------------
+If shell=True, the command string is interpreted as a raw shell command.
+
+Using shell=True may expose you to code injection if you use user input to build the command string.
+
+shell=True is sometimes convenient to make use of specific shell features like word splitting or parameter expansion. 
+
+>>> sb.call("ls -lha", shell=True)
+total 40K
+drwxr-xr-x 5 root root 4.0K May  5 05:35 .
+dr-xr-x--- 5 root root 4.0K May  5 05:35 ..
+-r--r--r-- 1 root root   14 May  5 04:38 abc.txt
+-rw-r--r-- 1 root root  296 May  5 05:35 demo.py
+-rw-r--r-- 1 root root  12K May  3 06:15 .demo.py.swp
+drwxr-xr-x 2 root root 4.0K May  5 04:30 dir1
+drwxr-xr-x 3 root root 4.0K May  3 04:52 dir2
+drwxr-xr-x 2 root root 4.0K May  5 05:35 dir4
+0
+
+Note : without shell=True it will not execute
+
+-----------------------------------------------------
+call() example, capture stdout and stderr
+
+import subprocess
+import sys
+
+# create two files to hold the output and errors, respectively
+with open('out.txt','w+') as f1:
+    with open('err.txt','w+') as f2:
+        out=subprocess.call(["ls","-lha"],stdout=f1,stderr=f2)
+        # reset file to read from it
+        f1.seek(0)
+        # save output (if any) in variable
+        output=f1.read()
+
+        # reset file to read from it
+        f2.seek(0)
+        # save errors (if any) in variable
+        errors = f2.read()
+
+        print("out put :",output)
+        print("Error :",errors)
+
+-------------------------------------------------
+Run command and capture output
+
+Using universal_newlines=True converts the output to a string instead of a byte array.
+
+
+
+import subprocess
+
+# errors in the created process are raised here too
+output = subprocess.check_output(["ls","-lha"],universal_newlines=True)
+
+print("command output :",output)
+
+
+or
+
+by using run method :
+
+import subprocess
+
+# run() returns a CompletedProcess object if it was successful
+# errors in the created process are raised here too
+process = subprocess.run(['ls','-lha'], check=True, stdout=subprocess.PIPE, universal_newlines=True)
+output = process.stdout
+
+-----------------------------
+Run raw string as a shell command line
+
+This is similar to the example above, with shell=True
+
+import subprocess
+
+# errors in the created process are raised here too
+output = subprocess.check_output("ls -lha", shell=True, universal_newlines=True)
+
+print(output)
+
+or
+
+
+import subprocess
+
+# run() returns a CompletedProcess object if it was successful
+# errors in the created process are raised here too
+process = subprocess.run('ls -lha', shell=True, check=True, stdout=subprocess.PIPE, universal_newlines=True)
+output = process.stdout
+
+print(output)
+
+---------------------------------------
+
+run() example: run command and get return code
+
+run() behaves mostly the same way as call() and you should use it instead of call() for version 3.5 onwards.
+
+
+
+import subprocess
+
+cp = subprocess.run(["ls","-lha"])
+
+print(cp)
+
+output:
+CompletedProcess(args=['ls', '-lha'], returncode=0)
+
+
+----------------------------------------------------
+
+run() example: run command, force exception if underlying process errors
+
+Use check=True to force the Python method to throw an exception if the underlying process encounters errors:
+
+
+>>> subprocess.run(["ls","foo bar"])
+ls: cannot access foo bar: No such file or directory
+CompletedProcess(args=['ls', 'foo bar'], returncode=2)
+
+
+or
+
+>>> subprocess.run(["ls","foo bar"], check=True)
+ls: cannot access foo bar: No such file or directory
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/lib/python3.8/subprocess.py", line 512, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['ls', 'foo bar']' returned non-zero exit status 2.
+
+-----------------------------------------
+
+run() example: using shell=True
+
+As in the call() example, shell=True, the command string is interpreted as a raw shell command.
+Again, Using shell=True may expose you to code injection if you use user input to build the command string.
+
+
+import subprocess
+cp = subprocess.run(["ls -lha"],shell=True)
+
+
+------------------------------------------------
+
+run() example: store output and error message in string 
+
+If the underlying process returns a nonzero exit code, you will not get an exception; the error message can be accessed via the stderr attribute in the CompletedProcess object.
+
+case 1: process return 0 exit code
+
+
+import subprocess
+
+cp = subprocess.run(["ls","-lha"], universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+print("output :",cp.stdout)
+print("Error :",cp.stderr)
+# '' (empty string)
+print("exit status :",cp.returncode)
+
+
+output : total 44K
+...
+...
+...
+
+Error :
+exit status : 0
+
+
+
+case 2: process returns nonzero exit code
+
+import subprocess
+
+cp = subprocess.run(["ls","foo bar"], universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+print("output :",cp.stdout)
+print("Error :",cp.stderr)
+# '' (empty string)
+print("exit status :",cp.returncode)
+
+
+output :
+Error : ls: cannot access foo bar: No such file or directory
+
+exit status : 2
+
+
+-----------------------------------------------------------
+case 3: other OS-level errors
+
+this case will throw an exception no matter what. For example, if you call an executable that doesn't exist. This throws an exception because it wasn't that the subprocess had an error - it never got created in the first place.
+
+
+import subprocess
+try:
+    cp = subprocess.run(["abc","foo bar"], universal_newlines=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    print("output :",cp.stdout)
+    print("Error :",cp.stderr)
+# '' (empty string)
+    print("exit status :",cp.returncode)
+except Exception as ex:
+   print(ex)
+
+
+[Errno 2] No such file or directory: 'abc'
+
+
+------------------------------------------
+Popen example: run command and get return code.
+
+Popen() is used for more complex examples where you need
+
+
+from subprocess import Popen
+
+p = Popen(["ls","-lha"])
+p.wait()
+
+
+Note : 
+A Popen object has a .wait() method exactly defined for this: to wait for the completion of a given subprocess (and, besides, for retuning its exit status).
+
+
+---------------------------------------
+Popen example: Store the output and error messages in a string
+
+import subprocess
+from subprocess import Popen
+
+p = Popen(["ls","-lha"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
+output, errors = p.communicate()
+
+print("output :",output)
+print("Error :",errors)
+
+
+-------------------------------------------------------------
+Popen example: Redirect output to file
+
+import subprocess
+from subprocess import Popen
+
+path_to_output_file = 'out.txt'
+
+myoutput = open(path_to_output_file,'w+')
+
+p = Popen(["ls","-lha"], stdout=myoutput, stderr=subprocess.PIPE, universal_newlines=True)
+
+output, errors = p.communicate()
+
+# stdout has been written to this file
+with open(path_to_output_file,"r") as f:
+    print(f.read())
+
+
+--------------------------------------------
+Popen example: Redirect output and errors to the same file
+
+import subprocess
+from subprocess import Popen
+
+path_to_output_file = 'out.txt'
+
+myoutput = open(path_to_output_file,'w+')
+
+p = Popen(["ls","foo bar"], stdout=myoutput, stderr=myoutput, universal_newlines=True)
+
+output, errors = p.communicate()
+
+# stdout has been written to this file
+with open(path_to_output_file,"r") as f:
+    print(f.read())
+
+----------------------------------------
+
+Popen example: Run command in the background
+
+By default, calls to Popen() spawn a subprocess in the background and don't wait for it to terminate (unless you use wait() on the Popen object).
+
+from subprocess import Popen,PIPE
+
+# this is equivalent to ls -lha | grep "foo bar"
+p1 = Popen(["ls","-lha"], stdout=PIPE)
+p2 = Popen(["grep", "foo bar"], stdin=p1.stdout, stdout=PIPE)
+p1.stdout.close()
+
+output = p2.communicate()[0]
+print(output)
+
+----------------------------------------
+# uptime | awk {print $5}
+
+from subprocess import Popen,PIPE
+
+# this is equivalent to ls -lha | grep "foo bar"
+p1 = Popen(["uptime"], stdout=PIPE)
+p2 = Popen(["awk", "{print $5}"], stdin=p1.stdout, stdout=PIPE)
+p1.stdout.close()
+
+output = p2.communicate()[0]
+print(output)
+
+
+
+
+
+
+

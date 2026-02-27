@@ -1,0 +1,306 @@
+Multi Threading:
+----------------
+
+Multi Tasking:
+--------------
+
+1.Process Bsed Multi Tesking :
+Executing several task simultaneously where each
+task separate independent process.
+
+2.Thread Based Multi Tasking :
+Executing several task simultaneously where each
+task separate independent part of the same program and 
+each independent part is called thread.
+
+threading module:
+
+main Thread:
+------------
+import threading
+print('Current Executing Thread:',threading.current_thread().getName())
+
+Note : use when if jobs are independent
+
+3 ways:
+-------
+1. Creating a Thread without using any class
+2. Creating a Thread by extending Thread class
+3. Creating a Thread without extending Thread class
+
+
+1.Without using any class :
+--------------------------
+from threading import *
+def display():
+    for i in range(10):
+        print('child Thread')
+
+
+t=Thread(target=display) # creation of Thread Object
+t.start()
+for i in range(10):
+    print('Main Thread') 
+-----------------------
+2. By extending thread class :
+------------------------------
+from threading import *
+class MyThread(Thread):
+    def run(self):
+        for i in range(10):
+            print('child Thread')
+
+t=MyThread()
+t.start()
+
+for i in range(10):
+    print('Main Thread')
+
+
+3. Without extending Thread class:
+----------------------------------
+
+from threading import *
+class Demo:
+    def m1(self):
+        for i in range(10):
+            print('child Thread-1')
+
+d=Demo()
+t=Thread(target=d.m1)
+t.start()
+for i in range(10):
+    print('Main Thread')
+
+--------------------------------
+Now calculate time without MT or with MT:
+
+1.
+
+from threading import *
+import time
+def doubles(numbers):
+    for n in numbers:
+        time.sleep(1)
+        print('Double value :',2*n)
+
+
+def squares(numbers):
+    for n in numbers:
+        time.sleep(2)
+        print('Squaers value :',n*n)
+
+numbers=[1,2,3,4,5,6]
+begintime=time.time()
+doubles(numbers)
+squares(numbers)
+endtime=time.time()
+print('The total time taken :',endtime-begintime)
+
+
+----------------------------
+
+now with thread:
+
+from threading import *
+import time
+def doubles(numbers):
+    for n in numbers:
+        time.sleep(1)
+        print('Double value :',2*n)
+
+
+def squares(numbers):
+    for n in numbers:
+        time.sleep(2)
+        print('Squaers value :',n*n)
+
+numbers=[1,2,3,4,5,6]
+begintime=time.time()
+t1=Thread(target=doubles,args=(numbers,))
+t2=Thread(target=squares,args=(numbers,))
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+
+endtime=time.time()
+print('The total time taken :',endtime-begintime)
+
+
+
+Note : Why we have ',' in args ? : if a single value in tuple compulsory we have to use ','. 
+--------------------
+How to get or set thread name :
+To get Name:
+------------
+t.name
+t.getName()
+
+To set name:
+------------
+t.name='new name'
+t.setName(name)
+
+
+from threading import *
+print(current_thread().getName())
+current_thread().setName('Mythread')
+print(current_thread().getName())
+
+
+----------------------------
+Thread Identification Number: for every thread a unique number given
+-----------------------------
+by using 'ident':
+
+from threading import *
+
+def test():
+    print('child Thread')
+
+t=Thread(target=test)
+t.start()
+print('Main thread id number :',current_thread().ident)
+print('child Thread id number :',t.ident)
+
+----------------------------------------
+
+active_count():
+
+import time
+def display():
+    print(current_thread().name,'...started')
+    time.sleep(3)
+    print(current_thread().name,'...ended')
+    print('The Number of active Threads :',active_count())
+t1=Thread(target=display,name='ChildThread-1')
+t2=Thread(target=display,name='ChildThread-2')
+t3=Thread(target=display,name='ChildThread-3')
+
+t1.start()
+t2.start()
+t3.start()
+
+print('The number of active Threads :',active_count())
+time.sleep(10)
+print('The number of active Threads :',active_count())
+
+---------------------------------
+enumerate():
+----------  
+to get list of all active threads
+
+l=enumerate()
+
+
+-------------------
+isAlive() return True if thread is in Alive state
+
+
+--------------------
+Daemon Thread : which is executing at the background.
+the Main purpose is : to provide support for non-daemon threads(main thread)
+Ex : Garbagebe Collector is run in background.
+
+supporting jobs can be implemented by Daemon Thread
+where as main jobs should be implemented by Non Daemon 
+ 
+How we can check the given thread is demon thread or not:
+t.isDaemon()
+or 
+t.daemon
+ 
+--------
+from threading import *
+mt=current_thread()
+print(mt.isDaemon())
+print(mt.daemon)
+---------------
+how to set a thread as Daemon:
+
+t.setDaemon(True)
+
+Note : once thread started we cannot change its Daemon nature.
+By mistake if you trying to chnage 
+we will get 
+RuntimeError: connot set daemon status of active thread
+
+Ex : if i will trying to change main thread
+from threading import *
+mt=current_thread()
+print(mt.isDaemon())
+print(mt.daemon)
+mt.setDaemon(True)
+
+Default Nature :
+---------------
+Non-Daemon
+
+Note : if the parent thread is non-Daemon then the child thread is non-daemon
+if the parent is Daemon then the child thread is Daemon.
+
+from threading import *
+def job():
+    print('executed by child thread')
+
+t=Thread(target=job)
+print(t.isDaemon())
+t.setDaemon(True)
+print(t.isDaemon())
+
+
+------------------------
+from threading import *
+def job1():
+    print('executed by t1')
+    t2=Thread(target=job2)
+    print('t1 is Daemon :',t2.isDaemon())
+    t2.start()
+def job2():
+    print('executed by t2')
+
+    
+t1=Thread(target=job1)
+t1.setDaemon(True)
+print('t1 is Daemon :',t1.isDaemon())
+t1.start()
+
+whenever last non-daemon thread terminates automatically
+all daemon threads will be terminated we are not required to terminate explicitly..
+
+
+
+-----------------------------------------
+Synchronization:
+---------------
+at a time when more then one thread try to access a shared resource , we need to ensure that
+resource will be used by only one thread at a time.
+the process by which this is achieved is called 
+synchronization.
+
+
+
+from threading import *
+def wish(name,lock):
+    lock.acquire()
+    for x in range(10):
+      print("welcome :"+name)
+    lock.release()
+
+lock=Lock()
+t1=Thread(target=wish,args=("Amit",lock))
+t2=Thread(target=wish,args=("Deepak",lock))
+
+t1.start()
+t2.start()
+
+
+race conditon: 
+A race condition may be defined as the occurring 
+of a condition when two or more threads can 
+access shared data and then try to change its
+value at the same time.
+
+
+deadlock:

@@ -1,0 +1,115 @@
+13:15:40	 From Host : import os
+
+
+#out=os.system("mkdir testdir")
+out=os.popen("ls")
+print(out.read())
+13:29:23	 From Host : import subprocess as sb
+
+
+
+#out=sb.run('date')
+#out=sb.run(['ls', '-l'])
+#out=sb.run('ls -l',shell=True)
+#out=sb.run('date',shell=True,stdout=sb.PIPE,stderr=sb.PIPE)
+#print(out.returncode)
+#print(out.stdout.decode())
+out=sb.run('date',shell=True,stdout=sb.PIPE,stderr=sb.PIPE,universal_newlines=True)
+#print(out.stdout,end="")
+#print(out.stdout[:-1])
+#f1=open("output.txt","w")
+#f2=open("error.txt","w")
+#out=sb.run('ls -l',shell=True,stdout=f1,stderr=f2,universal_newlines=True)
+#f1.close()
+#f2.close()
+13:36:30	 From Harsh : yes sir
+13:36:37	 From Host : import subprocess as sb
+
+
+
+
+#out=sb.Popen("date")
+#out=sb.Popen("ls -l",shell=True)
+#out=sb.Popen("date",stdout=sb.PIPE,stderr=sb.PIPE,universal_newlines=True)
+#print(out.communicate())
+
+p1=sb.Popen("uptime",stdout=sb.PIPE,stderr=sb.PIPE)
+
+p2=sb.Popen("awk '{print $3}'",shell=True,stdout=sb.PIPE,stderr=sb.PIPE,universal_newlines=True,
+            stdin=p1.stdout)
+
+print(p2.communicate()[0])
+13:42:41	 From Ashish Gautam : #!/bin/bash# Accessing command-line argumentsecho "The first argument is: $1"echo "The second argument is: $2"
+13:49:46	 From Host : import sys
+
+print(sys.argv) #list ['script name','','','','']
+13:58:56	 From Host : import argparse
+
+
+
+parse=argparse.ArgumentParser()
+
+parse.add_argument('host',help='host name')
+parse.add_argument('port',help='port number',type=int)
+
+args=parse.parse_args()
+
+print(args.host)
+print(type(args.port))
+14:03:03	 From Host : import argparse
+
+
+
+parse=argparse.ArgumentParser()
+
+parse.add_argument('host',help='host name')
+parse.add_argument('port',help='port number',type=int)
+parse.add_argument('-v','--verbose',help='help text',action="store_true")
+args=parse.parse_args()
+
+print(args.host)
+print(args.port)
+print(args.verbose)
+14:09:19	 From Host : import argparse
+
+
+
+parse=argparse.ArgumentParser()
+
+parse.add_argument('host',help='host name')
+parse.add_argument('port',help='port number',type=int)
+parse.add_argument('-v','--verbose',help='help text',choices=[1,2,3],type=int)
+args=parse.parse_args()
+
+print(args.host)
+print(args.port)
+print(args.verbose)
+14:18:26	 From Host : import argparse
+import os
+import time
+
+parse=argparse.ArgumentParser()
+
+parse.add_argument('dir',help='directory name')
+parse.add_argument('-l','--longlist',help='help text',action="store_true")
+args=parse.parse_args()
+
+
+if args.longlist:
+    if os.path.isdir(args.dir):
+         data=os.listdir(args.dir)
+         for file in data:
+             s=os.path.getsize(os.path.join(args.dir,file))
+             t=time.ctime(os.path.getctime(os.path.join(args.dir,file)))
+             print(file,'\t',s,'\t',t)
+    else:
+        print(f"dir {args.dir} does not exists")
+    
+else:
+    if os.path.isdir(args.dir):
+         data=os.listdir(args.dir)
+         for file in data:
+             print(file)
+    else:
+        print(f"dir {args.dir} does not exists")
+14:21:35	 From Host : https://github.com/kry496/python-usermanagement/blob/master/user_management.py

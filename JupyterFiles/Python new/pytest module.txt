@@ -1,0 +1,275 @@
+What is PyTest?
+Pytest is a testing framework which allows us to write test codes using python.
+
+pip install pytest
+
+Once the installation is complete you can confirm it with by
+py.test -h
+
+
+How pytest identifies the test files and test methods
+
+By default pytest only identifies the file names starting with test_ or ending with _test as the test files.
+
+Pytest requires the test method names to start with "test."
+
+Ex:
+test_login.py - valid
+login_test.py - valid
+testlogin.py -invalid
+logintest.py -invalid
+
+Ex:
+def test_file1_method1(): - valid
+def testfile1_method1(): - valid
+def file1_method1(): - invalid	
+
+=====================
+file name=>test_demo.py
+
+import pytest
+
+def m1(x):
+  return x*x*x
+
+def test_method():
+        assert m1(3)==27, "cube of 3 must be 27"
+
+=>to run all test file
+
+py.test
+
+=>to run specific file
+
+pytest test_demo.py
+
+
+F says failure
+
+Dot(.) says success.
+------------------------
+import pytest
+
+def m1(x):
+  if type(x)!= int:
+    raise TypeError("value must in int")
+  return x*x*x
+
+def test_m1():
+    a=3
+    assert m1(a)==27 ,f"cube of {a} will be {a*a*a}"
+
+def test_type():
+  with pytest.raises(TypeError) as ex:
+    m1('abc')
+
+@pytest.mark.xfail(raises=TypeError)
+def test_another():    
+     m1(2.3)
+===========================
+Run a subset of entire test
+Sometimes we don't want to run the entire test suite
+
+import pytest
+
+def test_file1_method1():
+	x=5
+	y=6
+	assert x+1 == y,"test failed"
+	assert x == y,"test failed"
+def test_file1_method2():
+	x=5
+	y=6
+	assert x+1 == y,"test failed"
+
+--------
+Run tests by substring matching
+
+py.test -k method1 -v
+-k <expression> is used to represent the substring to match
+-v increases the verbosity
+
+=>pytest test_demo.py -k method2 -v
+
+To run method1 from all test file
+ 
+=>py.test -k method1 -v
+
+
+=>pytest test_demo.py::test_method1
+-------------------------------
+
+2. Run tests by markers
+
+Here we will apply different marker names to test methods and run specific tests based on marker names. We can define the markers on each test names by using
+
+@pytest.mark.<name>.
+
+
+code
+
+import pytest
+@pytest.mark.set1
+def test_file1_method1():
+	x=5
+	y=6
+	assert x+1 == y,"test failed"
+	assert x == y,"test failed because x=" + str(x) + " y=" + str(y)
+
+@pytest.mark.set2
+def test_file1_method2():
+	x=5
+	y=6
+	assert x+1 == y,"test failed"
+
+
+----------------------
+We can run the marked test by
+
+py.test -m <name>
+-m <name> mentions the marker name
+
+=>py.test -m set1
+
+================================
+Pytest fixtures
+
+Fixtures are used when we want to run some code before every test method. So instead of repeating the same code in every test we define fixtures. Usually, fixtures are used to initialize database connections, pass the base , etc
+
+A method is marked as a fixture by marking with
+
+@pytest.fixture
+
+
+import pytest
+@pytest.fixture
+def supply_AA_BB_CC():
+	aa=25
+	bb =35
+	cc=45
+	return [aa,bb,cc]
+
+def test_comparewithAA(supply_AA_BB_CC):
+	zz=35
+	assert supply_AA_BB_CC[0]==zz,"aa and zz comparison failed"
+
+def test_comparewithBB(supply_AA_BB_CC):
+	zz=35
+	assert supply_AA_BB_CC[1]==zz,"bb and zz comparison failed"
+
+def test_comparewithCC(supply_AA_BB_CC):
+	zz=35
+	assert supply_AA_BB_CC[2]==zz,"cc and zz comparison failed"
+
+
+We have a fixture named supply_AA_BB_CC. This method will return a list of 3 values.
+We have 3 test methods comparing against each of the values.
+Each of the test function has an input argument whose name is matching with an available fixture. Pytest then invokes the corresponding fixture method and the returned values will be stored in the input argumen
+
+Note : The fixture method has a scope only within that test file it is defined. If we try to access the fixture in some other test file , we will get an error saying fixture 'supply_AA_BB_CC' not found for the test methods in other files.
+
+To use the same fixture against multiple test files, we will create fixture methods in a file called conftest.py
+
+conftest.py
+
+import pytest
+@pytest.fixture
+def supply_AA_BB_CC():
+	aa=25
+	bb =35
+	cc=45
+	return [aa,bb,cc]
+
+now you can use:
+====================================
+Parameterized tests
+
+The purpose of parameterizing a test is to run a test against multiple sets of arguments. We can do this by 
+
+@pytest.mark.parametrize.
+
+
+import pytest
+
+@pytest.mark.parametrize("a, b, c",[(5,5,10),(3,5,12)])
+
+def test_add(a, b, c):
+	assert a+b == c,"failed"
+
+====================
+import pytest
+
+def m1(x):
+        return x+x
+
+@pytest.mark.parametrize("a,b",[(2,4),(3,7)])
+
+def test_add(a,b):
+	assert m1(a) ==b ,"failed"
+
+============================
+Xfail / Skip tests
+
+There will be some situations where we don't want to execute a test, or a test case is not relevant for a particular time. In those situations, we have the option to xfail the test or skip the tests
+
+The xfailed test will be executed, but it will not be counted as part failed or passed tests. There will be no traceback displayed
+
+@pytest.mark.xfail
+
+Skipping a test means that the test will not be executed. We can skip tests using
+
+@pytest.mark.skip
+
+
+import pytest
+@pytest.mark.skip
+def test_add_1():
+	assert 100+200 == 400,"failed"
+
+@pytest.mark.skip
+def test_add_2():
+	assert 100+200 == 300,"failed"
+
+@pytest.mark.xfail
+def test_add_3():
+	assert 15+13 == 28,"failed"
+
+@pytest.mark.xfail
+def test_add_4():
+	assert 15+13 == 100,"failed"
+
+def test_add_5():
+	assert 3+2 == 5,"failed"
+
+def test_add_6():
+	assert 3+2 == 6,"failed"
+
+
+
+.test_add_1 and test_add_2 are skipped and will not be executed.
+.test_add_3 and test_add_4 are xfailed. These tests will be .executed and will be part of xfailed(on test failure) or xpassed  (on test pass) tests. There won't be any traceback for failures.
+.test_add_5 and test_add_6 will be executed and test_add_6 will  report failure with traceback while the test_add_5 passes
+
+
+to see the result
+
+py.test test_demo.py -v 
+
+===============================
+Results XML
+
+We can create test results in XML format which we can feed to Continuous Integration servers for further processing and so.
+
+py.test test_demo.py -v --junitxml="amit.xml"
+
+-----------------------------------------
+
+for more Examples
+
+https://github.com/pluralsight/intro-to-pytest/tree/master/tests
+
+
+
+
+
+

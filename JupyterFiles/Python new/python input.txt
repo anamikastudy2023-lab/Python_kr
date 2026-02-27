@@ -1,0 +1,164 @@
+reading Dynamic input from the keyboard:
+----------------------------------------
+
+
+1. raw_input()   # always read as str only but in python-3 it will not work
+
+2 input()  # it is also always read as str only in python-3
+             then type casting is required
+note :python 2 input and python3 input both are diff.
+  
+
+x=input('first number')
+y=input('second number')
+
+a=int(x)
+b=int(y)
+
+print("sum is  :",a+b)
+
+or
+---
+x=int(input('first number'))
+y=int(input('second number'))
+print("sum is  :",x+y)
+
+or
+---
+print("sum is  :",int(input('first number'))+int(input('second number')))  # notn recomnded
+
+for float:
+----------
+
+x=float(input('first number'))
+
+
+
+-----------------
+eno=int(input('Enter Employee Number'))
+ename=input('Enter Employee Name')
+esal=float(input('Enter Employee Salary'))
+eaddr=input('Enter Employee Address')
+marriedornot=bool(input('Is Employee Married[True|False]:'))
+
+
+print('Employee Number',eno)
+print('Employee Name',ename)
+print('Employee Salary',esal)
+print('Employee Address',eaddr)
+print('Employee Married or not',marriedornot)
+
+not : boot will not print correct answer
+
+coz if the string is empty then only it is treated as False, it is not empty then whatever the content is there whether it
+     it is true , flase, or any value it is treated as True
+
+for Example :
+--------------
+print(bool('True'))
+print(bool('False'))
+print(bool('Amit'))
+print(bool(''))   
+
+out put will be :  True, True, True, False
+
+
+
+how to read multiple value from keyboard in a single line:
+
+a,b=[int(x) for x in input("enter 2 numbers").split()]
+print("the sum is :",a+b)
+
+
+eval(): take string as argument and evaluate it
+-------
+
+use: if you want to read expression from keybord.
+x=eval("10+20+30")
+print(x)
+
+-----------
+x=eval(input("enter a list"))
+print(type(x))
+print(x)
+
+command Line Arguments:
+------------------------
+The arguments which are passing from command line(command prompet):
+
+pree deefine argument (argv) in sys module
+
+from sys import argv
+print(argv)
+print(argv[1:])
+print(argv[1])
+
+
+print() function:
+-----------------
+
+print() without any arguments ==> a new line will be inserted
+print("Amit\nkumar")
++==> both arguments should be str only
+*==> one argument should be str and other should be int
+
+print("Amit"+"kumar") ==>Amitkumar
+print("Amit","Kumar") ==>Amit Kumar
+print("vlalue is :",a,b,c) ==>vlalue is : 10 20 30
+print("value is :",a,b,c,sep=',') ==>value is :,10,20,30
+print(10,20,30,sep=':') ==>10:20:30
+sep = seprator
+-------------------------
+end attribute:
+
+print("welcome")
+print("to kr")
+print("network")
+
+output :
+welcome
+to kr
+network
+
+------
+print("welcome",end=' ')
+print("to kr",end=' ')
+print("network",end=' ')
+
+output :
+welcome to kr network 
+
+---------------------------
+print(10,20,30,sep=':', end='...')
+print(60,70,80,sep='-')
+
+10:20:30...60-70-80
+
+print(formatted String) :
+--------------------------
+%i==>int
+%d==>int
+%f==>float
+%s==> str
+
+print("formatted String" %(variable list))
+ex:
+print("value is :%d" %(12))
+print("name is :%s and age is :%d" %('Amit',23))
+
+print() function with replacement operator:
+------------------------------------------
+{} ==> replacement operator
+
+name="Amit"
+age=23
+city="Delhi"
+
+print("Hello {0} your age is {1} and you are from {2}".format(name,age,city))
+or
+print("Hello {} your age is {} and you are from {}".format(name,age,city))
+or
+print("Hello {a} your age is {b} and you are from {c}".format(a=name,b=age,c=city))
+
+
+

@@ -1,0 +1,88 @@
+
+
+
+
+__name__ is a built-in variable which evaluates to the name of the current module. Thus it can be used to check whether the current script is being run on its own or being imported somewhere else by combining it with if statement
+
+__name__ is one such special variable. If the source file is executed as the main program, the interpreter sets the __name__ variable to have a value “__main__”. If this file is being imported from another module, __name__ will be set to the module’s name.
+
+
+module1.py
+
+
+print(f"module1 __name__ in same file ={__name__}")
+
+
+=>
+you will get __name__ = __main__
+
+Note: if you will run module1.py
+
+output : module1 __name__ in same file =__main__
+
+
+
+----------------------------
+module2.py
+
+
+import module1
+
+
+=>
+now if you will run module2.py you will get
+
+__name__= module1 
+
+
+output :module1 __name__ in same file =module1
+
+-----------------------------
+lets see an example:
+
+module1.py
+
+def info():
+    print("welcoem to kr")
+
+
+if __name__=="__main__":
+    info()
+
+
+Note: here we are creating a function with name info and we are calling it 
+      if only __name__== __main__
+      if you will run tha module1.py it will call info function because name will be __main__
+
+----------------
+but lets see in module2.py
+
+import module1
+
+
+Note: if you will execute module2.py if willl call module1
+      now the __name__ will be module1 not __main__
+      so in this case if will return false and it will not call info function in module2.py
+
+
+
+so some times you want to make your module as a main program.
+or you are calling some functions in your module and you want anybody can use them if they wants
+by importing the module and in this case you wants the functions you are calling in imported module
+will not call in this module then you will use if __name__=="__main__"
+
+
+
+You might naturally wonder why anybody would want this. Well, sometimes you want to write a .py file that can be both used by other programs and/or modules as a module, and can also be run as the main program itself. 
+
+Your module is a library, but you want to have a script mode where it runs some unit tests or a demo.
+
+Your module is only used as a main program, but it has some unit tests, and the testing framework works by importing .py files like your script and running special test functions. You don't want it to try running the script just because it's importing the module.
+
+
+Your module is mostly used as a main program, but it also provides a programmer-friendly API for advanced users.
+       
+
+ 
+
+

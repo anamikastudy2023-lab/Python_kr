@@ -1,0 +1,374 @@
+important methods which can be used for python database:
+
+connect()
+cursor()
+execute()
+executescript()
+executemany()
+commit()
+rollback()
+fetchone()
+fetchall()
+fetchmany(n)
+close()
+
+Note :these methods won't be changed from database to database.
+================================
+from pymysql import *  #for mysql
+from cx_Oracle import * #for oracle   |conn_str = u'user/password@host:port/service'
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   cur.execute("create table employee (id int , name varchar(30))")
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+----------------------------------------------
+
+from pymysql import *
+
+con=connect("localhost","root","root","krnetwork")
+print("connect")
+
+cur=con.cursor()
+    
+sql="insert into pythontable values(101,'Amit')"
+
+cur.execute(sql)
+con.commit()
+con.close()
+
+Note : while performing  DML operations(insert|update|delete), compulsory we have to use
+commit() method , then only the result will be reflected in the database.
+
+----------------------------------------
+executemany() method 
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   sql="insert into employee (id,name) values(%s,%s)"
+   records=[(101,'Amit'),
+            (102,'Deepka'),
+            (103,'Ram')]
+   cur.executemany(sql,records)
+   con.commit()
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+
+
+
+---------------------------------------------------------
+from pymysql import *
+
+con=connect("localhost","root","root","krnetwork")
+print("connect")
+
+cur=con.cursor()
+    
+sql="insert into pythontable values(102,'Rahul')"
+try:
+    cur.execute(sql)
+    con.commit()
+except:
+    con.rollback()
+con.close()
+
+---------------------------------------------------
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   id=int(input("Enter id"))
+   name=input("Enter name")
+   sql="insert into employee (id,name) values('%d','%s')"
+   cur.execute(sql %(id,name))
+   #or
+   #sql="insert into pythontable values('%d','%s')"%(id,name)
+   #cur.execute(sql)
+   con.commit()
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+------------------------------------------------------
+
+
+important methods which can be used for python database:
+
+connect()
+cursor()
+execute()
+executescript()
+executemany()
+commit()
+rollback()
+fetchone()
+fetchall()
+fetchmany(n)
+close()
+
+Note :these methods won't be changed from database to database.
+================================
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   cur.execute("create table employee (id int , name varchar(30))")
+except Exception  as ex:
+    if con:
+        cur.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+----------------------------------------------
+
+from pymysql import *
+
+con=connect("localhost","root","root","krnetwork")
+print("connect")
+
+cur=con.cursor()
+    
+sql="insert into pythontable values(101,'Amit')"
+
+cur.execute(sql)
+con.commit()
+con.close()
+
+Note : while performing  DML operations(insert|update|delete), compulsory we have to use
+commit() method , then only the result will be reflected in the database.
+
+----------------------------------------
+executemany() method 
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   sql="insert into employee (id,name) values(%s,%s)"
+   records=[(101,'Amit'),
+            (102,'Deepka'),
+            (103,'Ram')]
+   cur.executemany(sql,records)
+   con.commit()
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+
+
+
+---------------------------------------------------------
+from pymysql import *
+
+con=connect("localhost","root","root","krnetwork")
+print("connect")
+
+cur=con.cursor()
+    
+sql="insert into pythontable values(102,'Rahul')"
+try:
+    cur.execute(sql)
+    con.commit()
+except:
+    con.rollback()
+con.close()
+
+---------------------------------------------------
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   id=int(input("Enter id"))
+   name=input("Enter name")
+   sql="insert into employee (id,name) values('%d','%s')"
+   cur.execute(sql %(id,name))
+   #or
+   #sql="insert into pythontable values('%d','%s')"%(id,name)
+   #cur.execute(sql)
+   con.commit()
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+------------------------------------------------------
+Update Query:
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   id=int(input("Enter id"))
+   name=input("Enter name")
+   sql="update employee set name='%s' where id='%d'"
+   cur.execute(sql %(name,id))
+   
+   con.commit()
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+
+---------------------------------------------------
+select all employee info by using fetchone() method
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   cur.execute("select * from employee")
+   row=cur.fetchone()
+   while row is not None:
+       print(row)
+       row=cur.fetchone()
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+---------------------------------------
+select all employee details using fetchall() method :
+
+
+from pymysql import *
+try:
+   con=connect("localhost","root","root","krnetwork")
+   print("connect")
+   cur=con.cursor()
+   cur.execute("select * from employee")
+   data=cur.fetchall()
+   for row in data:
+       print("id is :",row[0])
+       print("name is :",row[1])
+       print("*"*25)
+except Exception  as ex:
+    if con:
+        con.rollback()
+        print("There is  a problem with sql ", ex)
+
+finally:
+    if cur:
+        cur.close()
+    if con:
+        con.close()
+
+-----------------------------------------------------
+
+
+
+
+
+-------------------------
+from pymysql import *
+
+con=connect("localhost","root","root","krnetwork")
+print("connect")
+
+cur=con.cursor()
+
+sql="select * from pythontable"
+try:
+  cur.execute(sql)
+  res = cur.fetchall()
+  for row in res:
+     id=row[0]
+     name=row[1]
+     print("id is :%d"%id)
+     print("name is :%s"%name)
+except:
+    print("Error")
+con.close()
+-----------------------------------------------------
+how to insert date in mysql using python:
+
+
+from pymysql import *
+from datetime import datetime
+
+now = datetime.now()
+id=101
+name="Amit"
+formatted_date = now.strftime('%Y-%m-%d')
+
+con=connect("localhost","root","root","krnetwork")
+cur=con.cursor()
+cur.execute('insert into kremp values(%s, %s,%s)', (id , name, formatted_date))
+con.commit()
+
+
+-------------------------------------------------
+How to retrieve date from mysql
+
+from pymysql import *
+
+con=connect("localhost","root","root","krnetwork")
+cur=con.cursor()
+cur.execute('select * from kremp')
+row =cur.fetchone()
+print("id is :",row[0])
+print("name is :",row[1])
+print("age is :",row[2])
+d=row[2]
+print(type(d))
+
+

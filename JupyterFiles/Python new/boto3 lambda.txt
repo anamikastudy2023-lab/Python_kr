@@ -1,0 +1,85 @@
+task one :lambda function to send mail when an ec2 instance stopped
+
+1st==>: create policy:
+
+here i m adding 2 services
+
+service:sns
+action: publish
+resource: all resource
+
+service: CloudWatch Logs
+action:all cloudwatch logs
+resource: all resource
+
+
+2nd==> :then create role with this policy:
+
+
+3rd==> :create sns topic
+
+topic name: lambda-demo(any)
+Display name: ProdServer(any)
+
+
+4th==> :now add subscribers to topic:
+
+topic Arn : select your topic arn
+potocol : Email
+endpint : nishi4ca@gmail.com
+
+
+5th==> :subscribe to email and check email 
+
+
+6th==> :create lambda fucntion from scratch
+
+name : any name
+runtime: python3.8
+role: choose an existing role(select role that you create earlier)
+
+7nt==> now write logic and test lambda 
+
+import json
+import boto3
+
+client=boto3.client('sns')
+def lambda_handler(event, context):
+    #print(str(event))
+    inst_id=event['detail']['instance-id']
+    client.publish(TopicArn='arn:aws:sns:us-east-2:880993752599:labda-demo',
+    Message="Hello Team instance id {} has stopped".format(inst_id))
+    
+    
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
+
+
+
+Note : return code is not mandatory
+
+8th==> add trigger
+
+cloudwatch Events/EventBridge
+
+Rule: create a new rule
+
+Rule name : when_ec2_stops (any)
+Rule description :(any)
+Rule type :Event pattern
+select : EC2 on EC2 instance state-change notification
+then in Detail select state ==> stopped
+
+Note : you can specify the instance also for specific instance
+
+save it
+
+and now you are ready 
+
+stop your instance and chek your email
+ 
+
+
+

@@ -1,0 +1,93 @@
+Working with csv  using pandas:
+
+import pandas as pd
+print(pd.read_csv('G:\\mycsv.csv'))
+
+-----------------------------
+to get column names
+
+data=pd.read_csv("G:\\mycsv.csv")
+print(data.columns)
+
+-----------------
+we can get all the rows below an entire column as a list
+
+data=pd.read_csv("G:\\mycsv.csv")
+print(data['name'])
+
+---------------------
+you can skip any row :
+
+import pandas as pd
+print(pd.read_csv('G:\\mycsv.csv', skiprows =[2]))
+
+---------------------------
+to read specific column:
+
+import pandas as pd
+print(pd.read_csv('G:\\mycsv.csv',usecols = ['name']))
+
+---------------------
+by using this you can tell that my header on row 1
+ 
+data=pd.read_csv("G:\\mycsv.csv",header=1)
+
+------------------------------------------
+you can set it if you do not have header
+
+data=pd.read_csv("G:\\mycsv.csv",header=None,names=['Emp id','Emp name','Emp age'])
+
+-----------------------------------
+How many rows you want to read excluding header
+
+data=pd.read_csv("G:\\mycsv.csv",nrows=2)
+
+------------------------------------
+will replace your value with NaN
+
+data=pd.read_csv("G:\\mycsv.csv",na_values=[34])
+
+-----------------------------------------
+
+suppose you have the same value in other fields and you dont want to change that
+you can specify column name
+data=pd.read_csv("G:\\mycsv.csv",na_values={'age':[34]})
+------------------------------------------
+
+call function:
+
+
+def convert_age_cell(cell):
+    if cell=='34':
+        return 18
+    return cell
+
+data=pd.read_csv("G:\\mycsv.csv",converters={'age':convert_age_cell})
+print(data)
+-------------------------------------------
+import pandas as pd
+
+data=pd.read_csv("G:\\mycsv.csv")
+print(data['age'].max())
+print(data['age'].min())
+-------------------------------
+write datafreame to csv 
+
+df =pd.DataFrame({'id':[101,102,103,104,105],
+                  'name':['Amit','Ram','Deepak','Gopal','Deepika'],
+                  'age':[22,24,45,12,32]})
+
+df.to_csv("G:\\mycsv.csv")
+
+-------------------
+for append use mode='a'
+header=Flase  if your have header
+index=False  if you do not want to write index number
+
+df.to_csv("G:\\mycsv.csv",mode='a', header=False,index=False)
+
+
+--------------------------
+
+
+

@@ -1,0 +1,118 @@
+import time
+import threading
+
+l=threading.Lock()
+def wish(name):
+   l.acquire()
+   for i in range(10):
+      print("Good Morning :",end="")
+      time.sleep(2)
+      print(name)
+   l.release()
+
+t1=threading.Thread(target=wish, args=('Dhoni',))
+t2=threading.Thread(target=wish, args=('Virat',))   
+t1.start()
+t2.start()
+
+-----------------------------------------
+
+RLock() function:
+
+import time
+from threading import *
+
+l=RLock()
+def factorial(n):
+   l.acquire()
+   if n==0:
+      result=1
+   else:
+      result=n*factorial(n-1)
+   l.release()
+   return result
+
+def result(n):
+   print("The Factoiral of",n,"is :",factorial(n))
+
+t1=Thread(target=result, args=(5,))
+t2=Thread(target=result, args=(5,))
+
+t1.start()
+t2.start()
+
+-----------------------------
+Lock() vs RLock()
+
+1. Lock Object can be acquired by only one thread at a time.
+Even owner thread also cannot acquire
+multiple times.
+
+1. RLock Objects can be acquired by only one thread at a time,
+but owner thread can acquire same lock object multiple times.
+
+
+-----------------------------------------------
+Synchronization by using semaphore:
+
+semaphore can be used to limit the access to the shared resources with limited capacity.
+
+s=Semaphore(counter)
+by default counter is 1
+for every acquire() call counter value will be decremented and for every relese() call counter
+value will be incremented.
+
+
+Ex :
+
+import time
+from threading import *
+
+s=Semaphore(2)
+def wish(name):
+   s.acquire()
+   for i in range(10):
+      print("Good Morning :",end="")
+      time.sleep(2)
+      print(name)
+   s.release()
+
+t1=Thread(target=wish,args=("Dhoni",))
+t2=Thread(target=wish,args=("Yuvraj",))
+t3=Thread(target=wish,args=("Kohli",))
+t4=Thread(target=wish,args=("Rohit",))
+t5=Thread(target=wish,args=("Dhawan",))
+
+t1.start()
+t2.start()
+t3.start()
+t4.start()
+t5.start()
+
+
+-----------------------------------
+BoundedSemaphore:
+
+Normal semaphore is an unlimited semaphore which allows  us to
+call release() method any number of times to increment counter. 
+The number of release() calles exceed the number of
+acquire() calls also.
+
+from threading import *
+
+
+s=Semaphore(2)
+s.acquire()
+s.acquire()
+s.release()
+s.release()
+s.release()
+print("End")
+
+it is valid
+
+BounedSemaphore is exactly same as Semaphore except that the number of
+release() calls should not exceed the number of acquire.
+
+ 
+

@@ -1,0 +1,254 @@
+datetime module:
+
+datetime classes in Python are categorized into main 5 classes.
+
+date – Manipulate just date (year,Month, day)
+time – Time independent of the day (Hour, minute, second, microsecond)
+datetime – Combination of time and date (Month, day, year, hour, second, microsecond)
+timedelta— A duration of time used for manipulating dates
+tzinfo— An abstract class for dealing with time zones
+
+
+---------------------------------------
+date :
+
+from datetime import date
+
+date=date.today()
+print("Today date is :",date)
+
+=>
+date=date.today()
+print("Day of Month:",date.day)
+
+=>
+date=date.today()
+print("Month of year:",date.month)
+
+=>
+
+date=date.today()
+print("Current year:",date.year)
+
+=>
+
+date=date.today()
+print("Day of week:",date.weekday())
+
+Monday => 0
+...
+...
+...
+Sunday => 6
+
+
+=>
+
+date=date.today()
+print("Formatted Date:",date.strftime('%d/%m/%Y'))
+
+=>
+
+date=date(2010,2,14) #(year,month,day)
+print("Create your date object:",date)
+
+----------------------------------------------
+time :
+
+from datetime import time
+
+time=time() #(hour,minute,second,microsecond)
+print("Empty time",time) #output 00:00:00
+
+=>
+
+time=time(11,45,34)
+print("cteate your time object",time)
+
+=>
+
+time=time(11,45,34)
+print("Hour :",time.hour)
+
+=>
+
+time=time(11,45,34)
+print("Hour :",time.minute)
+
+=>
+
+time=time(11,45,34)
+print("Hour :",time.second)
+
+=>
+
+time=time(11,45,34)
+print("Hour :",time.microsecond)
+
+------------------------------------
+datetime:
+
+from datetime import datetime
+
+date_time=datetime.today()
+print("Current date and time ",date_time)
+
+=>
+
+date_time=datetime.now()
+print("Current date and time ",date_time)
+
+=>
+
+time=datetime.now().time()
+print("Current time :",time)
+
+
+=>
+
+date=datetime.now().date()
+print("Current time :",date)
+
+=>
+
+tmstmp=datetime.today().timestamp()
+print("Current timestamp :",tmstmp)
+
+
+=>
+	
+tmstmp=datetime.today().timestamp()
+date_time=datetime.fromtimestamp(tmstmp)
+print("timestamp to date time:",date_time)
+
+=>
+
+formet_date_time=datetime.now().strftime("%d-%m-%y %H:%M:%S")
+print("Formet date and time:",formet_date_time)
+
+
+
+=>
+string to date :
+
+dts="12-May-1018"
+
+from datetime import datetime
+dt=datetime.strptime(dts,"%d-%b-%Y") #(string,format)
+
+===============================================
+time module :
+
+time() :
+Returns the number of seconds that have passed since epoch.
+
+epoch : The epoch is the point where the time starts. On January 1st of that year, at 0 hours
+For Unix, the epoch is 1970
+
+import time
+
+t=time.time()
+print("epoch  :",t)
+
+=>
+
+ctime()
+
+Returns the current date and time by taking elapsed seconds as its parameter.
+
+e=time.time()
+t=time.ctime(e)
+print("current date time  :",t)
+
+=>
+
+sleep()
+
+Stops execution of a thread for the given duration.
+
+time.sleep(second)
+
+=>
+
+print(time.localtime(e),end='n----------n')
+print(time.gmtime(e),end='n-----------n') #in UTC formet
+
+output :
+time.struct_time(tm_year=2020, tm_mon=5, tm_mday=1, tm_hour=17, tm_min=3, tm_sec=9, tm_wday=4, tm_yday=122, tm_isdst=0)
+
+attribute :
+
+tm_year   0000, .., 2019, …, 9999
+
+tm_mon    1-12
+
+tm_mday   1-31
+
+tm_hour   0-23
+
+tm_min    0-59
+
+tm_sec    0-61
+
+tm_wday   0-6  (Monday is 0)
+
+tm_yday   1-366
+
+tm_isdst   0, 1, -1    (daylight savings time, -1 when unknown)
+
+====================================================
+Working with Time Differences
+
+In order to perform arithmetic operations with time you can simply substract two datetime objects, which will return a datetime.timedelta object.
+
+
+import datetime
+
+timestring = "2020-03-30T23:51:03Z"
+
+# Create datetime objects
+d0 = datetime.datetime.strptime(timestring, "%Y-%m-%dT%H:%M:%SZ")
+d1 = datetime.datetime.now() # Current time
+
+# Calculate timedelta
+dt = d1 - d0
+
+passed_days = dt.days
+passed_seconds = dt.days # remaining seconds
+passed_microseconds = dt.microseconds # remaining microseconds
+total_seconds = dt.total_seconds()
+
+print(passed_days)
+
+==========================
+
+import time
+import datetime
+import pytz
+
+utc=pytz.utc
+
+date=datetime.datetime.now(utc)
+
+time1 =date.strftime("%r %Z")
+print(time1)
+
+
+
+--------------------------------------
+import pytz
+from dateutil.tz import *
+from datetime import datetime
+
+
+# This contains the local timezone 
+local = tzlocal()
+now = datetime.now()
+now = now.replace(tzinfo = local)
+
+# assuming now contains a timezone aware datetime
+tz = pytz.timezone('Asia/Kolkata')
+your_now = now.astimezone(tz)
+print(your_now)
+
+

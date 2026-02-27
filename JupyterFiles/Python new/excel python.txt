@@ -1,0 +1,89 @@
+import xlwt 
+from xlwt import Workbook 
+  
+# Workbook is created 
+wb = Workbook() 
+print(help(xlwt.easyxf))  
+ add_sheet is used to create sheet. 
+sheet1 = wb.add_sheet('Sheet 1')
+style = xlwt.easyxf('font: bold 1, color red;') 
+sheet1.write(0,0,'Amit',style)  
+sheet1.write(0,1,'Deepak')
+sheet1.write(0,2,'Ram')
+
+wb.save('D:\\python\\rename\\example.xls') 
+
+
+=====================================================
+
+import xlsxwriter 
+
+
+
+workbook = xlsxwriter.Workbook('D:\\python\\rename\\hello.xlsx') 
+worksheet = workbook.add_worksheet()
+
+worksheet.write('A1', 'Hello..') 
+worksheet.write('A2', '') 
+worksheet.write('A3', '') 
+worksheet.write('A4', '')
+worksheet.write(0,1,'Amit')
+workbook.close() 
+
+
+
+=====================================================
+import xlsxwriter 
+
+
+
+workbook = xlsxwriter.Workbook('D:\\python\\rename\\hello.xlsx') 
+worksheet = workbook.add_worksheet()
+
+scores = ( 
+    ['ankit', 1000], 
+    ['rahul',   100], 
+    ['priya',  300], 
+    ['harshita',    50], 
+) 
+  
+# Start from the first cell. Rows and 
+# columns are zero indexed. 
+row = 0
+col = 0
+  
+# Iterate over the data and write it out row by row. 
+for name, score in (scores): 
+    worksheet.write(row, col, name) 
+    worksheet.write(row, col + 1, score) 
+    row += 1
+  
+workbook.close()
+
+============================================
+
+
+import xlrd
+
+wb=xlrd.open_workbook("D:\\python\\rename\\hello.xlsx")
+sh=wb.sheet_by_index(0)
+
+for row in range(sh.nrows):
+    for col in range(sh.ncols):
+        print(sh.cell_value(row,col),end=" ")
+    print()
+
+
+===============================================
+
+import xlrd
+
+wb=xlrd.open_workbook("D:\\python\\rename\\hello.xlsx")
+sh=wb.sheet_by_index(0)
+print(sh.row_values(0))
+print(sh.col_values(0))
+
+=============================
+
+
+

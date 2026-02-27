@@ -1,0 +1,92 @@
+Types of inheritance:
+1.single inheritance 
+ single parent and single child
+ class Test:
+    def m1(self):
+        print('parent method')
+
+class Demo(Test):
+    def m2(self):
+        print('child class')
+
+d=Demo()
+d.m1()
+d.m2()
+
+2.multi level inheritance
+
+ class Test:
+    def m1(self):
+        print('parent method')
+
+class Example(Test):
+    def m3(self):
+        print('class Example')
+
+class Demo(Example):
+    def m2(self):
+        print('child class')
+
+d=Demo()
+d.m1()
+d.m2()
+d.m3()
+3.Hierarchical inheritance
+ one parent multiple child
+
+class Test:
+    def m1(self):
+        print('parent method')
+
+class Example(Test):
+    def m3(self):
+        print('class Example')
+
+class Demo(Test):
+    def m2(self):
+        print('child class')
+
+d=Demo()
+d.m1()
+d.m2()
+e=Example()
+e.m1()
+e.m3()
+
+4.Multiple Inheritance
+class Test:
+    def m1(self):
+        print('class Test')
+
+class Example:
+    def m1(self):
+        print('class Example')
+
+class Demo(Test,Example):
+    def m2(self):
+        print('child class')
+
+d=Demo()
+d.m1()
+
+Note : order is based on parents,first priority gose to first parent
+5.Hybrid Inheritance
+
+Method resolution order in python:
+you can get method resolution order by using mro() built in function
+
+class Test:
+    def m1(self):
+        print('class Test')
+
+class Example:
+    def m1(self):
+        print('class Example')
+
+class Demo(Test,Example):
+    def m2(self):
+        print('child class')
+
+
+print(Demo.mro())
+

@@ -1,0 +1,144 @@
+
+
+socket module:
+
+s=socket.socket(domain=-1,type=-1,proto=0)
+
+1.domain =>ipv6-->socket.AF_INET6 or ipv4--> socket.AF_INET(bydefault)
+2.type => type of communication TCP(socket.SOCK_STREAM) based(bydefault) or UDP(socket.SOCK_DGRAM) based
+3.protocol => Typically zero, this may be used to identify a variant of a protocol within a domain and type.
+ 
+
+import socket
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+print(s)
+
+------------------------------------
+Server Socket Method:
+---------------------
+1. bind(hostname(ip address),portnumber) 
+This method binds address (hostname, port number pair) to socket.
+Note :Accept only tuple
+
+2. listen(number) :This method sets up and start TCP listener.
+
+number=> how many clints can communicate at same time 
+
+3. accept() : This passively accept TCP client connection, waiting 
+until connection arrives
+accept will return connection object or ip address of clint
+
+simple server:
+
+import socket
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname() #to get local machine name
+#or you can use "127.0.0.1" that is local host ip address
+
+port =5000
+s.bind((host,port))
+s.listen()
+con,addr= s.accept()
+s.close()
+-----------------------------------
+Clint Socket Methods:
+
+1. connect((host,port)) : This method actively initiates TCP server connection.
+ 
+-----------
+Simple Clint:
+
+import socket
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname() #to get local machine name
+#or you can use "127.0.0.1" that is local host ip address
+port =5000
+
+s.connect((host,port))
+s.close()
+
+---------------------------------
+General Socket Methods:
+
+1. recv(byts) :This method receives TCP message
+2. send() :This method transmits TCP message 
+3. recvfrom() :This method receives UDP message
+4. sendto() :This method transmits UDP message
+5. close() :This method closes socket
+6. gethostname() :Returns the hostname.
+
+------------------------
+Simple Server Clint Communication :
+
+server:
+import socket
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname() #to get local machine name
+#or you can use "127.0.0.1" that is local host ip address
+port =5000
+s.bind((host,port))
+s.listen()
+while True :
+  con,addr=s.accept()
+
+  print('Got connection from', addr)
+
+  con.send(b'Thank you for connecting')
+  print(con.recv(1024))
+  con.close()
+ 
+Clint:
+------
+
+import socket
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname() #to get local machine name
+#or you can use "127.0.0.1" that is local host ip address
+port =5000
+s.connect((host,port))
+print(s.recv(1024))
+s.send(b"this is clint")
+s.close()
+
+----------------------------------------
+simple chat server :
+
+import socket
+
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname() #to get local machine name
+#or you can use "127.0.0.1" that is local host ip address
+port =5000
+s.bind((host,port))
+s.listen()
+con,addr=s.accept()
+print('Got connection from', addr)
+while True :
+  data="Server=>"+input("")
+  con.send(bytes(data, encoding='utf-8'))
+  print(con.recv(1024))
+  
+ 
+-----------------------------------
+import socket
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host=socket.gethostname() #to get local machine name
+#or you can use "127.0.0.1" that is local host ip address
+port =5000
+s.connect((host,port))
+while True:
+ msg=s.recv(1024)
+ if msg==b"Server=>bye" :
+    s.send(bytes("bye", 'utf-8'))
+    break
+ print(msg)
+ data="Client=>"+input("")
+ s.send(bytes(data, 'utf-8'))
+ 
+s.close()
+-------------------------------------------
+https://pymotw.com/2/socket/addressing.html

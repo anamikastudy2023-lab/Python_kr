@@ -1,0 +1,41 @@
+13:56:04	 From Host : import boto3
+import pprint
+sess=boto3.session.Session()
+
+
+res=sess.resource('ec2')
+clnt=sess.client('ec2')
+
+
+
+#resp=clnt.describe_instances()
+'''
+resp=clnt.describe_instances(Filters=[
+        {
+            'Name': 'instance-state-name',
+            'Values': [
+                'running',
+            ]
+        },
+    ],)
+
+'''
+#pprint.pprint(resp)
+#print(resp['Reservations'][0]['Instances'][0]['InstanceId'])
+
+
+#instancs=res.instances.all()
+instancs=res.instances.filter(Filters=[
+        {
+            'Name': 'instance-state-name',
+            'Values': [
+                'running',
+            ]
+        },
+    ])
+x=list(instancs)
+print(x)
+
+#print(x.id)
+#print(x.state)
+#x.stop()

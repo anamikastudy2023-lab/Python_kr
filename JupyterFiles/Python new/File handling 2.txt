@@ -1,0 +1,180 @@
+Zipping and Unzipping File :
+----------------------------
+1.To improve memory utilization
+2.we can reduce transfer time
+
+for that we need zipfile module
+it contain a class ZipFile class
+
+to create a zip file
+----------------------
+from zipfile import *
+f=ZipFile('D:\\files.zip','w',ZIP_DEFLATED)
+f.write('D:\\Demo.class')
+f.write('D:\\Demo.java')
+f.close()
+print('zip file created successfully')
+
+-------------------------------
+how to unzip file:
+import zipfile
+with zipfile.ZipFile("D:\\input\\file.zip","r") as zip_ref:
+    zip_ref.extractall("D:\\input\\")
+
+
+----------------------------------
+from zipfile import *
+
+f=ZipFile('G:\\abc123\\myzip.zip','r')
+
+x=f.filelist
+
+for y in x:
+    print(y.filename)
+----------------------------
+tar file
+tar.gz
+
+import tarfile
+tar = tarfile.open("sample.tar", "w:gz")
+tar.add("D:\\pytoapp.txt")
+tar.close()
+    
+
+-------------------------------
+working with Directories :
+--------------------------
+1.to know cwd:
+--------------
+import os
+cwd=os.getcwd()
+print('cwd :',cwd)
+
+2.change to new dir:
+--------------------
+import os
+cwd=os.getcwd()
+print('cwd :',cwd)
+os.chdir('D:\\input\\')
+cwd=os.getcwd()
+print('cwd :',cwd)
+
+3.create a new directory:
+-------------------------
+import os
+os.mkdir('d:\\input\\python')
+
+Note : os.makedirs()
+-----------------
+to create dir inside dir some time 
+like :
+pyhton/fileio/videos/
+
+4.remove an existing directory :
+-------------------------------
+import os
+os.rmdir('d:\\input\\python')
+
+note : last one got deleted
+if you want all :
+os.removedirs()
+
+os.remove() to remove file
+
+5.to list content of directory:
+-------------------------------
+import os
+list1=os.listdir('d:\\file-iopython\\')
+print(list1)
+
+for l in list1:
+    print(l)
+    
+
+6.to rename a dir:
+------------------
+import os
+os.rename('d:\\input','d:\\file-iopython')
+
+note : just like dir you can rename the file
+
+
+
+--------------------------------------
+import os
+os.chdir("D:\\")
+for dirpath,dirnames,filenames in os.walk('.'):
+    print(dirpath) #currunt path
+    print(dirnames) #dir name
+    print(filenames) #filename
+
+-------------------------------------
+how to get information about a file:
+	
+stat() function
+
+st_mode==> protection bits
+st_ino==> Inode number
+st_dev==> device
+st_nlink==> no of hard links for this file
+st_uid==>userid of owner
+st_gid==>group id of owner
+st_size==> size of file in bytes
+st_atime==> time of most recent access
+st_mtime==> time of most recent modification 
+st_ctime==> time of most recent meta data change
+-------------------------------------------------
+Note time we get in timestamp
+number of mili sec from jan 1st 1970
+
+now
+fromtimestamp() datetime module 
+
+------------------
+import os
+from datetime import *
+stats=os.stat('D://file-iopython//amit.txt')
+print('File Size in Bytes :',stats.st_size)
+print('File Last Accessd Time :',datetime.fromtimestamp(stats.st_atime))
+print('File Last modified Time :',datetime.fromtimestamp(stats.st_mtime))
+
+--------------------------------------------
+pickling and unpickling :
+
+pickling : the process of writing an object to the file is called pickling
+unpickling : the process of reading an object from the file is called unpickling
+
+
+pickling :
+
+to write we need pickle module
+pickle.dump(Object,file)
+
+unpickling :
+
+pickle.load(file)
+
+
+import pickle
+
+class Employee:
+    def __init__(self,eno,ename,esal,eaddr):
+        self.eno=eno
+        self.ename=ename
+        self.esal=esal
+        self.eaddr=eaddr
+
+    def display(self):
+        print(self.eno,'\t',self.ename,'\t',self.esal,'\t',self.eaddr)
+        
+    
+with open("D:\\file-iopython\\emp.data",'wb') as f:
+    e=Employee(101,"Amit",12000,"Delhi")
+    pickle.dump(e,f)
+    print("pickling of Employeen Object completed")
+with open("D:\\file-iopython\\emp.data",'rb') as f:
+    obj=pickle.load(f)
+    obj.display()
+---------------------------------------------
+
+

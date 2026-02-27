@@ -1,0 +1,60 @@
+super() :
+--------
+from child class to call parent class members.
+code reusability
+
+class Person:
+    def __init__(self,name,age):
+        self.name=name
+        self.age=age
+        #100 properties
+    def display(self):
+        print('Name :',self.name)
+        print('Age :',self.age)
+
+class Student(Person):
+    def __init__(self,name,age,rollno,marks):
+        super().__init__(name,age)
+        self.rollno=rollno
+        self.marks=marks
+    def display(self):
+        super().display()
+        print('Roll Number:',self.rollno)
+        print('Marks :',self.marks)
+
+class Teacher(Person):
+    def __init__(self,name,age,salary,subject):
+        super().__init__(name,age)
+        self.salary=salary
+        self.subject=subject
+
+    def display(self):
+        super().display()
+        print('Salary :',self.salary)
+        print('Subject :',self.subject)
+
+s=Student("Amit",23,101,78)
+s.display()
+print("*"*25)
+t=Teacher("Deepak",34,1000,"Python")
+t.display()
+
+Note : 1.from child class by using super() we cannot call
+parent class instance variable we should use self only.
+
+2. from child class by using super() method we can call parent class
+static variable
+
+class Test:
+    a=12
+    def __init__(self):
+        self.b=20
+
+class Demo(Test):
+    def m1(self):
+        print(super().a)
+        #print(super().b) cant access instance var
+        print(self.b)
+
+d=Demo()
+d.m1() 

@@ -1,0 +1,80 @@
+pxssh - control an SSH session
+
+This class extends pexpect.spawn to specialize setting up SSH connections. This adds methods for login, logout, and expecting the shell prompt.
+
+
+from pexpect import pxssh #pip install pexpect
+import getpass
+try:
+    s = pxssh.pxssh()
+    hostname = input('hostname: ')
+    username = input('username: ')
+    password = getpass.getpass('password: ')
+    s.login(hostname, username, password)
+    s.sendline('uptime')   # run a command
+    s.prompt()             # match the prompt
+    print(s.before)        # print everything before the prompt.
+    s.sendline('ls -l')
+    s.prompt()
+    print(s.before)
+    s.sendline('df')
+    s.prompt()
+    print(s.before)
+    s.logout()
+except pxssh.ExceptionPxssh as e:
+    print("pxssh failed on login.")
+    print(e)
+
+
+=>
+prompt(timeout=-1):
+Match the next shell prompt.
+
+---------------------------------------------
+
+from pexpect import pxssh
+s = pxssh.pxssh()
+if not s.login ('ip', 'root', 'password'):
+    print("SSH session failed on login.")
+    print(str(s))
+else:
+    print("SSH session login successful")
+    s.sendline ('ls ')
+    s.prompt()         # match the prompt
+    print(s.before)     # print everything before the prompt.
+    s.logout()
+
+
+=============================================
+spur: 
+
+Run commands and manipulate files locally or over SSH using the same interfac
+
+To run echo locally:
+
+import spur #pip install spur
+
+shell = spur.LocalShell()
+result = shell.run(["echo", "-n", "hello"])
+print(result.output) # prints hello
+
+
+
+Executing the same command over SSH uses the same interface
+
+import spur
+
+shell = spur.SshShell(hostname="localhost", username="bob", password="password1")
+with shell:
+    result = shell.run(["echo", "-n", "hello"])
+print(result.output) # prints hello
+
+
+-----------------------------------------
+import spur
+
+shell = spur.SshShell(hostname="ip", username="root", password="password")
+result = shell.run(["ls"])
+print(result.output)
+
+========================================================

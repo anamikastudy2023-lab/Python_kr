@@ -1,0 +1,188 @@
+from tkinter import *
+master = Tk()
+
+def var_states():
+   print("male: %d,\nfemale: %d" % (var1.get(), var2.get()))
+
+Label(master, text="Your sex:").grid(row=0, sticky=W)
+var1 = IntVar()
+Checkbutton(master, text="male", variable=var1).grid(row=1, sticky=W)
+var2 = IntVar()
+Checkbutton(master, text="female", variable=var2).grid(row=2, sticky=W)
+Button(master, text='Quit', command=master.quit).grid(row=3, sticky=W, pady=4)
+Button(master, text='Show', command=var_states).grid(row=4, sticky=W, pady=4)
+
+master.mainloop()
+-----------------------------------------
+columnspan or rowspan:
+
+bt.grid(columnspan=2)
+bt.grid(rowspan=2)
+
+------------------------------------
+how to get value of radio button:
+from tkinter import *
+ 
+from tkinter.ttk import *
+ 
+window = Tk()
+ 
+window.title("Welcome to LikeGeeks app")
+ 
+selected = IntVar()
+ 
+rad1 = Radiobutton(window,text='First', value=1, variable=selected)
+ 
+rad2 = Radiobutton(window,text='Second', value=2, variable=selected)
+ 
+rad3 = Radiobutton(window,text='Third', value=3, variable=selected)
+ 
+def clicked():
+ 
+   print(selected.get())
+ 
+btn = Button(window, text="Click Me", command=clicked)
+ 
+rad1.grid(column=0, row=0)
+ 
+rad2.grid(column=1, row=0)
+ 
+rad3.grid(column=2, row=0)
+ 
+btn.grid(column=3, row=0)
+ 
+window.mainloop()
+---------------------------------
+Entry box focu and disabled:
+
+-------------------------
+
+
+from tkinter import *
+
+tk=Tk()
+
+en=Entry(tk,state='disabled')
+#en.focus()
+en.pack()
+
+
+tk.mainloop()
+-------------------------------------
+scrolled Text:
+from tkinter import *
+ 
+from tkinter import scrolledtext
+ 
+window = Tk()
+ 
+window.title("Welcome to LikeGeeks app")
+ 
+window.geometry('350x200')
+ 
+txt = scrolledtext.ScrolledText(window,width=40,height=10)
+ 
+txt.grid(column=0,row=0)
+ 
+window.mainloop()
+
+-----------------------------------------------
+
+Add Note :
+----------
+
+from tkinter import *
+ 
+from tkinter import ttk
+ 
+window = Tk()
+ 
+window.title("Welcome to LikeGeeks app")
+
+def Note():
+   
+  tab1 = ttk.Frame(tab_control)
+  
+  tab_control.add(tab1, text='First')
+ 
+  lbl1 = Label(tab1, text= 'label1')
+ 
+  lbl1.grid(column=0, row=0)
+
+tab_control = ttk.Notebook(window)
+
+tab_control.pack(expand=1, fill='both')
+
+bt=Button(window,text="click",command=Note)
+bt.pack()
+
+------------------------------------
+from tkinter import *
+
+root = Tk()
+
+b = Button(root, text="Delete me", command=lambda: b.pack_forget())
+b.pack()
+
+root.mainloop()
+
+
+--------------------------------------
+
+
+ 
+window.mainloop()
+--------------------------------------
+ProgressBar:
+
+bar = Progressbar(tk, length=200, style='black.Horizontal.TProgressbar')
+ 
+bar['value'] = 70
+ 
+bar.grid(column=0, row=0)
+
+
+----------------------------------------
+open file :
+
+from tkinter import *
+from tkinter import filedialog
+
+def openfile():
+   #file = filedialog.askopenfilename()
+   #files = filedialog.askopenfilenames() #for multiple files
+   dir = filedialog.askdirectory() # you can ask for directory
+   print(dir)
+
+tk=Tk()
+
+bt=Button(tk,text="openfile",command=openfile)
+bt.pack()
+
+tk.mainloop()
+------------------------------------------
+how to add image on tkinter window:
+Note : first install pillow library
+
+from PIL import Image, ImageTk 
+import tkinter as tk 
+
+root = tk.Tk()
+img = Image.open("d:\\guidovan.jpg")
+tkimage = ImageTk.PhotoImage(img)
+tk.Label(root, image=tkimage).pack()
+root.mainloop()
+
+----------------------------------------------
+from tkinter import *
+ 
+ 
+window = Tk()
+ 
+window.title("Welcome to LikeGeeks app")
+ 
+en=Entry(window)
+en.insert('end','Amit')
+en.pack()
+ 
+window.mainloop()

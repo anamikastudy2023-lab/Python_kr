@@ -1,0 +1,63 @@
+import os 
+import pprint 
+  
+# Get the list of user's 
+# environment variables 
+env_var = os.environ 
+  
+# Print the list of user's 
+# environment variables 
+print("User's Environment variable:") 
+pprint.pprint(dict(env_var), width = 1)
+
+home = os.environ['HOME'] 
+
+=>
+os.getgid() #Return the real group id of the current process.
+
+os.getuid() #Return the current process’s user id.
+
+os.getpid() #Returns the real process ID of the current process.
+
+
+os.name #name of os
+
+os.getlogin() #Return the name of the user logged in
+
+
+
+------------------------
+os.setegid(egid)
+Set the current process’s effective group id.
+
+os.seteuid(euid)
+Set the current process’s effective user id.
+
+os.setgid(gid)
+Set the current process’ group id.
+
+os.setuid(uid)
+Set the current process’s user id.
+
+
+os.uname()
+Returns information identifying the current operating system. The return value is an object with five attributes:
+
+sysname - operating system name
+nodename - name of machine on network (implementation-defined)
+release - operating system release
+version - operating system version
+machine - hardware identifier
+
+------------------------------------------
+You can use os.access(path, mode) to check the file permission with modes for reading, writing and execution permissions.
+
+>>> import os
+>>> os.access('my_file', os.R_OK) # Check for read access
+True
+>>> os.access('my_file', os.W_OK) # Check for write access
+True
+>>> os.access('my_file', os.X_OK) # Check for execution access
+False
+>>> os.access('my_file', os.F_OK) # Check for existance of file
+True

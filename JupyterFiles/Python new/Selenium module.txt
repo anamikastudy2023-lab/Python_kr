@@ -1,0 +1,170 @@
+Selenium :
+----------
+The selenium package is used to automate web browser interaction from Python.
+
+pip install selenium
+
+Drivers:
+--------
+Selenium requires a driver to interface with the chosen browser. 
+
+
+Chrome WebDriver:
+-----------------
+
+class
+selenium.webdriver.chrome.webdriver.WebDriver(executable_path='chromedriver)
+
+
+
+from selenium import webdriver
+import time
+
+driver=webdriver.Chrome(executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe')
+
+driver.get('https://www.google.co.in/') # Navigate to the Google home page.
+
+driver.maximize_window() #Maximize the browser window.
+time.sleep(2)
+
+elm=driver.find_element_by_name("q") #Identify the Google search text box 
+
+time.sleep(3)
+elm.send_keys("kr network cloud") #and pass the value.
+
+driver.close() #Close the Browser.
+-------------------------------------------------------
+1. get(url)
+Loads a web page in the current browser session.
+
+2.maximize_window()
+Maximizes the current window that webdriver is using
+
+3.minimize_window()
+Invokes the window manager-specific ‘minimize’ operation
+
+4.quit()
+Quits the driver and closes every associated window.
+
+
+6.save_screenshot(filename)
+Saves a screenshot of the current window to a PNG image file.
+
+
+7.title
+Returns the title of the current page.
+
+Usage:	title = driver.title
+
+
+
+
+1.find_element(by='id', value=None)
+Find an element given a By strategy and locator. Prefer the find_element_by_* methods when possible.
+
+Ex:
+elm=driver.find_element(by='id', value='email') # url https://www.facebook.com/
+
+2.find_element_by_class_name(name)
+Finds an element by class name.
+
+<html>
+  <body>
+    <p class="content"> site content.</p>
+  </body>
+</html>
+
+Ex:
+
+driver.find_element_by_class_name('content')
+
+3.find_element_by_css_selector(css_selector)
+Finds an element by css selector.
+
+4.find_element_by_id(id)
+Finds an element by id.
+
+Ex:
+elm=driver.find_element_by_id('email') # url https://www.facebook.com/
+
+5.find_element_by_link_text(link_text)
+Finds an element by link text.
+
+<html>
+  <body>
+    <p>Are you sureyou want to do this?</p>
+    <a href="continue.html">continue</a>
+    <a href="cancel.html">cancel</a>
+  </body>
+</html>
+
+Ex:
+driver.find_element_by_link_text('continue')
+
+Note : the first element with the given link text will be return
+
+
+6.find_element_by_name(name)
+Finds an element by name.
+
+Ex:
+elm=driver.find_element_by_name("q") #Identify the Google search text box 
+
+7.find_element_by_partial_link_text(link_text)
+Finds an element by a partial match of its link text.
+
+
+8.find_element_by_tag_name(name)
+Finds an element by tag name.
+
+<html>
+  <body>
+    <h1>Welcome</h1>
+    <p class="content"> site content.</p>
+  </body>
+</html>
+
+Ex:
+driver.find_element_by_tag_name('h1')
+
+Note : the first element with the given tag name will be return
+
+
+9.find_element_by_xpath(xpath)
+Finds an element by xpath.
+
+
+
+----------------------------------------------
+click(on_element=None)
+Clicks an element.
+
+click_and_hold(on_element=None)
+Holds down the left mouse button on an element.
+
+send_keys(*keys_to_send)
+Sends keys to current focused element.
+
+
+---------------------------------------------------------------
+from selenium import webdriver
+import time
+from selenium.webdriver.support.ui import WebDriverWait
+
+driver=webdriver.Chrome(executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe')
+
+driver.get('https://www.facebook.com/') # Navigate to the Google home page.
+
+driver.maximize_window() #Maximize the browser window.
+time.sleep(2)
+
+elm1=driver.find_element_by_id('email')
+elm1.send_keys('nishi4ca@gmail.com')
+elm2=driver.find_element_by_name('pass')
+elm2.send_keys('redhat')
+elm3=WebDriverWait(driver,10).until(lambda driver :driver.find_element_by_xpath('//input[@value="Log In"]'))
+#time.sleep(2)
+elm3.click()
+
+time.sleep(4)
+driver.close() #Close the Browser.

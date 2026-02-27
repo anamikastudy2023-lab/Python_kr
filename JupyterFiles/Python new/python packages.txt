@@ -1,0 +1,19 @@
+it is an encapsulation mechanism to group related modules into a single unit.
+package is nothiong but folder or directory which
+represent collection of python modules.
+
+Any foulder or directory contains __init__.py
+file, is considered as a python package. this file can be empty.
+
+A packgae can contains sub packages also.
+
+D:\pythonpackage>
+  |-Demo1.py
+  |-__init__.py
+
+in Example.py file
+
+import pythonpackage.Demo1
+pythonpackage.Demo1.m1()
+
+Note : m1() function define inside Demo1 modules.

@@ -1,0 +1,65 @@
+Special Operators:
+------------------
+
+1. Identity operators:
+----------------------
+is 
+is not
+
+a is b ==> return true if both are pointing to the same object
+a is not b ==> if both are pointing to the diff obj then return true
+
+(a is b) (a==b)
+
+2. Membership operator:
+-----------------------
+in
+not in
+
+list1=[10,20,30]
+
+x in list1 ==> return true if x is the member of list1
+
+name="Amit"
+'A' in name ==> true
+
+
+math module:
+------------
+
+module is the collection of functions variables and classes
+
+import math (use like math.sqrt())
+from math import pi
+from math import * (use like sqrt() now you don't need to specify math)
+aliasing :
+import math as m
+
+note: now you can't use original name
+
+sqrt()
+ceil()
+floor()
+pow(x,y)
+factorial()
+fabs() : retur absolute value in float
+sin() :This function returns the sine of value passed as argument.
+       The value passed in this function should be in radians.
+cos() :This function returns the cosine of value passed as argument.
+       The value passed in this function should be in radians.
+log(a,b) log of a with value b
+log2(a)
+log10(a)
+
+
+pi=3.14
+e=2.71 
+inf =inifinity
+nan = not a number
+
+ex:
+r=int(input("Enter Radius:"))
+area=pi*r**2
+print("the area is :",area)
+
+ 

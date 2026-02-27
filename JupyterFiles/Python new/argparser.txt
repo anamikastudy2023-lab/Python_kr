@@ -1,0 +1,490 @@
+Argparse
+
+What is it?
+Parser for command-line options, arguments and subcommands
+
+Why use it?
+
+The argparse module makes it easy to write user-friendly command-line interfaces. 
+
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("name")
+args = parser.parse_args()
+print(args.name)
+
+output :
+
+1st case: when you run without args
+
+[nishant@server Desktop]$ python3.7 hello.py 
+usage: hello.py [-h] name
+hello.py: error: the following arguments are required: name
+
+2nd case when you pass args :
+
+[nishant@server Desktop]$ python3.7 hello.py Amit
+Amit
+
+
+3rd case : you can get help by using -h or --help
+
+nishant@server Desktop]$ python3.7 hello.py -h
+usage: hello.py [-h] name
+
+positional arguments:
+  name
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+=========================================
+now you can set your own help message 
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("name",help="you can set here your customize help string")
+args = parser.parse_args()
+print(args.name)
+
+output :
+
+[nishant@server Desktop]$ python3.7 hello.py -h
+usage: hello.py [-h] name
+
+positional arguments:
+  name        you can set here your customize help string
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+==========================================
+set type : 
+without type the value will be str only
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("name",help="you can set here your customize help string")
+parser.add_argument("age")
+args = parser.parse_args()
+print(type(args.age)
+
+output:
+
+[nishant@server Desktop]$ python3.7 hello.py Amit 23
+<class 'str'>
+
+
+now :
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("name",help="you can set here your customize help string")
+parser.add_argument("age",type=int)
+args = parser.parse_args()
+print(type(args.age))
+
+
+[nishant@server Desktop]$ python3.7 hello.py Amit 23
+<class 'int'>
+
+
+============================
+Optional arguments
+
+In our "ls" example above, we made use of the optional argument "-l" to get more
+information about a file.
+
+The program below will display something when --verbosity is specified and display nothing when not.
+
+
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--verbose", help="increase output verbosity help message",
+                    action="store_true")
+args = parser.parse_args()
+if args.verbose:
+    print("verbosity turned on")
+
+
+An optional argument (or option) is (by default) given None as a value when its
+not being used.
+
+Using the --verbosity option, only two values are actually useful, True or False. 
+
+The keyword "action" is being given the value "store_true" which means that if
+the option is specifed, then assign the value "True" to args.verbose
+
+Not specifying the option implies False. 
+
+
+If we run the program with the  --help option, we can see:
+
+[nishant@server Desktop]$ python3.7 hello.py -h
+usage: hello.py [-h] [--verbose]
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --verbose   increase output verbosity help message
+
+
+Run the program using the --verbose option :
+
+[nishant@server Desktop]$ python3.7 hello.py --verbose
+verbosity turned on
+
+
+Short option:
+
+parser.add_argument("-v", "--verbose", help="increase output verbosity",
+                    action="store_true")
+
+
+
+Example :
+   
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("square", type=int,
+                    help="display a square of a given number")
+parser.add_argument("-v", "--verbose", action="store_true",
+                    help="increase output verbosity")
+args = parser.parse_args()
+answer = args.square**2
+if args.verbose:
+    print("the square of {} equals {}".format(args.square, answer))
+else:
+    print(answer) 
+
+
+output :
+
+[nishant@server Desktop]$ python3.7 hello.py 23 --verbose
+the square of 23 equals 529
+
+[nishant@server Desktop]$ python3.7 hello.py 23 
+529
+
+
+Example 2 :
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("square", type=int,
+                    help="display a square of a given number")
+parser.add_argument("-v", "--verbosity", type=int,
+                    help="increase output verbosity")
+args = parser.parse_args()
+answer = args.square**2
+if args.verbosity == 2:
+    print("the square of {} equals {}".format(args.square, answer))
+elif args.verbosity == 1:
+    print("{}^2 == {}".format(args.square, answer))
+else:
+    print(answer)
+
+
+output :
+1st:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 
+usage: hello.py [-h] [-v VERBOSITY] square
+hello.py: error: argument -v/--verbosity: expected one argument
+2nd:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 1
+23^2 == 529
+
+3rd:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 2
+the square of 23 equals 529
+
+
+Example 3:
+
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("square", type=int,
+                    help="display a square of a given number")
+parser.add_argument("-v", "--verbosity", type=int, choices=[0, 1, 2],
+                    help="increase output verbosity")
+args = parser.parse_args()
+answer = args.square**2
+if args.verbosity == 2:
+    print("the square of {} equals {}".format(args.square, answer))
+elif args.verbosity == 1:
+    print("{}^2 == {}".format(args.square, answer))
+else:
+    print(answer)
+
+
+output:
+1st:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 0
+529
+
+2nd:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 1
+23^2 == 529
+
+3rd:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 2
+the square of 23 equals 529
+
+4th:
+[nishant@server Desktop]$ python3.7 hello.py 23 -v 3
+usage: hello.py [-h] [-v {0,1,2}] square
+hello.py: error: argument -v/--verbosity: invalid choice: 3 (choose from 0, 1, 2)
+-------------------------------------------------------
+
+The add_argument() method :
+
+
+name or flags - Either a name or a list of option strings, e.g. foo or -f, --foo.
+
+action - The basic type of action to be taken when this argument is encountered at the command line.
+
+nargs - The number of command-line arguments that should be consumed.
+
+const - A constant value required by some action and nargs selections.
+
+default - The value produced if the argument is absent from the command line.
+
+type - The type to which the command-line argument should be converted.
+
+choices - A container of the allowable values for the argument.
+
+required - Whether or not the command-line option may be omitted (optionals only).
+
+help - A brief description of what the argument does.
+
+metavar - A name for the argument in usage messages.
+
+dest - The name of the attribute to be added to the object returned by parse_args().
+
+---------------------------------------------------------
+Example :
+
+
+parser = argparse.ArgumentParser(description='ADD/DELETE Users')
+parser.add_argument('-a', '--add',metavar='ADD-USER',help='ADD USER TO THE SERVER',dest='adduser')
+parser.add_argument('-d', '--delete',metavar='DELETE-USER',help='DELETE USER FROM THE THE SERVER',dest='deluser')
+parser.add_argument('-g', '--group',metavar='group',help='Manually specific USER GROUP',dest='group')
+parser.add_argument('-x', '--gid',metavar='gid',help='Manually specific GROUP ID',dest='gid')
+parser.add_argument('-y', '--uid',metavar='uid',help='Manually specific USER ID',dest='uid')
+parser.add_argument('-s', '--shell',metavar='shell',help='USE NO to avoid login shell creation',dest='shell')
+parser.add_argument('-f', '--directory',metavar='directory',help='USE NO to avoid USER directory creation',dest='folder')
+parser.add_argument('-p', '--passwd',metavar='passwd',help='USE YES to overide default password created',dest='passwd')
+
+args = parser.parse_args()
+user_name = args.adduser
+user_id = args.uid
+
+
+
+see full example:
+
+https://github.com/kry496/python-usermanagement/blob/master/user_management.py
+
+
+=================================
+# myls.py
+import os
+import sys
+
+if len(sys.argv) > 2:
+    print('You have specified too many arguments')
+    sys.exit()
+
+if len(sys.argv) < 2:
+    print('You need to specify the path to be listed')
+    sys.exit()
+
+input_path = sys.argv[1]
+
+if not os.path.isdir(input_path):
+    print('The path specified does not exist')
+    sys.exit()
+
+print('\n'.join(os.listdir(input_path)))
+
+
+=>
+ You need to specify the path to be listed
+
+$ python myls.py /mnt /proc /dev
+You have specified too many arguments
+
+$ python myls.py /mnt
+dir1
+dir2
+
+
+
+===================================
+# myls.py
+# Import the argparse library
+import argparse
+
+import os
+import sys
+
+# Create the parser
+my_parser = argparse.ArgumentParser(description='List the content of a folder')
+
+# Add the arguments
+my_parser.add_argument('Path',
+                       metavar='path',
+                       type=str,
+                       help='the path to list')
+
+# Execute the parse_args() method
+args = my_parser.parse_args()
+
+input_path = args.Path
+
+if not os.path.isdir(input_path):
+    print('The path specified does not exist')
+    sys.exit()
+
+print('\n'.join(os.listdir(input_path)))
+
+----------------------------------
+Setting the Name of the Program
+
+you can specify the name of your program just by using the prog keyword:
+
+my_parser = argparse.ArgumentParser(prog='myls',
+                                    description='List the content of a folder')
+
+
+Displaying a Custom Program Usage Help :
+
+my_parser = argparse.ArgumentParser(prog='myls',
+                                    usage='%(prog)s [options] path',
+                                    description='List the content of a folder')
+
+-------------------------------------------------------
+Displaying Text Before and After the Arguments Help
+To customize the text displayed before and after the arguments help text, you can use two different keywords:
+
+description: for the text that is shown before the help text
+epilog: for the text shown after the help text
+
+
+my_parser = argparse.ArgumentParser(description='List the content of a folder',
+                                    epilog='Enjoy the program! :)')
+
+-------------------------------------------
+
+Setting Prefix Chars for Files That Contain Arguments to Be Included
+
+When you are dealing with a very long or complicated command line, it can be a good idea to save the arguments to an external file and ask your program to load arguments from it.
+
+
+import argparse
+
+my_parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
+
+my_parser.add_argument('a',
+                       help='a first argument')
+
+my_parser.add_argument('b',
+                       help='a second argument')
+
+my_parser.add_argument('c',
+                       help='a third argument')
+
+my_parser.add_argument('d',
+                       help='a fourth argument')
+
+my_parser.add_argument('e',
+                       help='a fifth argument')
+
+my_parser.add_argument('-v',
+                       '--verbose',
+                       action='store_true',
+                       help='an optional argument')
+
+# Execute parse_args()
+args = my_parser.parse_args()
+
+print('If you read this line it means that you have provided '
+      'all the parameters')
+
+
+=> 
+So let’s create a file named args.txt that contains all the necessary parameters, with an argument on each line like this:
+
+first
+second
+third
+fourth
+fifth
+
+
+$ python fromfile_example.py @args.txt
+
+
+-----------------
+
+Using Auto Help
+
+In some of the previous examples, you used the -h flag to get a help text.
+
+my_parser = argparse.ArgumentParser(description='List the content of a folder',
+                                    add_help=False)
+
+
+The code in the example above specifies the add_help keyword set to False, so now if you run the code, you’ll see that the -h flag isn’t accepted anymore:
+
+
+
+
+-------------------------------------------------
+Optional arguments are not mandatory, and when they are used they can modify the behavior of the command at runtime.
+
+
+# myls.py
+# Import the argparse library
+import argparse
+
+import os
+import sys
+
+# Create the parser
+my_parser = argparse.ArgumentParser(description='List the content of a folder')
+
+# Add the arguments
+my_parser.add_argument('Path',
+                       metavar='path',
+                       type=str,
+                       help='the path to list')
+my_parser.add_argument('-l',
+                       '--long',
+                       action='store_true',
+                       help='enable the long listing format')
+
+# Execute parse_args()
+args = my_parser.parse_args()
+
+input_path = args.Path
+
+if not os.path.isdir(input_path):
+    print('The path specified does not exist')
+    sys.exit()
+
+for line in os.listdir(input_path):
+    if args.long:  # Simplified long listing
+        size = os.stat(os.path.join(input_path, line)).st_size
+        line = '%10d  %s' % (size, line)
+    print(line)
+
+
+=======================
+import sys
+print(sys.argv)
+
+
+
+
+https://realpython.com/command-line-interfaces-python-argparse/    

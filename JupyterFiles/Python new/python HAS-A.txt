@@ -1,0 +1,60 @@
+we can reuse the members of a class by using IS-A and HAS-A relationship:
+IS-A vs HAS-A :
+----------------
+composition vs aggregation :
+----------------------------
+Strong association ==>aggregatio
+weak association ==>composition
+
+University Vs Department :
+without existing University is there any chance of existing department..?
+Department should associat with University
+without University no existing of Department
+
+so Department objects share a strong relationship with University object
+
+Note : so here University Object/Container Object(object That contain other object) contain the Department Objetcs/contained object.
+
+University HAS-A Department but Strong Association
+
+
+Department vs Professor==> weakly association 
+Department Has-A Professor => without existing of department thair may be a chance of Professor:
+
+Example:
+class Student:
+  collegeName="Kr network"
+  def __init__(self,name):
+    self.name=name
+
+print(Student.collegeName) # no need to create object
+s=Student("Amit")
+print(s.name)
+
+
+Note:Without existing of student thair may be a chance of college name
+but without existing of student thair is no chance of student name.
+
+so :
+Aggregatio ==> Strong relation between instance variabel and Object
+Composition==> weak relation between static variable and Object
+
+class Address:
+    def __init__(self,city,pin):
+        self.city=city
+        self.pin=pin
+
+
+
+class Student:
+    def __init__(self,id,name,Address=None):
+        self.id=id
+        self.name=name
+        self.Address=Address
+    def display(self):
+       print("id is :",self.id)
+       print("name is :",self.name)
+       print("Addrress is :",self.Address.city,self.Address.pin)
+    
+s=Student(101,"Amit",Address("Delhi",110092))
+s.display()

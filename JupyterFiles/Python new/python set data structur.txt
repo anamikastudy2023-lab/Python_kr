@@ -1,0 +1,71 @@
+SET DATA STRUCTURE :
+--------------------
+
+1. if we want to represent a group of unique values as a single entity then we should go
+for set.
+2. Duplicates are not allowed.
+3. Insertion order is not preserved. But we can sort the elements.
+4. indexing and slicing not allowed for the set.
+5. Heterogeneous elements are allowed.
+6. Set Objects are mutable i.e once we create a set object we
+   can perform any changes in that object based on our requirement.
+7. We can represent set element within curly braces and with comma seperation.
+8. we can apply mathmetical operations like union, intersection,difference etc
+   on set object.
+
+Creation of set:
+----------------
+s={10,20,30,40}
+print(type(s))
+
+we can create set object by using set() function
+s=set(any sequence)
+
+l=[10,20,30,40]
+s=set(l)
+print(s)
+print(type(s))
+
+
+Note : if you want to create empty set
+------ 
+s={} ==> it is treated as dictionary but not empty set.
+so compulsory we should use set() function
+
+Important function of set:
+--------------------------
+
+1. add(x): add item x to the set:
+2. update(x,y,z): add multiple items to the set.
+Note : Arguments are not individual elements and these
+are iterable objects like List,range etc.
+
+s.update([59,50,60],[88,99])
+
+3. copy(): return copy of set. it is cloned object.
+4. pop(): it remove and return some random element from the set.
+5. remove(): it removes specified element from set. if element not present in the set then we 
+             will get KeyError.
+6. discard(x) : it remove the specified element from the set. if the 
+                element not present in the set then we won't get any error.
+7. clear() : remove all elements from the set.
+
+8. union() : x.union(y) ==> will return all elements present in both sets.
+
+ x={10,20,30,40}
+y={30,40,50,60}
+
+print(x.union(y))
+or
+print(x|y) 
+
+9. intersection(): return common elements present in both x and y
+x.intersetion(y) or x & y
+
+10. difference() : 
+   x.difference(y) or x-y
+return the elements in x but not in y
+
+11. symmetric_difference():
+    x.symmetric_difference(y) or x^y
+return elements present in either x or y but not in both

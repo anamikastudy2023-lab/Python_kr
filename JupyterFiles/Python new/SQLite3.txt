@@ -1,0 +1,85 @@
+SQLITE3==:
+----------
+
+
+SQLite is a C library that provides a lightweight disk-based database that doesn’t require a separate server process and allows accessing the database using a nonstandard variant of the SQL query language. Some applications can use SQLite for internal data storage.
+
+
+
+=>
+To use the module, you must first create a Connection object that represents the database. Here the data will be stored in the user.db file:
+
+import sqlite3
+con=None
+try:
+   con = sqlite3.connect('user.db')
+   print("connect")
+except Exception as ex:
+    print(ex)
+finally:
+    if con!=None:
+        con.close()
+
+=>
+
+Once you have a Connection, you can create a Cursor object and call its execute() method to perform SQL commands:
+
+
+import sqlite3
+con=None
+try:
+   con = sqlite3.connect('user.db')
+   cur=con.cursor()
+   #cur.execute("create table user (id int, name varchar(20))")
+   cur.execute("insert into user values(101,'Amit')")
+   con.commit() #DML query will refelect only Save (commit) the changes
+except Exception as ex:
+    print(ex)
+finally:
+    if con!=None:
+        con.close()
+
+
+=>=>=> 
+
+import sqlite3
+con=None
+try:
+   con = sqlite3.connect('user.db')
+   cur=con.cursor()
+   id=int(input("Enter id :"))
+   name=input("Enter name")
+   sql="insert into user values(?,?)"
+   cur.execute(sql,(id,name))
+   con.commit() #DML query will refelect only Save (commit) the changes
+except Exception as ex:
+    print(ex)
+finally:
+    if con!=None:
+        con.close()
+
+=========>
+
+import sqlite3
+
+con=None
+
+try:
+
+   con = sqlite3.connect('user.db')
+   cur=con.cursor()
+   cur.execute("select * from user")
+   data=cur.fetchall()
+   #data=cur.fetchmany(2)
+   #data=cur.fetchone()
+   print(data)
+except Exception as ex:
+    print(ex)
+finally:
+    if con!=None:
+        con.close()
+
+
+
+--------------------------
+rest all like same as normal sql pymysql

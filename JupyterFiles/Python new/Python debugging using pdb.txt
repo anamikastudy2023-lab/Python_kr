@@ -1,0 +1,245 @@
+pdb Module
+
+==================================
+list pdb commands and sortcut
+
+args	a	Print the argument list of the current function
+break	b	Creates a breakpoint (requires parameters) in the program execution
+continue	c or cont	Continues program execution
+help	h	Provides list of commands or help for a specified command
+jump	j	Set the next line to be executed
+list	l	Print the source code around the current line
+next	n	Continue execution until the next line in the current function is reached or returns
+step	s	Execute the current line, stopping at first possible occasion
+pp	pp	Pretty-prints the value of the expression
+quit or exit	q	Aborts the program
+return	r	Continue execution until the current function returns
+
+==========================================================
+most commonly used commands are => list,next,step,continue
+
+Example.py
+
+def add(x,y):
+    sum=x+y
+    return sum
+
+
+if __name__=="__main__":
+    x=input("Num 1 : ")
+    y=input("Num 2 : ")
+    z=add(x,y)
+    print(z)
+
+
+==> to start debugger
+
+python -m pdb Example.py
+
+you will get pdb interface
+
+(pdb) command
+
+(pdb) help   => to get all commands
+
+(pdb) help next => to get the help of specific command
+
+
+====================================
+
+we can type the command list in order to get context around the current line.
+
+
+(Pdb) list
+  1     def add(x,y):
+  2         sum=x+y
+  3         return sum
+  4
+  5
+  6  -> if __name__=="__main__":
+  7         x=input("Num 1 : ")
+  8         y=input("Num 2 : ")
+  9         z=add(x,y)
+ 10         print(z)
+[EOF]
+
+==============================
+ or you can also specify which lines to include,
+
+(Pdb) list 6,9
+  6  -> if __name__=="__main__":
+  7         x=input("Num 1 : ")
+  8         y=input("Num 2 : ")
+  9         z=add(x,y)
+
+
+========================
+To move through the program line by line, we can use step or next
+
+The difference between step and next is that step will stop within a called function, while next executes called functions to only stop at the next line of the current function. We can see this difference when we work with the function.
+
+The step command will iterate through the loops once it gets to the running of the function, showing exactly what the loop is doing.
+
+
+next command :
+
+-> def add(x,y):
+(Pdb) next
+> c:\users\user\desktop\example.py(6)<module>()
+-> if __name__=="__main__":
+(Pdb) next
+> c:\users\user\desktop\example.py(7)<module>()
+-> x=input("Num 1 : ")
+(Pdb) next
+Num 1 : 3
+> c:\users\user\desktop\example.py(8)<module>()
+-> y=input("Num 2 : ")
+(Pdb) next
+Num 2 : 5
+> c:\users\user\desktop\example.py(9)<module>()
+-> z=add(x,y)
+(Pdb) next
+> c:\users\user\desktop\example.py(10)<module>()
+-> print(z)
+(Pdb) next
+35
+
+=============================
+
+step command
+
+-> def add(x,y):
+(Pdb) step
+> c:\users\user\desktop\example.py(6)<module>()
+-> if __name__=="__main__":
+(Pdb) step
+> c:\users\user\desktop\example.py(7)<module>()
+-> x=input("Num 1 : ")
+(Pdb) step
+Num 1 : 2
+> c:\users\user\desktop\example.py(8)<module>()
+-> y=input("Num 2 : ")
+(Pdb) step
+Num 2 : 3
+> c:\users\user\desktop\example.py(9)<module>()
+-> z=add(x,y)
+(Pdb) step
+--Call--
+> c:\users\user\desktop\example.py(1)add()
+-> def add(x,y):
+(Pdb) step
+> c:\users\user\desktop\example.py(2)add()
+-> sum1=x+y
+(Pdb) step
+> c:\users\user\desktop\example.py(3)add()
+-> return sum1
+(Pdb) step
+--Return--
+> c:\users\user\desktop\example.py(3)add()->'23'
+-> return sum1
+(Pdb) step
+> c:\users\user\desktop\example.py(10)<module>()
+-> print(z)
+(Pdb) step
+23
+
+============================
+
+pp and print command to print the value of expression :
+
+> c:\users\user\desktop\example.py(8)<module>()
+-> y=input("Num 2 : ")
+(Pdb) pp x
+'3'
+(Pdb) print(x)
+3
+
+=======================
+exit or q to exit from pdb
+
+
+====================
+continue => roceed with the execution as usual with the continue command.
+
+
+========================
+
+whatis => command to check the type of a variable
+
+(Pdb) whatis x
+<class 'str'>
+
+
+==================================
+
+Breakpoints
+You typically will be working with larger programs than the example above, so you’ll likely be wanting to look at particular functions or lines rather than going through an entire program. By using the break command to set breakpoints, you’ll run the program up until the specified breakpoint.
+
+
+<program_file>:<line_number>
+
+(Pdb) break Example.py:9
+Breakpoint 1 at c:\users\user\desktop\example.py:9
+
+
+(Pdb) break 9
+Breakpoint 2 at c:\users\user\desktop\example.py:9
+(Pdb) continue
+Num 1 : 6
+Num 2 : 7
+> c:\users\user\desktop\example.py(9)<module>()
+-> z=add(x,y)
+
+
+will stop at line 9
+
+Note : you can set multiple break
+
+--------------
+To see a list of breakpoints that are currently set to run, use the command break without any arguments. 
+
+(Pdb) break
+Num Type         Disp Enb   Where
+1   breakpoint   keep yes   at c:\users\user\desktop\example.py:9
+        breakpoint already hit 1 time
+2   breakpoint   keep yes   at c:\users\user\desktop\example.py:6
+
+
+=> disable 1
+
+=>enable 1
+
+=>clear 2
+
+=> clear 
+and then y to clear all breakpoints
+
+===============================================
+Another way to use debugger by using pdb module
+
+Note : but in this case you need to set breakpoint at some point 
+       by using pdb.set_trace() 
+now run your scrip directly in shell using run module
+or
+
+python Example.py
+
+import pdb
+
+def add(x,y):
+    sum1=x+y
+    return sum1
+
+
+if __name__=="__main__":
+    x=input("Num 1 : ")
+    y=input("Num 2 : ")
+    pdb.set_trace()
+    z=add(x,y)
+    print(z)
+
+
+
+
+
+

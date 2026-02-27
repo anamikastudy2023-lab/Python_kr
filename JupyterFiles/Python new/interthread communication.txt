@@ -1,0 +1,87 @@
+Interthread communication by using Queue:
+
+Queue internally has Condition object
+that condition has lock object
+
+Queue class present in queue module
+
+q=queue.Queue()
+
+put() method to put object in queue
+get() method to get the object
+
+------------------------------
+from threading import *
+import time
+import random
+import queue
+
+def produce(q):
+   while True:
+      item=random.randint(1,100)
+      print('Producer producing Item:',item)
+      q.put(item)
+      print('Producer giving notification')
+      time.sleep(5)
+
+
+def consume(q):
+   while True:
+      print('Consumer waiting for updation')
+      print('Consumer consuming item:',q.get())
+      
+
+q=queue.Queue()
+t1=Thread(target=consume,args=(q,))
+t2=Thread(target=produce,args=(q,))
+t1.start()
+t2.start()
+    
+---------------------------------
+python support 3 types of Queues:
+
+1. FIFO Queue:  default nature:
+--------------
+import queue
+q=queue.Queue()
+q.put(10)
+q.put(5)
+q.put(20)
+q.put(15)
+q.put(0)
+
+while not q.empty():
+   print(q.get(),end=' ')
+
+
+2.LIFO Queue:
+-------------
+import queue
+q=queue.LifoQueue()
+q.put(10)
+q.put(5)
+q.put(20)
+q.put(15)
+q.put(0)
+
+while not q.empty():
+   print(q.get(),end=' ')
+------------------------------
+
+
+3.PriorityQueue:
+-----------------
+
+import queue
+q=queue.PriorityQueue()
+q.put((5,'Durga'))
+q.put((2,'Ravi'))
+q.put((4,'Shiva'))
+q.put((1,'Pavan'))
+q.put((3,'Anil'))
+
+while not q.empty():
+   print(q.get()[1],end=' ')
+
+
+default priority A-Z

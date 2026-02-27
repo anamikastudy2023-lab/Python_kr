@@ -1,0 +1,342 @@
+Boto3 s3 :
+=========
+
+list all buckets:
+
+import boto3
+import datetime
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('s3')
+res=sess.resource('s3')
+
+buckets=client.list_buckets()
+list=buckets['Buckets']
+for buck in list:
+    print("name :", buck['Name'])
+    print("Creat Date :",buck['CreationDate'])
+   
+
+
+or
+import boto3
+import datetime
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('s3')
+res=sess.resource('s3')
+all_buckets=res.buckets.all()
+for bucket in all_buckets:
+    print(bucket.name)
+
+
+---------------------------------
+To connect with a particular bucket
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+bucket=res.Bucket('amitbucket101')
+
+
+=>
+list all object from a bucket
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+bucket=res.Bucket('amitbucket101')
+all_obj=bucket.objects.all()
+for obj in all_obj:
+    print(obj.key)
+
+
+=>
+list all objects from all bucket :
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+all_bucket=res.buckets.all()
+for bucket in all_bucket:
+      all_obj=bucket.objects.all()
+      for obj in all_obj:
+        print(f"{obj.key} from {bucket.name} bucket")
+
+    
+
+=>
+Get Permission of Bucket
+
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+
+bucket=res.Bucket('amitbucket101')
+acl=bucket.Acl()
+print(acl.grants[0]['Permission'])
+
+or
+
+bucket=res.BucketAcl('amitbucket101')
+print(bucket.grants)
+
+
+----------------------------
+Get Permission of Object
+
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+
+bucket=res.Bucket('amitbucket101')
+
+all_obj=bucket.objects.all()
+for obj in all_obj:
+    print(obj.Acl().grants)
+
+
+Access Controls :
+
+bucket.Acl().put(ACL='public-read')
+obj.Acl().put(ACL='public-read')
+
+-----------------------------------------
+put(**kwargs)
+Sets the permissions on an existing bucket using access control lists (ACL). For more information, see Using ACLs . To set the ACL of a bucket, you must have WRITE_ACP permission.
+
+You can use one of the following two ways to set a bucket's permissions:
+
+Specify the ACL in the request body
+Specify permissions using request headers
+
+
+read for more bucket ACl:
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#bucketacl
+
+
+---------------------------------
+create Bucket:
+
+create(**kwargs)
+Creates a new bucket. 
+
+
+Parameters
+ACL (string) -- The canned ACL to apply to the bucket.
+CreateBucketConfiguration (dict) --
+The configuration information for the bucket.
+
+LocationConstraint (string) --
+Specifies the Region where the bucket will be created. If you don't specify a Region, the bucket is created in the US East (N. Virginia) Region (us-east-1).
+
+GrantFullControl (string) -- Allows grantee the read, write, read ACP, and write ACP permissions on the bucket.
+GrantRead (string) -- Allows grantee to list the objects in the bucket.
+GrantReadACP (string) -- Allows grantee to read the bucket ACL.
+GrantWrite (string) -- Allows grantee to create, overwrite, and delete any object in the bucket.
+GrantWriteACP (string) -- Allows grantee to write the ACL for the applicable bucket.
+ObjectLockEnabledForBucket (boolean) -- Specifies whether you want S3 Object Lock to be enabled for the new bucket.
+
+
+    ACL='private'|'public-read'|'public-read-write'|'authenticated-read',
+    CreateBucketConfiguration={
+        'LocationConstraint': 'EU'|'eu-west-1'|'us-west-1'|'us-west-2'|'ap-south-1'|'ap-southeast-1'|'ap-southeast-2'|'ap-northeast-1'|'sa-east-1'|'cn-north-1'|'eu-central-1'
+    },
+    GrantFullControl='string',
+    GrantRead='string',
+    GrantReadACP='string',
+    GrantWrite='string',
+    GrantWriteACP='string',
+    ObjectLockEnabledForBucket=True|False
+)
+
+
+
+
+ACL=='private'|'public-read'|'public-read-write'|'authenticated-read'
+
+choose any one:
+
+Ex: 
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+bucket=res.Bucket('amitbucket103')
+response=bucket.create(ACL='public-read-write',
+    CreateBucketConfiguration={
+        'LocationConstraint': 'us-east-2'
+    })
+
+
+print(response)
+
+
+--------------------------------------
+delete bucket
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+bucket=res.Bucket('amitbucket103')
+resp=bucket.delete()
+print(resp)
+
+
+
+
+---------------------------------------
+create object and write in object:
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+obj=res.Object('amitbucket101','abc.txt')
+obj.put(Body=b"welcome to kr network")
+
+
+or
+
+client = boto3.client('s3')
+client.put_object(Body=b"Welcome to kr network",Bucket='amitbucket101',
+                                    Key='anotherfilename.txt')
+
+
+-------------------------------
+upload file in bucket:
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+bucket=res.Bucket('amitbucket101')
+bucket.upload_file('D:\\log.txt','new.txt')
+
+-------------------------------------
+Storing a Python Dictionary Object As JSON in S3 Bucket
+
+
+import boto3
+import json
+s3 = boto3.client('s3')
+
+myData = {'firstName':'Saravanan','lastName':'Subramanian','title':'Manager', 'empId':'007'}
+
+serializedMyData = json.dumps(myData)
+
+s3.put_object(Body=bytes(serializedMyData),Bucket='mytestbucket',Key='EmpId007')
+
+
+
+-----------------------------
+Retrieving a JSON From S3 Bucket
+
+
+import boto3
+import json
+s3 = boto3.client('s3')
+
+object = s3.get_object(Bucket='mytestbucket',Key='EmpId007')
+
+serializedObject = object['Body'].read()
+
+myData = json.loads(serializedObject)
+
+
+-----------------------------------
+
+download object:
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+#client=sess.client('s3')
+res=sess.resource('s3')
+obj=res.Object('amitbucket101','abc.txt')
+obj.download_file("D:\\froms3.txt")
+
+------------------------------------------
+copy object from one bucket to another bucket
+
+'amitbucket101' ===>to ===> 'amitbucket102'
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+s3 = sess.resource('s3')
+
+copy_source = {
+    'Bucket': 'amitbucket101',
+    'Key': 'abc.txt'
+}
+bucket = s3.Bucket('amitbucket102')
+obj = bucket.Object('abc.txt')
+obj.copy(copy_source)
+
+
+---------------------------------------
+download_fileobj(Fileobj)
+Download this object from S3 to a file-like object.
+
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+s3 = sess.resource('s3')
+bucket = s3.Bucket('amitbucket102')
+obj = bucket.Object('abc.txt')
+f1=open("D:\\abcs3file.txt","wb")
+obj.download_fileobj(f1)
+f1.close()
+
+---------------------------------------------
+to read file
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+s3 = sess.resource('s3')
+bucket = s3.Bucket('amitbucket102')
+obj = bucket.Object('abc.txt')
+print(obj.get()['Body'].read())
+
+----------------------------------
+append data to file object:
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+s3 = sess.resource('s3')
+bucket = s3.Bucket('amitbucket102')
+
+obj = bucket.Object('abc.txt')
+
+data=obj.get()['Body'].read()
+
+appdata=data+b"welcome to kr"
+
+obj.put(Body=appdata)
+
+
+
+
+

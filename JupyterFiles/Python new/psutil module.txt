@@ -1,0 +1,228 @@
+Psutil module in Python
+
+Psutil is a Python cross-platform library used to access system details and process utilities. It is used to keep track of various resources utilization in the system. Usage of resources like CPU, memory, disks, network, sensors can be monitored. 
+
+
+1 :psutil.cpu_times() – This function gives system CPU times as a named tuple.
+
+
+user – time spent by normal processes executing in user mode
+system – time spent by processes executing in kernel mode
+idle – time when system was idle
+nice – time spent by priority processes executing in user mode
+iowait – time spent waiting for I/O to complete. This is not          accounted in idle time counter.
+irq – time spent for servicing hardware interrupts
+softirq – time spent for servicing software interrupts
+steal – time spent by other operating systems running in a         virtualized environment
+guest – time spent running a virtual CPU for guest operating         systems under the control of the Linux kernel
+
+
+>>>import psutil
+>>> psutil.cpu_times()
+
+output :
+scputimes(user=276.48, nice=4.29, system=59.11, idle=65289.73, iowait=13.6, irq=0.0, softirq=0.34, steal=10.02, guest=0.0, guest_nice=0.0)
+
+
+2.  psutil.cpu_percent() – This function calculates the current system-wide CPU utilization as a percentage.
+
+
+>>> psutil.cpu_percent()
+
+output :
+0.2
+
+3.  psutil.cpu_count(logical=True) – This function shows a number of logical CPUs in the system. 
+
+
+>>> psutil.cpu_count()
+
+4. psutil.cpu_stats() – This function gives CPU statistics as a named tuple. The statistics includes :
+
+ctx_switches – number of context switches since boot.
+interrupts – number of interrupts since boot.
+soft_interrupts – number of software interrupts since boot.
+syscalls – number of system calls since boot. Always set to 0 in Ubuntu.
+
+
+>>> psutil.cpu_stats()
+scpustats(ctx_switches=1908982, interrupts=887609, soft_interrupts=1139356, syscalls=0)
+
+
+5.  psutil.getloadavg() – This function gives the average system load in last 1, 5 and 15 minutes as a tuple. The load represents the processes which are in a runnable state, either using the CPU or waiting to use the CPU (e.g. waiting for disk I/O).
+
+
+>>> psutil.getloadavg()
+
+(0.0, 0.0, 0.0)
+-------------------------------------
+Memory 
+
+
+6. psutil.virtual_memory() – This function gives system memory usage in bytes. The sum of used and available may or may not be equal to total. In order to get details of free physical memory this function is used.
+
+total – total physical memory excluding swap.
+available – the memory that can be given instantly to processes without the system going into swap.
+used – memory used.
+free – memory not used at and is readily available
+active – memory currently in use or very recently used.
+inactive – memory that is marked as not used.
+buffers – cache data like file system metadata.
+cached – cached data
+shared – memory that may be accessed by multiple processes.
+
+
+>>> psutil.virtual_memory()
+svmem(total=1033367552, available=817061888, percent=20.9, used=49422336, free=137400320, active=383406080, inactive=414552064, buffers=67887104, cached=778657792, shared=61440, slab=84389888)
+
+
+7. psutil.swap_memory() – This function provides details of swap memory statistics as a tuple.
+
+total – total swap memory in bytes
+used – used swap memory in bytes
+free – free swap memory in bytes
+percent – the percentage usage that is calculated as (total – available) / total * 100
+sin – the number of bytes the system has swapped in from disk
+sout – the number of bytes the system has swapped out from disk
+
+
+>>> psutil.swap_memory()
+sswap(total=0, used=0, free=0, percent=0.0, sin=0, sout=0)
+----------------------------------------------
+Disk
+
+
+8. psutil.disk_partitions() – This function provides the details of all mounted disk partitions as a list of tuples including device, mount point and filesystem type.
+
+
+>>> psutil.disk_partitions()
+[sdiskpart(device='/dev/xvda1', mountpoint='/', fstype='ext4', opts='rw,noatime,data=ordered')]
+
+9. psutil.disk_usage(path)- This function gives disk usage statistics as a tuple for a given path. Total, used and free space are expressed in bytes, along with the percentage usage.
+
+
+>>> psutil.disk_usage('/')
+sdiskusage(total=8385892352, used=1747140608, free=6536097792, percent=21.1)
+
+
+psutil.disk_io_counters():
+
+Return system-wide disk I/O statistics as a named tuple including the following fields:
+
+read_count: number of reads
+write_count: number of writes
+read_bytes: number of bytes read
+write_bytes: number of bytes written
+
+----------------------------------------
+Network
+
+
+10. psutil.net_io_counters()- This function gives the details of network Input output statistics as a tuple.
+
+bytes_sent – number of bytes sent
+bytes_recv – number of bytes received
+packets_sent – number of packets sent
+packets_recv – number of packets received
+errin – total number of errors while receiving
+errout – total number of errors while sending
+dropin – total number of incoming packets which were dropped
+dropout – total number of outgoing packets which were dropped
+
+
+>>> psutil.net_io_counters()
+snetio(bytes_sent=22055117, bytes_recv=82103271, packets_sent=119371, packets_recv=153652, errin=0, errout=0, dropin=0, dropout=0)
+
+
+11. psutil.net_connections() – This function gives the list of socket connections of a system as a named tuples.
+
+fd – the socket file descriptor.
+family – the socket family, either AF_INET, AF_INET6 or AF_UNIX.
+type – the socket type, either SOCK_STREAM, SOCK_DGRAM or SOCK_SEQPACKET.
+laddr – the local address as a (ip, port) named tuple
+raddr – the remote address as a (ip, port) named tuple
+status – represents the status of a TCP connection.
+pid – the PID of the process which opened the socket, if retrievable, else None.
+
+
+
+>>> psutil.net_connections()
+
+[sconn(fd=9, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='0.0.0.0', port=57877), raddr=(), status='LISTEN', pid=2338), sconn(fd=8, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='0.0.0.0', port=52544), raddr=(), status='NONE', pid=2338), sconn(fd=17, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='127.0.0.1', port=123), raddr=(), status='NONE', pid=2585), sconn(fd=9, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='::', port=111), raddr=(), status='NONE', pid=2317), sconn(fd=3, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='172.31.21.154', port=22), raddr=addr(ip='103.217.135.93', port=57126), status='ESTABLISHED', pid=18911), sconn(fd=11, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='::', port=111), raddr=(), status='LISTEN', pid=2317), sconn(fd=5, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='0.0.0.0', port=68), raddr=(), status='NONE', pid=2100), sconn(fd=6, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='0.0.0.0', port=111), raddr=(), status='NONE', pid=2317), sconn(fd=4, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='::', port=22), raddr=(), status='LISTEN', pid=2876), sconn(fd=10, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='::', port=38365), raddr=(), status='NONE', pid=2338), sconn(fd=7, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='0.0.0.0', port=796), raddr=(), status='NONE', pid=2317), sconn(fd=5, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='127.0.0.1', port=818), raddr=(), status='NONE', pid=2338), sconn(fd=4, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='127.0.0.1', port=25), raddr=(), status='LISTEN', pid=2606), sconn(fd=18, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='172.31.21.154', port=123), raddr=(), status='NONE', pid=2585), sconn(fd=16, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='0.0.0.0', port=123), raddr=(), status='NONE', pid=2585), sconn(fd=3, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='0.0.0.0', port=22), raddr=(), status='LISTEN', pid=2876), sconn(fd=4, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='fe80::4f1:77ff:fea1:cf40', port=546), raddr=(), status='NONE', pid=2199), sconn(fd=8, family=<AddressFamily.AF_INET: 2>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='0.0.0.0', port=111), raddr=(), status='LISTEN', pid=2317), sconn(fd=10, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_DGRAM: 2>, laddr=addr(ip='::', port=796), raddr=(), status='NONE', pid=2317), sconn(fd=11, family=<AddressFamily.AF_INET6: 10>, type=<SocketKind.SOCK_STREAM: 1>, laddr=addr(ip='::', port=54913), raddr=(), status='LISTEN', pid=2338)]
+
+
+
+12. psutil.net_if_addrs() – This function is used to get the addresses of each network interface card installed on the system. It is a dictionary whose keys are the Network Interface Card names and value is a list of named tuples for each address assigned to it.
+
+family – the socket family, either AF_INET or AF_INET6
+address – the primary NIC address
+netmask – the netmask address
+broadcast – the broadcast address.
+ptp – “point to point” it is the destination address on a point to point interface.
+
+>>>psutil.net_if_addrs() #ifconfig
+---------------------------------------------------
+sensors 
+package :lm-sensors #linux 
+
+13.psutil.sensors_temperatures()- This function returns hardware temperatures of the system in celsius. Each entry is a named tuple representing a certain hardware temperature sensor.
+ 
+14. psutil.sensors_fans() – This function gives the details of hardware fans speed expressed in RPM (rounds per minute). If sensors are not supported by the OS an empty dict is returned.
+
+15. psutil.sensors_battery() – This function gives battery status information as a named tuple.
+
+---------------------------
+Other system info
+
+16.  psutil.boot_time() – This function returns the system boot time which is expressed in seconds since the epoch.
+
+>>> psutil.boot_time()
+1588343055.0
+>>>from datetime import datetime
+>>> x=psutil.boot_time()
+>>> datetime.fromtimestamp(x)
+datetime.datetime(2020, 5, 1, 14, 24, 15)
+
+or :
+
+pip3 install uptime 
+
+>>> import uptime
+>>> uptime.uptime()
+
+
+17. psutil.users() – This function gives the list of users who are connected on the system as a named tuples
+
+user – It is the system name of the user.
+terminal – the tty of the user.
+host – the host name of the user.
+started – the creation time as a floating point number expressed in seconds since the epoch.
+pid – the PID of the login process
+
+>>> psutil.users()
+[suser(name='root', terminal='pts/0', host='103.217.135.93', started=1588408576.0, pid=18913)]
+-------------------------------------------------------------
+
+import psutil
+
+process_name = "chrome"
+pid = None
+
+for proc in psutil.process_iter():
+    if process_name in proc.name():
+       pid = proc.pid
+
+
+-----------------------------
+import psutil
+for p in psutil.process_iter():
+        #print(p.name())
+        #print(p.pid)
+        #print(p.username)
+        if p.name()=="sleep":
+            p.kill()
+
+
+
+for more 
+https://psutil.readthedocs.io/en/latest/

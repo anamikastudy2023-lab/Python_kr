@@ -1,0 +1,92 @@
+Pltform module : Access to underlying platform’s identifying data.
+
+1. =>platform.processor() 
+Returns the (real) processor name, e.g. 'amdk6'.
+
+>>> import platform
+>>> platform.processor()
+'x86_64'
+
+windows :
+>>> platform.processor()
+'Intel64 Family 6 Model 58 Stepping 9, GenuineIntel'
+
+
+2. platform.machine()
+This function returns a string that displays the machine type,
+
+>>> platform.machine()
+'AMD64'
+
+3. platform.node() : he node basically the system’s network name.
+
+>>> platform.node()
+'ip-172-31-21-154'
+
+window :
+>>> platform.node()
+'DESKTOP-COSALQF'
+
+4. platform.platform()
+Returns a single string identifying the underlying platform with as much useful information as possible.
+
+>>> platform.platform()
+'Linux-4.14.171-105.231.amzn1.x86_64-x86_64-with-glibc2.17'
+
+windos :
+
+>>> platform.platform()
+'Windows-10-10.0.17763-SP0'
+
+5. platform.system()
+This function returns a string that displays the name of the operation system on the current device being used to run the program.
+
+>>> platform.system()
+'Linux'
+
+
+6. platform.uname()
+This function returns a tuple that stores information regarding the system. 
+
+nformation about the system, node, release, version, machine, version and processor. 
+
+
+>>> platform.uname()
+uname_result(system='Linux', node='ip-172-31-21-154', release='4.14.171-105.231.amzn1.x86_64', version='#1 SMP Thu Feb 27 23:49:15 UTC 2020', machine='x86_64', processor='x86_64')
+
+
+7. platform.python_build()
+Returns a tuple (buildno, builddate) stating the Python build number and date as strings.
+
+>>> platform.python_build()
+('default', 'May  1 2020 14:40:09')
+
+8. platform.python_compiler()
+Returns a string identifying the compiler used for compiling Python.
+
+>>> platform.python_compiler()
+'GCC 4.8.5 20150623 (Red Hat 4.8.5-28)'
+
+9. platform.python_implementation()
+Returns a string identifying the Python implementation. Possible return values are: ‘CPython’, ‘IronPython’, ‘Jython’, ‘PyPy’.
+
+>>> platform.python_implementation()
+'CPython'
+
+10. platform.python_version()
+Returns the Python version as string 'major.minor.patchlevel'
+
+>>> platform.python_version()
+'3.8.2'
+
+11. platform.python_version_tuple()
+Returns the Python version as tuple (major, minor, patchlevel) of strings.
+
+>>> platform.python_version_tuple()
+('3', '8', '2')
+
+
+
+
+
+

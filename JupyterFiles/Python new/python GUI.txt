@@ -1,0 +1,481 @@
+To create a tkinter:
+
+1.Importing the module – tkinter
+2.Create the main window (container)
+3.Add any number of widgets to the main window
+4.Apply the event Trigger on the widgets.
+
+1.There are two main methods used you the user need to remember while creating the Python application with GUI.
+
+Tk(screenName=None,  baseName=None,  className=’Tk’,  useTk=1): 
+To create a main window, tkinter offers a method 
+‘Tk(screenName=None,  baseName=None,  className=’Tk’,  useTk=1)’. 
+To change the name of the window, you can change the className to 
+the desired one. The basic code used to create the main window of the application is:
+
+mainloop(): There is a method known by the name mainloop() is used when you are ready 
+for the application to run. mainloop() is an infinite loop used to run the application, wait for an event to occur and process the event till the window is not closed.
+
+Ex:
+import tkinter 
+m = tkinter.Tk() 
+''' 
+widgets are added here 
+'''
+m.mainloop() 
+
+----------------------------------
+from tkinter import *
+
+
+tk=Tk()
+
+lb= Label(tk,text="welcome to kr ........!")
+lb.pack()
+tk.mainloop()
+
+----------------------------------------
+tkinter also offers access to the geometric configuration of the widgets which can organize the widgets in 
+the parent windows. There are mainly three geometry manager classes class.
+
+1.pack() method:It organizes the widgets in blocks before placing in the parent widget.
+2.grid() method:It organizes the widgets in grid (table-like structure) before placing in the parent widget.
+3.place() method:It organizes the widgets by placing them on specific positions directed by the programmer.
+
+---------------------------------------------------------
+
+from tkinter import *
+from tkinter import font
+
+tk=Tk()
+
+lb= Label(tk,text="welcome to kr ........!")
+lb.pack()
+
+frame =Frame(tk)
+
+button1 =Button(frame,text="Button-1")
+button2 =Button(frame,text="Button-2")
+button3 =Button(frame,text="Button-3",height=5,width=10)
+
+button1.pack(side=LEFT)
+button2.pack(side=LEFT)
+button3.pack(side=LEFT)
+
+frame.pack()
+
+
+frame1=Frame(tk)
+helv36 = font.Font(family='Helvetica', size=36, weight=font.BOLD)
+button4=Button(frame1,text="Button-4", activebackground='red',activeforeground='green',bg='yellow', font=helv36)
+button4.pack()
+frame1.pack(side=BOTTOM)
+
+tk.mainloop()
+
+--------------------------------------
+how to set image on button:
+---------------------------
+
+from tkinter import *
+
+tk=Tk()
+
+lb= Label(tk,text="welcome to kr ........!")
+lb.pack()
+
+frame =Frame(tk)
+photo= PhotoImage(file="C:\\Users\\Lenovo\\Desktop\\bt.png")
+button1 =Button(frame,text="Button-1",image=photo ,width=50,height=50)
+
+button1.pack(side=LEFT)
+frame.pack()
+tk.mainloop()
+
+--------------------------------------------------------
+command attribute:
+------------------
+
+
+from tkinter import *
+
+tk=Tk()
+
+lb= Label(tk,text="welcome to kr ........!")
+lb.pack()
+
+frame =Frame(tk)
+photo= PhotoImage(file="C:\\Users\\Lenovo\\Desktop\\bt.png")
+button1 =Button(frame,text="Button-1",image=photo ,width=50,height=50,command=tk.destroy)
+
+button1.pack(side=LEFT)
+frame.pack()
+tk.mainloop()
+
+------------------------
+
+Fitting widgets in your layout:
+-------------------------------
+
+from tkinter import *
+
+tk=Tk()
+
+lb= Label(tk,text="welcome to kr ........!",bg='red')
+lb.pack(fill=X)
+
+lb1= Label(tk,text="welcome to kr ........!",bg='green')
+lb1.pack(side=LEFT,fill=Y)
+
+tk.mainloop()
+
+----------------------------------------------------
+Python Tkinter supports quite a number of different mouse cursors available. 
+The exact graphic may vary according to your operating system.
+
+Here is the list of interesting ones -
+
+"arrow"
+"circle"
+"clock"
+"cross"
+"dotbox"
+"exchange"
+"fleur"
+"heart"
+"heart"
+"man"
+"mouse"
+"pirate"
+"plus"
+"shuttle"
+"sizing"
+"spider"
+"spraycan"
+"star"
+"target"
+"tcross"
+"trek"
+"watch"
+
+
+-------------------
+from tkinter import *
+tk=Tk()
+tk.configure(background='orange')
+
+lb= Label(tk,text="name")
+lb1= Label(tk,text="password")
+entry1=Entry(tk,cursor="heart",bg='pink')
+entry2=Entry(tk,bg='pink')
+
+lb.grid(row=0,column=0,sticky=EW)
+entry1.grid(row=0,column=1)
+
+lb1.grid(row=1,column=0)
+entry2.grid(row=1,column=1)
+
+tk.mainloop()
+
+-----------------------------------------------------------------------
+checkbox:To select any number of options by displaying a number of 
+options to a user as toggle buttons.
+---------
+
+Checkbutton(tk, text='male', variable=1).grid(row=0, sticky=W)
+Checkbutton(tk, text='female', variable=2).grid(row=1, sticky=W)
+
+
+----------------------------------------------------------------------
+Entry:It is used to input the single line text entry from the user.. 
+For multi-line text input, Text widget is used.
+
+
+l1=Label(tk, text='First Name')
+l2=Label(tk, text='Last Name')
+
+e1 = Entry(tk)
+e2 = Entry(tk)
+
+l1.grid(row=0)
+l2.grid(row=1)
+e1.grid(row=0, column=1)
+e2.grid(row=1, column=1)
+
+Note : for multiple line
+
+e1 = Text(tk)
+-------------------------------------------------
+Listbox: It offers a list to the user from which the 
+user can accept any number of options.
+
+"+Lb = Listbox(tk)
+Lb.insert(1, 'Python')
+Lb.insert(2, 'Java')
+Lb.insert(3, 'C++')
+Lb.insert(4, 'Any other')
+Lb.pack()
+
+----------------------------------------------
+Menu: It is used to create all kinds of menus used by the application.
+
+from tkinter import *
+
+def createfile():
+    f=open("D:\\a.py",'w')
+    f.write("welcome to gui programing...")
+    f.close()
+
+
+tk=Tk()
+
+main_menu=Menu(tk)
+tk.config(menu=main_menu)
+
+fileMenu= Menu(main_menu)
+main_menu.add_cascade(label="File",menu=fileMenu)
+
+editMenu= Menu(main_menu)
+main_menu.add_cascade(label="Edit",menu=editMenu)
+
+fileMenu.add_command(label="New File", command=createfile)
+fileMenu.add_separator()
+
+
+tk.mainloop()
+
+-----------------------------------------------------
+Creating subMenu :
+------------------
+
+
+from tkinter import *
+
+def createfile():
+    f=open("D:\\a.py",'w')
+    f.write("welcome to gui programing...")
+    f.close()
+
+
+tk=Tk()
+
+main_menu=Menu(tk)
+tk.config(menu=main_menu)
+
+fileMenu= Menu(main_menu)
+main_menu.add_cascade(label="File",menu=fileMenu)
+
+editMenu= Menu(main_menu)
+main_menu.add_cascade(label="Edit",menu=editMenu)
+
+fileMenu.add_command(label="New File", command=createfile)
+fileMenu.add_separator()
+
+save_menu=Menu(fileMenu)
+save_menu.add_command(label="save as new")
+save_menu.add_command(label="save now")
+
+fileMenu.add_cascade(label="Save",menu=save_menu)
+
+tk.mainloop()
+
+
+
+
+------------------------------------------
+
+infoMessage or MessageBox:
+--------------------------
+
+from tkinter import *
+from tkinter import messagebox
+
+def m1():
+    messagebox.showinfo("success","Installation complet")
+    
+tk=Tk()
+
+b=Button(tk,text="message", command=m1)
+b.pack()
+
+tk.mainloop()
+-----------------------------------------
+MessageBox-askquestion:
+
+from tkinter import *
+from tkinter import messagebox
+
+def m1():
+    answer=messagebox.askquestion("exit","Do you really want to exit")
+    if answer=='yes':
+        tk.quit()
+tk=Tk()
+
+b=Button(tk,text="message", command=m1)
+b.pack()
+
+tk.mainloop()
+
+-------------------------------
+Messagebox-showerror :
+---------------------
+from tkinter import *
+from tkinter import messagebox
+
+def m1():
+    messagebox.showerror("Error","404 not found")
+    
+tk=Tk()
+
+b=Button(tk,text="message", command=m1)
+b.pack()
+
+tk.mainloop()
+-----------------------------
+MessageBox-showwarning:
+
+def m1():
+    val=messagebox.showwarning("Warning","This is a warning")
+    print(val)
+
+
+
+----------------------------
+MessageBox-askokcancel:
+
+val=messagebox.askokcancel("Warning","This is a warning")
+    print(val)
+
+----------------------------------
+MessageBox-askretrycancel :
+
+
+val=messagebox.askretrycancel("Warning","This is a warning")
+    print(val)
+-------------------------
+Message: It refers to the multi-line and non-editable text. 
+It works same as that of Label.
+
+from tkinter import *
+tk = Tk() 
+ourMessage ='This is our Message'
+messageVar = Message(tk, text = ourMessage) 
+messageVar.config(bg='lightgreen') 
+messageVar.pack( ) 
+
+tk.mainloop( ) 
+
+
+------------------------------------
+
+RadioButton: It is used to offer 
+multi-choice option to the user. 
+It offers several options to the 
+user and the user has to choose one option.
+
+
+from tkinter import *
+tk = Tk() 
+v = IntVar() 
+Radiobutton(tk, text='GfG', variable=v, value=1).pack(anchor=W) 
+Radiobutton(tk, text='MIT', variable=v, value=2).pack(anchor=W)  
+tk.mainloop( ) 
+
+--------------------------------
+canvas :
+--------
+
+1):
+
+canvas=Canvas(tk,width=200,height=200,bg='red')
+canvas.pack()
+line=canvas.create_line(0,0,200,100,fill='blue')
+line=canvas.create_line(200,100,0,200)
+
+2):
+
+
+
+---------------------------------------
+how to call function on  button:
+
+from tkinter import *
+
+tk=Tk()
+def m1():
+   print("welcome to kr...")
+
+bt=Button(tk,text="click" , command=m1)
+bt.pack()
+
+tk.mainloop()
+
+------------------------
+or :
+---
+'<Button-1>' parameter of bind method is the left clicking event,
+i.e., when you click the left button the bind method call the function say_hi
+
+<Button-1> for left click
+
+<Button-2> for middle click
+
+<Button-3> for right click
+
+
+
+from tkinter import *
+
+tk=Tk()
+def m1(event):
+   print("welcome to kr...")
+
+bt=Button(tk,text="click")
+bt.bind("<Button-1>",m1)
+bt.pack()
+
+tk.mainloop()
+
+-----------------------------------
+on mouse click events :
+
+from tkinter import *
+
+tk=Tk()
+def rightClick(event):
+   print("right click call")
+
+def middleClick(event):
+   print("middle click call")
+
+def leftClick(event):
+   print("left click call")
+
+frame=Frame(tk, width=300, height=200)
+frame.bind("<Button-1>",leftClick)
+frame.bind("<Button-2>",middleClick)
+frame.bind("<Button-3>",rightClick)
+frame.pack()
+tk.mainloop()
+
+---------------------------------------------
+GUI programing using oops:
+
+from tkinter import *
+
+class myButtons:
+   def __init__(self,master):
+      self.bt=Button(master,text="print",command=self.printMessage)
+      self.bt.pack(side=LEFT)
+
+      self.bt1=Button(master,text="Quit",command=master.quit)
+      self.bt1.pack(side=LEFT)
+
+   def printMessage(self):
+         print("printing message...")
+
+tk=Tk()
+b=myButtons(tk)
+tk.mainloop()
+
+------------------------------------------

@@ -1,0 +1,203 @@
+What is Shutil module?
+
+The shutil in Python is a module that offers several functions to deal with operations on files and their collections. It provides the ability to copy and removal of files.
+
+1 => shutil.which() :which() to show the directory of an exe.
+
+>>> import shutil
+>>> shutil.which('python')
+'/usr/bin/python'
+>>> shutil.which('ls')
+'/usr/bin/ls'
+>>> shutil.which('sh')
+'/usr/bin/sh'
+-----------------------------
+
+move() to move a file
+
+move() to relocate a file from one location to another.
+
+shutil.move("file_path", "path_to_where_you_want_to_move_file")
+
+>>>shutil.move('/home/nishant/Desktop/abc.txt','/home/nishant/Desktop/dir1')
+
+
+-------------------------------------------
+copy() to copy a file
+copy a file from one location to another
+
+shutil.copy("file_path", "path_to_directory_where_you_want_to_copy_to")
+
+>>>shutil.copy('/home/nishant/Desktop/dir2/abc.txt','/home/nishant/Desktop/dir1/')
+
+
+Copying file with Metadata
+
+If you need to make an exact clone of the file, along with the permissions and the metadata of a file as well, we can make use of the copy2() function. Note that this might not work completely on a POSIX based system.
+
+shutil.copy2('file_copy.py', '/home/nishant/Desktop/dir1/')
+----------------------------------------------
+Replicating complete directory :
+
+With copytree() function, it is possible to completely replicate a directory tree recursively. This means that is there are more directories inside a directory, that directory will be cloned as well.
+
+
+shutil.copytree('./shutil', './dir1')
+
+
+-------------------------------------------------
+rmtree() to delete files from dirs and subdirs
+
+This function removes all the contents of a directory recursively.
+
+shutil.rmtree("dir_path")
+
+>>>shutil.rmtree('/home/nishant/Desktop/dir2/')
+
+
+shutil.copy('/Users/admin/Downloads/socket/newdir/abc.txt','/Users/admin/Downloads/socket')
+shutil.copyfile('/Users/admin/Downloads/socket/newdir/abc.txt','/Users/admin/Downloads/socket/copyfile.txt')
+shutil.copytree('/Users/admin/Downloads/socket/newdir','/Users/admin/Downloads/socket/another')
+shutil.disk_usage('/Users/admin/Downloads')
+shutil.which('python')
+shutil.make_archive('myzip','zip','/Users/admin/Downloads/socket/newdir')
+shutil.make_archive('myzip','tar','/Users/admin/Downloads/socket/newdir')
+shutil.get_archive_formats()
+shutil.unpack_archive("/Users/admin/Documents/myzip.zip","unzipfiles")
+
+
+
+import os
+from pathlib import Path
+#os.chown("abc123.txt",502,50)
+#uid=os.stat("abc123.txt").st_uid
+#gid=os.stat("abc123.txt").st_gid
+#print(uid,gid)            
+#inf=Path("abc123.txt")
+#print(inf.owner())
+#print(inf.group())
+os.symlink('/root/dir1','/root/dir3')
+
+
+-------------------------------------
+Monitoring File-system Space
+
+We can even get information about how much is present on our file system with simplete call using disk_usage() function.
+
+
+
+import shutil
+
+total_b, used_b, free_b = shutil.disk_usage('.')
+
+gb = 10 ** 9
+
+print('Total: {:6.2f} GB'.format(total_b / gb))
+print('Used : {:6.2f} GB'.format(used_b / gb))
+print('Free : {:6.2f} GB'.format(free_b / gb)
+-----------------------------------------
+=>for file info :
+
+import os
+
+os.stat('/home/nishant/Desktop/demo1.py')
+
+=>for get a file's permission mask :
+
+import os
+import stat
+
+oct(os.stat("/home/nishant/Desktop/demo1.py")[stat.ST_MODE])[-3:]
+
+-----
+import os
+import stat
+
+x=os.stat("ags.txt")
+smode=x.st_mode
+fmode=oct(smode)
+print(fmode[-3:])
+
+# os.stat() method will return a 
+# stat_result’ object of ‘os.stat_result’ class 
+# which will represent  
+# the status of file.
+# st_mode attribute of 
+# returned 'stat_result' object 
+# will represent the file type and 
+# file mode bits (permissions). 
+
+# st_mode attribute is an integer value 
+# but we are interested in octal value 
+# for file's permission mask 
+  
+# So we will change the integer value 
+# to octal value 
+
+# last 3 octal digit  
+# represents the file permission mask 
+# and upper parts tells the file type 
+
+-----------------------------
+To Change File Perimissions:
+
+import os
+import stat
+
+os.chmod("ags.txt",stat.S_IWGRP | stat.S_IXOTH)
+
+os.chmod("ags.txt",stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO
+
+
+stat.S_IRWXU -> Mask for file owner permissions.
+
+stat.S_IRUSR -> Owner has read permission.
+
+stat.S_IWUSR -> Owner has write permission.
+
+stat.S_IXUSR -> Owner has execute permission.
+
+stat.S_IRWXG -> Mask for group permissions.
+
+stat.S_IRGRP -> Group has read permission.
+
+stat.S_IWGRP -> Group has write permission.
+
+stat.S_IXGRP -> Group has execute permission.
+
+stat.S_IRWXO -> Mask for permissions for others (not in group).
+
+stat.S_IROTH -> Others have read permission.
+
+stat.S_IWOTH ->Others have write permission.
+
+stat.S_IXOTH ->Others have execute permission.
+----------------------
+or you can simply use ocatal to change
+
+os.chmod("ags.txt",0o444)
+
+
+---------------------
+
+synchronizing two folders:
+
+
+
+dirsync <sourcedir> <targetdir> [options]
+
+options:
+
+--diff, -d	Only report difference between sourcedir and targetdir
+--sync, -s	Synchronize content between sourcedir and targetdir
+--update, -u	Update existing content between sourcedir and targetdir
+
+
+from dirsync import sync
+
+source_path = '/Give/Source/Folder/Here'
+target_path = '/Give/Target/Folder/Here'
+
+sync(source_path, target_path, 'sync') #for syncing one way
+sync(target_path, source_path, 'sync') #for syncing the opposite way
+

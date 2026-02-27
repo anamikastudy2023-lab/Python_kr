@@ -1,0 +1,391 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red25\green28\blue31;\red244\green244\blue244;}
+{\*\expandedcolortbl;;\cssrgb\c12941\c14510\c16078;\cssrgb\c96471\c96471\c96471;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww27860\viewh15440\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0                                                   openpyxl module python\
+\
+\pard\pardeftab720\sl432\partightenfactor0
+
+\f1\fs28\fsmilli14400 \cf2 \cb3 \expnd0\expndtw0\kerning0
+#pip install openpyxl\
+\
+#1: #Write data to excel\
+\
+from openpyxl import Workbook\
+\
+#Create object of Workbook\
+wb=Workbook()\
+#workbook is always created with at least one worksheet\
+#This is set to 0 by default. Unless you modify its value\
+#you will always get the first worksheet by using this method.\
+#or\
+#You can create new worksheets using the Workbook.create_sheet() method:\
+#ws1 = wb.create_sheet("Mysheet") # insert at the end (default)\
+#ws2 = wb.create_sheet("Mysheet", 0) # insert at first position\
+sheet = wb.active\
+sheet['A1']="Sam"\
+sheet['B1']="Deepak"\
+#Or\
+#sheet.cell(row=2,column=1,value="hello")\
+\
+#Save workbook\
+wb.save(filename="example.xlsx")\
+\
+#*****************************************************\
+\
+#2: reading data from sheet\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+#to see all the sheets you have available to work with\
+name=wb.sheetnames\
+print(name)\
+\
+#first available sheetname\
+sheet=wb.active\
+\
+#name of sheet\
+print(sheet.title)\
+\
+#get cell object\
+print(sheet['A1'])\
+\
+#to get cell value\
+print(sheet['A1'].value)\
+\
+#or to get cell object\
+print(sheet.cell(row=1,column=2))\
+\
+#to get cell value\
+print(sheet.cell(row=1,column=2).value)\
+\
+#****************************************************\
+\
+#3: get data\
+\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+sheet=wb.active\
+\
+#Iterating Through the Data\
+#print(sheet["A1:B4"])\
+'''\
+for id,name in sheet["A1:B5"]:\
+    print(id.value,name.value)'''\
+\
+# Get all cells from column A\
+#print(sheet['B'])\
+'''for name in sheet['B']:\
+    print(name.value)'''\
+\
+# Get all cells for a range of columns\
+#print(sheet['A:B'])\
+'''col1,col2=sheet['A:B']\
+for id,name in list(zip(col1,col2)):\
+        print(id.value,name.value)'''\
+\
+# Get all cells from row 3\
+#print(sheet[3])\
+'''for col in sheet[3]:\
+    print(col.value,end=" ")'''\
+	\
+# Get all cells for a range of rows\
+#sheet[5:6]\
+\
+#or\
+#to get rows\
+'''\
+for row in sheet.iter_rows(min_row=1, #start row\
+                            max_row=4, #end row\
+                            min_col=1, #start column\
+                            max_col=2): #end column\
+    for col in row:\
+        print(col.value,end="\\t")\
+    print()'''\
+\
+#to get columns\
+'''\
+for row in sheet.iter_cols(min_row=1, #start row\
+                            max_row=4, #end row\
+                            min_col=1, #start column\
+                            max_col=2): #end column\
+    for col in row:\
+        print(col.value,end="\\t")\
+    print()'''\
+\
+#or set "values_only=True" to get value\
+'''for row in sheet.iter_rows(min_row=1, #start row\
+                            max_row=4, #end row\
+                            min_col=1, #start column\
+                            max_col=2,\
+                            values_only=True): #end column\
+    for col in row:\
+        print(col,end="\\t")\
+    print()'''\
+# or to get rows\
+'''for row in sheet.rows:\
+    for col in row:\
+        print(col.value,end=" ")\
+    print()'''\
+\
+#to get all columns\
+\
+'''\
+for col in sheet.columns:\
+    print(col)'''\
+\
+#****************************************\
+\
+# 4: appending data\
+\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+#open sheet\
+sheet=wb.active\
+\
+#write data to specific cell\
+\
+sheet['C1']="Age"\
+sheet['C2']=23\
+sheet['C3']=45\
+sheet['C4']=34\
+sheet['C5']=26\
+\
+#save workbook\
+wb.save(filename="example.xlsx")\
+\
+#**************************************\
+\
+# 5 :Basic Spreadsheet Operations \
+\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+#open sheet\
+sheet=wb.active\
+\
+#Adding and Updating Cell Values\
+#sheet["A1"]="Value"\
+\
+#Managing Rows and Columns\
+# Insert a column before the existing column 3 ("C")\
+#sheet.insert_cols(idx=3)\
+\
+# Insert 2 columns between column 2 ("B") and 3 ("C")\
+#sheet.insert_cols(idx=3, amount=2)\
+\
+# Delete the created columns\
+#sheet.delete_cols(idx=3, amount=2)\
+#sheet.delete_cols(idx=3)\
+\
+\
+# Insert a new row in the beginning\
+#sheet.insert_rows(idx=1)\
+\
+\
+# Insert 3 new rows in the beginning\
+#sheet.insert_rows(idx=1, amount=3)\
+\
+\
+# Delete the first 4 rows\
+#sheet.delete_rows(idx=1, amount=4)\
+\
+\
+for row in sheet.rows:\
+    for col in row:\
+        print(col.value,end=" ")\
+    print()\
+\
+\
+wb.save(filename="example.xlsx")\
+\
+\
+#****************************************\
+\
+# 6: Managing Sheets\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+\
+#get all sheets name\
+'''\
+names=wb.sheetnames\
+print(names)\
+'''\
+#you can select a sheet using its title\
+'''\
+sheet=wb['sales']\
+print(sheet.title)\
+print(sheet[1])\
+'''\
+\
+#change a sheet title  \
+'''\
+sheet=wb['sales']\
+sheet.title="new_name"\
+print(wb.sheetnames)\
+'''\
+\
+#create new sheet\
+'''\
+sheet1=wb.create_sheet('order')\
+print(wb.sheetnames)\
+'''\
+\
+#or\
+\
+# You can also define the position to create the sheet at\
+#hr_sheet = wb.create_sheet("HR", 0)\
+\
+#you can remove sheet\
+'''\
+sheet=wb['order']\
+wb.remove(sheet)\
+print(wb.sheetnames)\
+'''\
+\
+#duplicates of a sheet using copy_worksheet():\
+'''\
+sheet1=wb['Sheet']\
+wb.copy_worksheet(sheet1)\
+print(wb.sheetnames)\
+'''\
+\
+	\
+\
+#**********************************\
+\
+# 7: Freezing Rows and Columns\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+sheet=wb.active\
+sheet.freeze_panes="B2"\
+wb.save(filename="example.xlsx")\
+\
+\
+#****************************************\
+\
+# 8: Adding Filters\
+\
+\
+from openpyxl import load_workbook\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+sheet=wb['Sheet']\
+\
+# Check the used spreadsheet space using the attribute "dimensions"\
+print(sheet.dimensions)\
+sheet.auto_filter.ref = "A1:C5"\
+wb.save(filename="example.xlsx")\
+\
+\
+#**********************************\
+\
+# 9: Adding Formulas\
+\
+\
+from openpyxl import load_workbook\
+	\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+sheet=wb['Sheet']\
+\
+sheet['C6']= "=SUM(C2:C5)"\
+\
+wb.save(filename="example.xlsx")\
+\
+\
+#************************************\
+\
+# 10 : Adding Styles\
+\
+from openpyxl import load_workbook\
+from openpyxl.utils import FORMULAE\
+# Import necessary style classes\
+from openpyxl.styles import Font, Color, Alignment, Border, Side, colors\
+from openpyxl.styles import NamedStyle\
+#for more style "https://openpyxl.readthedocs.io/en/stable/styles.html"\
+\
+\
+#load Workbook\
+wb=load_workbook(filename="example.xlsx")\
+\
+sheet=wb['Sheet']\
+'''\
+# Create a few styles\
+\
+bold_font = Font(bold=True)\
+big_red_text = Font(color=colors.RED, size=20)\
+center_aligned_text = Alignment(horizontal="center")\
+double_border_side = Side(border_style="double")\
+square_border = Border(top=double_border_side,\
+                        right=double_border_side,\
+                        bottom=double_border_side,\
+                        left=double_border_side)\
+\
+\
+# Style some cells!\
+\
+\
+sheet["A1"].font = bold_font\
+sheet["B1"].font = big_red_text\
+sheet["B2"].alignment = center_aligned_text\
+sheet["B3"].border = square_border\
+\
+'''\
+\
+# Let's create a style template for the header row\
+header = NamedStyle(name="header")\
+header.font = Font(bold=True)\
+header.border = Border(bottom=Side(border_style="thin"))\
+header.alignment = Alignment(horizontal="center", vertical="center")\
+\
+# Now let's apply this to all first row (header) cells\
+header_row = sheet[1]\
+for cell in header_row:\
+    cell.style = header\
+\
+wb.save(filename="example.xlsx")\
+\
+\
+\
+\
+\
+\
+Thank You\
+\
+\
+\
+\
+\
+\
+\
+\
+}

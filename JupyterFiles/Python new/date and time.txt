@@ -1,0 +1,160 @@
+
+1) Get Current Date and Time :
+  ----------------------------
+
+import datetime
+d = datetime.datetime.now()
+print(d)
+
+2) Get Current Date:
+  ------------------
+d= datetime.date.today()
+print(d)
+
+3)  Date object to represent a dat:
+  ---------------------------------
+d = datetime.date(2019, 2, 13)
+print(d)
+
+4) Get current date :
+  -------------------
+today = datetime.date.today()
+print("Current date =", today)
+
+5) Get date from a timestamp :
+  ----------------------------
+timestamp = datetime.date.fromtimestamp(1326244364)
+print("Date =", timestamp)
+
+6) from datetime import date :
+  ----------------------------
+
+today = datetime.date.today() 
+print("Current year:", today.year)
+print("Current month:", today.month)
+print("Current day:", today.day)
+
+7) Current time using datetime object :
+  -------------------------------------
+
+now = datetime.now()
+time = now.strftime("%H:%M:%S")
+time = date.strftime("%Y:%B:%d")
+print("Current Time =",time)
+
+8) Time object to represent time :
+ ---------------------------------
+
+from datetime import time
+
+# time(hour = 0, minute = 0, second = 0)
+a = time()
+print("a =", a)
+
+# time(hour, minute and second)
+b = time(11, 34, 56)
+print("b =", b)
+
+# time(hour, minute and second)
+c = time(hour = 11, minute = 34, second = 56)
+print("c =", c)
+
+# time(hour, minute, second, microsecond)
+d = time(11, 34, 56, 234566)
+print("d =", d)
+
+    
+9) Print hour, minute, second and microsecond :
+  ---------------------------------------------
+
+a = time(11, 34, 56)
+
+print("hour =", a.hour)
+print("minute =", a.minute)
+print("second =", a.second)
+
+10) Python datetime object :
+----------------------------
+from datetime import datetime
+
+#datetime(year, month, day)
+a = datetime(2018, 11, 28)
+print(a)
+
+# datetime(year, month, day, hour, minute, second, microsecond)
+b = datetime(2017, 11, 28, 23, 55, 59, 342380)
+print(b)
+
+11)  Print year, month, hour, minute and timestamp :
+  --------------------------------------------------
+
+a = datetime(2017, 11, 28, 23, 55, 59, 342380)
+print("year =", a.year)
+print("month =", a.month)
+print("hour =", a.hour)
+print("minute =", a.minute)
+print("timestamp =", a.timestamp())
+
+12) Current time  :
+  -----------------
+
+now = datetime.now().time() # time object
+print("now =", now)
+
+13) Current time using time module :
+ -----------------------------------
+t = time.localtime()
+current_time = time.strftime("%H:%M:%S", t)
+print(current_time)
+
+
+----------------------------
+1. calendar(year, w, l, c) :- This function displays the year,
+width of characters, no. of lines per week and column separations.
+
+import calendar 
+  
+# using calender to print calendar of year 
+# prints calendar of 2019 
+print ("The calender of year 2012 is : ") 
+print (calendar.calendar(2019,2,1,6)) 
+--------------------------------------------
+isleap (year) :- This function checks if year mentioned in argument is leap or not. 
+
+if (calendar.isleap(2008)): 
+       print ("The year is leap") 
+else : print ("The year is not leap") 
+
+----------------------------------
+month (year, month, w, l) :- This function prints the month of a specific year mentioned in 
+It takes 4 arguments, year, month, width of characters and no. of lines taken by a week.
+
+import calendar 
+  
+ 
+print ("The month 5th of 2016 is :") 
+print (calendar.month(2016,5,2,1))
+
+---------------------------------------
+
+import time
+import datetime
+import pytz
+
+utc=pytz.utc
+
+date=datetime.datetime.now(utc)
+
+time1 =date.strftime("%r %Z")
+print(time1)
+
+----------------------------------------
+
+import time
+
+m =time.time()
+t=time.localtime(m)
+
+zon=time.strftime('%Z',t)
+
+print(zon) 

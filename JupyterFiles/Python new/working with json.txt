@@ -1,0 +1,67 @@
+''' javaScript object Notation'''
+
+import json
+
+people_string='''
+{
+ "people":[
+       {
+        "name": "John",
+        "phone": "123-234-5678",
+        "emails": ["Jhon@gmail.com","jhonsmith@gmail.com"],
+        "has_license": false
+        },
+        
+        {
+        "name": "John Doe",
+        "phone": "123-234-5678",
+        "emails": ["Jhon23@gmail.com","jhonDoe@gmail.com"],
+        "has_license": true
+        }
+      ]
+   }'''
+
+data=json.loads(people_string)
+print(data)
+
+print(type(data)) #=> dict
+---------------------------------
+json          python
+object        dict
+array         list
+string        str
+number(int)   int
+number(real)  float
+true          True
+false         False
+null          None
+
+------------------------------
+for person in data['people']:
+    print(person)
+-----------------------
+for person in data['people']:
+    print(person['name'])
+------------------'
+if you want to delete phone from josn
+
+for person in data['people']:
+    del person['phone']
+print(data)
+----------------------
+new_string=json.dumps(data)
+print(new_string)
+----------------------
+if you want to read your file in jason format
+
+new_string=json.dumps(data,indent=2)
+
+    
+             
+
+
+
+
+
+
+

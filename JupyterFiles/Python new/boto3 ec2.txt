@@ -1,0 +1,383 @@
+
+
+
+
+
+
+=>Boto3 is the name of the python open source SDK for AWS.
+=>it allows you to directly create , update, and delete aws resources from your python scripts.
+=> it's complicated in many ways but it is rich SDK for AWS.
+
+
+
+Configuring your AWS environment:
+
+AWSCLI is a set of command-line tools for accessing AWS. Really, the main reason why we use it is for easy configuration, as it comes with a subcommand named configure.
+
+on Linux :
+
+$ aws configure
+
+Your AWS Access Key
+Your AWS Secret Access Key
+A “Default region name” – enter us-east-1
+A “Default output format” – enter json
+
+----------------------------------------------
+for windows :
+
+C:\Users\USER> pip install awscli
+
+then 
+
+C:\Users\USER> aws configure
+
+AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+
+--------------------------------------------
+What aws configure does:
+
+Just to make it obvious that there’s no magic here, what the configure command does is set up a text file that the awscli and boto3`` libraries are configured to look at, by default, for your credentials. If you are on OS X/Linux, the configure command creates a new text file at this path:
+
+
+~/.aws/credentials
+
+(If you’re on Windows, the location is the same place, except with Windows-style path)
+
+$ cat ~/.aws/credentials
+
+[default]
+aws_access_key_id = AKIAIOSFODNN7EXAMPLE
+aws_secret_access_key = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+Note : if you wil not provide any profile name "default" will be set
+
+if you want :
+
+$ aws configure --profile <profilename>
+-------------------------------------------
+The core Concept of boto3 are :
+
+1. resource : higher-level object to access aws services (all operations will be (.) operations) 
+
+2. client : low-level object to access aws services( all operations will be dict base operations (key value))
+	
+3. meta : object to enter into client object from
+resource object( no need to create new client object)
+
+4. session : it store configuration state and allows you to create aws service resource objects
+and client objects or (oject to get connect with particular AWS account or IAM account)
+
+5. collections: a tool to iterate and manipulate groups of resources (Like : in s3 you have multiple buckets so connect with one by one you can connect at a time with multipule buckets)
+
+6. paginators : automatic paging of responses
+
+7. waiters : a way to block until a certain state has been reached ( suppose you launch a ec2 instance and you want to deploy something on ec2 so the ec2 will take some time to go in running state at that time you need to wait)
+
+
+
+-----------------------------------------------------------------------------
+Session :
+
+Configuring Credentials
+
+There are two types of configuration data in boto3: credentials and non-credentials. Credentials include items such as aws_access_key_id, aws_secret_access_key, and aws_session_token. Non-credential configuration includes items such as which region to use or which addressing style to use for Amazon S3.
+
+Shared credential file (~/.aws/credentials)
+AWS config file (~/.aws/config)
+
+Boto3 will check these environment variables for credentials:
+
+AWS_ACCESS_KEY_ID
+The access key for your AWS account.
+AWS_SECRET_ACCESS_KEY
+The secret key for your AWS account.
+AWS_SESSION_TOKEN
+
+$ cat ~/.aws/credentials
+
+[default]
+aws_access_key_id=foo
+aws_secret_access_key=bar
+aws_session_token=baz
+
+
+
+The shared credentials file also supports the concept of profiles. Profiles represent logical groups of configuration. The shared credential file can have multiple profiles defined:
+
+$ cat ~/.aws/credentials
+
+[default]
+aws_access_key_id=foo
+aws_secret_access_key=bar
+
+[dev]
+aws_access_key_id=foo2
+aws_secret_access_key=bar2
+
+[prod]
+aws_access_key_id=foo3
+aws_secret_access_key=bar3
+
+-------------------------------------
+Note :  Do not hard code credentials
+
+session = boto3.Session(
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_KEY,
+    aws_session_token=SESSION_TOKEN,
+)
+
+or
+
+You can then specify a profile name via the AWS_PROFILE environment variable or the profile_name argument when creating a Session:
+
+session = boto3.Session(profile_name='dev')
+# Any clients created from this session will use credentials
+# from the [dev] section of ~/.aws/credentials.
+dev_s3_client = session.client('s3')
+
+
+for More : https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#configuring-credentials
+
+-------------------------------------------------
+
+import boto3
+#sess=boto3.session.Session(profile_name="default",region_name="us-east-2") # default meaning with root privilege
+sess=boto3.session.Session()
+ec2 = sess.resource('ec2')
+#or
+#cl=sess.client('ec2')
+
+inst=ec2.Instance('i-0c03b87e00858ff4e')
+st=inst.state['Name']
+print(st)
+
+
+
+
+------------------------------------------------
+Add new IAM user in your aws account :
+
+
+then provide credentials for that particular user 
+Note: you can use same name of different name
+
+
+C:\Users\USER>aws configure --profile im_ec2_user
+AWS Access Key ID [None]: **********6TT
+AWS Secret Access Key [None]: *********************nMAO2
+Default region name [None]: us-east-2
+Default output format [None]: json
+
+
+Now:
+
+import boto3
+sess=boto3.session.Session(profile_name="im_ec2_user",region_name="us-east-2")
+ec2 = sess.resource('ec2')
+
+
+--------------------------------------------
+
+Now you are ready to use boto3
+
+
+1. list all instance ids :
+
+import boto3
+# Create a low-level client with the service name
+
+s3cl = boto3.client('ec2') ## for client interface
+inst=s3cl.describe_instances()
+for reservation in inst["Reservations"]:
+    for instance in reservation["Instances"]:
+              print(instance["InstanceId"])
+
+
+2. instance id,public_ip,status,zone.. by using tag name :
+
+import boto3
+s3cl = boto3.client('ec2')
+inst= s3cl.describe_instances(Filters=[{'Name': 'tag:Name', 'Values': ['Python']}])
+inst_id=inst["Reservations"][0]["Instances"][0]["InstanceId"]
+public_ip=inst["Reservations"][0]["Instances"][0]['PublicIpAddress']
+status=inst["Reservations"][0]["Instances"][0]['State']['Name']
+avail_zone=inst["Reservations"][0]["Instances"][0]['Placement']['AvailabilityZone']
+
+
+3. start and stop instance :
+
+import boto3
+s3cl = boto3.client('ec2')
+inst= s3cl.describe_instances(Filters=[{'Name': 'tag:Name', 'Values': ['Python']}])
+inst_id=inst["Reservations"][0]["Instances"][0]["InstanceId"]
+#s3cl.stop_instances(InstanceIds=[inst_id])
+s3cl.start_instances(InstanceIds=[inst_id])
+
+
+---------------------------------------------------------------------------
+
+List all instance by using resource
+
+import boto3
+ec2 = boto3.resource('ec2')
+all_inst=ec2.instances.all()
+for inst in all_inst:
+    print(inst)
+
+
+=> All info
+
+import boto3
+ec2 = boto3.resource('ec2')
+all_inst=ec2.instances.all()
+for inst in all_inst:
+    print(inst.state)
+    print(inst.id)
+    print(inst.public_ip_address)
+    print(inst.tags)
+
+
+=> start, stop, reboot :
+
+import boto3
+ec2 = boto3.resource('ec2')
+inst=ec2.Instance('i-0c03b87e00858ff4e')
+st=inst.state['Name']
+
+if st=='stopped':
+    inst.start()
+    inst.wait_until_running()
+    print(f"instance {inst.instance_id} started successfully now stat {inst.state}")
+else:
+    print("already start") 
+
+
+inst.start()
+inst.stop()
+inst.reboot()
+
+---------------------------------
+
+create image :
+
+import boto3
+import datetime
+
+sess=boto3.session.Session(profile_name="default")
+clnt = sess.client('ec2')
+res=sess.resource('ec2')
+instance_id='i-0c03b87e00858ff4e'
+date = datetime.datetime.utcnow().strftime('%Y%m%d')
+name = f"InstanceID_{instance_id}_Image_Backup_{date}"
+img=clnt.create_image(InstanceId=instance_id, Name=name)
+print(img)
+
+
+Connect with image :
+
+import boto3
+import datetime
+
+sess=boto3.session.Session(profile_name="default")
+res=sess.resource('ec2')
+img=res.Image('ami-07441112b1e697766')
+#print(img.creation_date)
+#print(img.owner_id)
+#print(img.state)
+#print(img.image_location)
+
+
+Tagging Images and EC2 Instances
+A very powerful, yet extremely simple, feature of EC2 instances and AMI images are the ability to add custom tags. 
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+res=sess.resource('ec2')
+img=res.Image('ami-07441112b1e697766')
+img.create_tags(Tags=[{'Key': 'RemoveOn', 'Value': 'remove_on'}])
+
+
+=>
+Creating an EC2 Instance from a Backup Image
+
+import boto3
+import datetime
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('ec2')
+client.run_instances(ImageId='ami-07441112b1e697766', MinCount=1, MaxCount=1, InstanceType='t2.micro')
+
+
+
+-------------------------------
+list image:
+
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('ec2')
+res=sess.resource('ec2')
+all_inst=res.instances.all()
+for inst in all_inst:
+    img=inst.image
+    if img:
+        
+        print(f'for {inst.id} :img available',img.image_id,img.creation_date)
+    else:
+        print(f'for {inst.id} :img not available')
+
+
+
+remove image :
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('ec2')
+res=sess.resource('ec2')
+ami = list(res.images.filter(ImageIds=['ami-07441112b1e697766']).all())[0]
+ami.deregister()
+
+or
+ami= res.Image('ami-07441112b1e697766')
+ami.deregister()
+
+
+---------------------------------------------
+Terminating an EC2 Instance
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('ec2')
+res=sess.resource('ec2')
+inst=res.Instance('i-0ebd6c957242605b1')
+inst.terminate()
+inst.wait_until_terminated()
+print("terminated sucess fully")
+
+
+
+or
+
+import boto3
+
+sess=boto3.session.Session(profile_name="default")
+client=sess.client('ec2')
+res=sess.resource('ec2')
+all_inst=res.instances.all()
+
+for inst in all_inst:
+    st=inst.state['Name']
+    if st=='stopped':
+        inst.terminate()
+        inst.wait_until_terminated()
+        print("terminated sucess fully")
+   

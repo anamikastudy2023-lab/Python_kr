@@ -1,0 +1,288 @@
+Type Casting:
+-------------
+
+int()
+float()
+complex()
+bool()
+str()
+
+int():
+------
+int(123.34)===> 123
+int(10+20j)  ==> can't convert complex to int (TypeError)
+int(True)==>  1
+int('10')==>
+   int('10.5') ==> if you want to convert from str to int then str should contain only int value  (ValueError)
+                    and this int value only in (base 10) decimal only
+
+
+
+float():
+-------
+
+float(12)==> 12.0
+float(True)==>1.0
+float(10+20j) ==> can't convert complex to float
+float("12.5")===> 12.5
+float("10")  ===>10.0
+
+complex():
+-----------
+
+Form-1: commplex(x)==> x+0j whatever the value you pass as x that x is consider as a real part
+Form-2: complex(x,y)==> x+yj   x is the real part and y is imag part
+
+
+Form-1: commplex(x):
+---------------------
+
+complex(10)  ==> 10+0j
+complex(12.5)  ==>12.5+0j
+complex(True) ==>1+0j
+complex("10")  ==> 10+0j
+complex("10.5")  ==>10.5+0j
+
+Form-2: complex(x,y):
+---------------------
+
+complex(10,20) ==> 10+20j
+complex(True,False) ==> 1+0j
+complex(1.5,3.4) ==>1.5+3.4j
+
+
+bool():
+-------
+
+for int:
+bool(1) ==>True   || 0 means flase and other int means true 
+bool(0) ===> False
+bool(10) ===>True  
+
+for float:
+0.0 ==>false
+other menas true
+
+for complex:
+
+bool(10+20j) ==> true    both real and img part are 0 then we will get only false otherwise true
+bool(0+0j) ==> false
+
+for String:
+
+if arg is empty then it is treated as flase otherwise it is treated as true
+bool('') ==> false
+bool('amit') ==> true
+bool('  ')==> true  space is treated as char 
+
+
+
+str():
+------
+
+str(x) you can pass any type of value 
+
+
+
+
+
+pointing to the same object only in the following range:
+int ==> 0 to 256
+bool==> always
+str==> always
+
+note :float and complex always a new object will be created
+
+
+note : 0 to 256 is most commonly used range 
+
+at the time python interpreter starts from 0 to 256 integer objects will be created at the 
+beginning
+
+a=10
+b=10
+c=10   all are pointing to the same object which is already created
+
+but in case of float and complex why is not there
+ suppose 0 to 1
+ 0.1
+ 0.01
+0.111
+0.101
+infinite
+
+in case of float you can not define range
+
+x+yj in complex ,img and real also can be float
+
+
+bytes data type :
+-------
+
+it is a grup of byte numbers. just like an array
+
+1.in range 0 to 256
+2.immutable(does not support item assignment)
+
+x=[10,20,30,40]
+
+b=bytes(x)
+type(b)
+
+for i in b: print(i)
+
+bytearray ==>  both are same
+
+1. mutable  
+
+except this there is no diff.
+
+
+logical operator:
+-------------------
+and , or 
+
+if you applied for non-boolean types:
+--------------------------------------
+
+0 means False
+non zero means true
+empty string =False
+
+ex:   x and y
+
+if x evaluates to false then result is x otherwise returns y
+
+10 and 20 ===> retuer 20 coz x is true
+
+0 and 23 ===>0
+
+
+or:  x or y
+
+if x is evaluates to True then result is x otherwise returnx y
+
+10 or 20 ==>10
+0 or 20 == > 20
+
+0 or 0 ==> 0
+
+
+
+Bitwise operators:
+
+&(and) 
+|(or)
+^(xor) x-or
+~ bitwise not(inversion)
+<< left sift
+>> right sift
+ 
+applicable only for int and bool 
+
+&==> if both bits are 1 then only 1 otherwise 0
+| ==> if atleast one bit is 1 then 1 otherwise 0
+
+^ ==> x-or if both arg are diff then 1 otherwise 0
+
+~ ==> 1 become 0 and  0 become 1
+
+4 & 5 ===> 4     4 =100 and 5 =101
+
+100
+101
+----
+100 ==>4
+
+4 | 5 ===> 5
+
+100
+101
+----
+101 ==>5
+
+
+4^5 ==>1
+
+100
+101
+----
+001 
+
+
+-----------------------------
+(~)
+
+~4 ==>-5
+
+note:
+00000...100
+ first bit is represented as sign bit 
+0-> +ve
+1-> -ve
+
+when ever the value is in -ve then the value is in 2's form
+
+
+4==> 00000...100
+~4==>111111...011
+
+now first bit is 1 means -ve value
+
+now how to find 2's compliment form
+
+first fing 1's compliment form then add 1 to find 2's compliment form
+
+0000000...100
++           1
+----------------
+00000000...101
+
+==> -5
+
+
+
+<<:
+===
+10<<2
+move 2 cells into left hand side
+000000..0001010 ==10
+0000..000101000 ==40 is the answer
+
+>> :
+====
+10>>2
+
+move 2 cells into right hand side
+0000...0001010 =10
+000000...00010 =2 
+
+
+convert char to ascii : 
+---------------------
+
+ord('a') ==>97
+
+convert ascii to cahr :
+---------------------
+
+chr(97) ==>'a'
+
+
+assignment operator :
+
+x=10
+a,b,c,d =10,20,30,40
+
+x+=10 ==> x=x+10
+-=
+*=
+/=
+%=
+//=
+**=
+&=
+|=
+^=
+
+

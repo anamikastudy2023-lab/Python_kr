@@ -1,0 +1,290 @@
+File Handling : if you want to store the data permanently.
+---------------
+
+Temporary --> our data structure list,set,tuple,dict
+store data inside PVM as the part of heap.
+
+opening the file:
+
+open(filename,mod)
+
+modes allowed:  Note the default mode is 'r' mode if you will not specified
+--------------
+1.r ==>read ==> open an existing file for read operation
+if the specified file is not available the we will get FileNotFoundError
+
+2.w ==>write ==>  open file for write operation
+if the  specified file is not available then this will create that file
+if file already contains some data it will perform overwrite operation
+ 
+3.a ==>append ==> open an existing file for append mode
+if file is not available then it will create
+
+4.r+ ==>read and write 
+
+5.w+ ==> write and read
+6.a+ ==> append and read
+7.x==>exclusiv : if file is already available then we get FileExistsErro
+  file should not be available then it will work
+
+For binary data:
+rb,wb,ab,r+b,w+b,a+b,xb
+-----------------------------
+f=open('abc.txt','r')
+---------------------------
+various properties of file Object:
+--------------------------------
+f.name ==> name of file
+f.mode ==> mode of file
+f.closed ==> already closed or not
+f.readable() ==> 
+f.writable() ==>
+f.close()==>
+------------------------------------
+f=open('abc.txt','r')
+
+print("file name :",f.name)
+print("file mode :",f.mode)
+print("is file readable ?",f.readable())
+print("is file writable ?",f.writable())
+print("is file closed :",f.closed)
+f.close()
+print("is file closed :",f.closed)
+
+
+
+writing data to the file :
+---------------------------
+f.write(str) 
+f.writelines(list of lines)
+
+
+Ex :
+f=open('abc.txt','w')
+f.write('welcome')
+f.write(" to kr ")
+f.write("network cloud")
+f.close()
+-------------------------------
+Ex :
+f=open('abc.txt','w')
+list1=['sunny\t','bunny\n','chinny\n','vinny\n']
+f.writelines(list1)
+f.close()
+
+--------------------------------------------
+provide file name as dynamic input
+provide data as dynamic input
+
+foulder D:\\input
+
+\ as scape char
+
+Ex :
+fname=input("Enter File Name :")
+f=open('D:\\input\\'+fname,'w')
+data=input('Enter your required data :')
+f.write(data)
+f.close()
+------------------
+
+reading character data from the text file:
+-------------------------------------------
+
+f.read()==> to read total data from the file.
+f.read(n)==> to read n character from the file
+f.readline()==> to read only line
+f.readlines()==> read all lines into a list
+
+---------------------------
+f=open('D:\\input\\python.txt','r')
+data=f.read()
+print(data)
+----------------
+i want to read only first 8 char:
+
+f=open('D:\\input\\python.txt','r')
+data=f.read(8)
+print(data)
+------------------------------
+read one line from file :
+
+f=open('D:\\input\\python.txt','r')
+data=f.readline()
+print(data)
+
+Note : our data contains \n and print method autometically add \n 
+thats why 2 times scpace added
+
+--------------------------------------
+if you don't want space in mid of line
+
+Ex:
+f=open("D:\\input\\python.txt",'r')
+
+data=f.readline()
+print(data,end="")
+data=f.readline()
+print(data,end="")
+
+---------------------------------
+f.readlines()==> read all line into a list
+
+f=open("D:\\input\\python.txt",'r')
+
+data=f.readlines()
+for line in data:
+    print(line,end="")
+
+----------------------------------------
+see the cursor movment :
+
+f=open("D:\\input\\python.txt",'r')
+
+print(f.read(3))
+print(f.readline())
+print(f.read(4))
+print('Remaining Data:')
+print(f.read())
+
+-------------------------------------------
+read data from one file and write it to another file:
+
+f1=open("D:\\input\\python.txt",'r')
+f2=open("D:\\input\\output.txt",'w')
+f2.write(f1.read())
+f1.close()
+f2.close()
+
+----------------------------
+if i want to close the open connection automatically :
+
+with statement :
+
+with open('abc.txt','w') as f:
+
+now after complet the task it will close the connection automatically
+Ex :
+with open("D:\\input\\python.txt",'r') as f1:
+  print(f1.read())
+print(f1.closed)
+
+----------------------------------
+tell() :
+--------
+to return current position of the cursor(file pointer) 
+from begning of the file
+
+r-->begning
+w-->begning
+a-->last 
+
+uhn with open("D:\\input\\python.txt",'r') as f1:
+ print(f1.tell())
+ print(f1.read(4))
+ print(f1.tell())
+
+-----------------------------------
+seek() :
+-------
+To move the cursor from one position to another position
+
+with open("D:\\input\\python.txt",'r') as f1:
+  f1.seek(7)
+  print(f1.read())
+---------------------------------------
+isfile() method from os module :
+-------------------------------
+will check that specified file is available or not
+
+Ex:
+import os
+fname=input('Enter File Name')
+if os.path.isfile("D:\\input\\"+fname):
+    print('File Exists :',fname)
+    f=open("D:\\input\\"+fname,'r')
+    print(f.read())
+else:
+    print('File does not exist :',fname)
+
+-------------------------------------------
+the number of lines, words and characters present in the given file
+
+Ex :
+import os
+fname=input('Enter File Name')
+if os.path.isfile("D:\\input\\"+fname):
+    print('File Exists :',fname)
+    f=open("D:\\input\\"+fname,'r')
+    lcount=wcount=ccount=0
+    for line in f:
+        lcount=lcount+1
+        words=line.split()
+        wcount=wcount+len(words)
+        ccount=ccount+len(line)
+    print("The number of lines :",lcount)
+    print("The number of words :",wcount)
+    print("The number of character :",ccount)
+else:
+    print('File does not exist :',fname)
+
+----------------------------------
+Binary Data:
+------------
+images, video files, audio files
+
+write a program to read image file and write to a new file
+
+f1=open('D:\\guidovan.jpg','rb')
+f2=open("D:\\input\\newpic.jpg",'wb')
+bytes=f1.read()
+f2.write(bytes)
+f1.close()
+f2.close()
+
+----------------------------------
+for video
+
+f1=open('D:\\demo.mp4','rb')
+f2=open("D:\\input\\newvideo.mp4",'wb')
+bytes=f1.read()
+f2.write(bytes)
+f1.close()
+f2.close()
+
+-----------------------------
+Handling csv file:
+------------------
+csv-->comma seperate values
+
+for that we need to import module csv
+
+Ex:
+import csv
+with open("D:\\input\\name.csv",'w',newline='') as f:
+    w=csv.writer(f)
+    w.writerow(['Name','Id','Age'])
+    while True:
+        name=input("Enter student Name :")
+        id=int(input('Enter Student id :'))
+        age=int(input('Enter Student age :'))
+        w.writerow([name,id,age])
+        opetion=input('Do you want to insert one more record yes or no :')
+        if opetion.lower()=='no' :
+            break
+print('Added successfully !!!!')
+    
+-------------------------------------
+read data from csv file:
+
+import csv
+f=open("D:\\input\\name.csv",'r')
+r=csv.reader(f)
+data=list(r)
+for row in data:
+    for column in row:
+        print(column,'\t',end=" ")
+    print()
+
+
+

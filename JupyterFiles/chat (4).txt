@@ -1,0 +1,34 @@
+14:43:36	 From Host : https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/billing/azure-mgmt-billing
+15:13:55	 From Host : import paramiko
+import getpass
+import time
+
+ip='13.201.31.199'
+port=22
+username='ec2-user'
+password=getpass.getpass()
+
+ssh=paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(ip,port,username,password)
+stdin,stdout,stderr=ssh.exec_command('ls')
+time.sleep(4)
+outlines=stdout.readlines()
+print(outlines)
+15:17:04	 From Host : import paramiko
+import getpass
+import time
+
+ip='13.201.31.199'
+port=22
+username='ec2-user'
+password=getpass.getpass()
+
+ssh=paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(ip,port,username,password)
+
+
+ftp_client=ssh.open_sftp()
+
+ftp_client.put("/Users/admin/Documents/demo11.py","test.py")

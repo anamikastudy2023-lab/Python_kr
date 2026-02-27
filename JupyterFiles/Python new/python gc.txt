@@ -1,0 +1,68 @@
+Grabage collection:
+
+To destroy an unused object.
+
+if that object does not contain any reference variable.
+
+by default gc is eable.
+
+gc module
+1.gc.isenabled() ==> to check whether the gc is enable or disable
+2.gc.disable()==> to disable gc
+3.gc.enable()==> to enable gc
+
+
+Destructors:
+------------
+The job of distructor is to perform clean up activities just before destroying an obj.
+name : __del__(): gc call del method before destroying an object for cleanup jobs.
+
+class Test:
+   def __init__(self):
+      print('Object creation....')
+   def __del__(self):
+      print("preforming clean up jobs")
+
+t1=Test()
+t1=None
+   
+
+Note : if the reference count 0 then only object is  gc.
+
+Ex:
+class Test:
+   def __init__(self):
+      print('Object creation....')
+   def __del__(self):
+      print("preforming clean up jobs")
+
+t1=Test()
+t2=t1
+t3=t2
+del t1
+print('Object not yet destroyed after deleting t1')
+del t2
+print('Object not yet destroyed after deleting t1')
+print('I m trying to delete t3 also...')
+del t3
+   
+
+how to find number of references of an object:
+----------------------------------------------
+
+sys.getrefcount(obj ref)
+
+import sys
+class Test:
+   pass
+
+t1=Test()
+t2=t1
+t3=t1
+t4=t1
+
+print(sys.getrefcount(t1))
+
+
+Note :pythin internally maintain one ref variable for every object that is self.
+ 

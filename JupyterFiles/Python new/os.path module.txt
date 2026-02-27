@@ -1,0 +1,117 @@
+OS Path module
+
+
+1. os.path.abspath(path) :
+Return a normalized absolutized version of the pathname path.
+
+import os
+
+>>> os.path.abspath('ags.txt')
+'/root/python/ags.txt'
+
+
+
+2. os.path.basename(path) : Return the base name of pathname path.
+
+>>> os.path.basename('/root/python/ags.txt')
+'ags.txt'
+
+
+
+3. os.path.commonpath(paths): Return the longest common sub-path of each pathname in the sequence paths
+
+4. os.path.commonprefix(list) ":
+   
+
+>>> os.path.commonprefix(['/usr/lib', '/usr/local/lib'])
+'/usr/l'
+
+>>> os.path.commonpath(['/usr/lib', '/usr/local/lib'])
+'/usr'
+
+
+5. os.path.dirname(path): Return the directory name of pathname path
+
+
+
+>>> os.path.dirname('/root/python/ags.txt')
+'/root/python'
+
+
+6. os.path.exists(path) :Return True if path refers to an existing path or an open file descriptor
+
+>>> os.path.exists('/root/python/')
+True
+
+
+7. os.path.getatime(path) : Return the time of last access of path
+
+
+>>> import time
+>>> time.ctime(os.path.getatime('/root/python/'))
+'Sat May  2 04:17:13 2020'
+>>> time.ctime(os.path.getatime('/root/python/ags.txt'))
+'Sat May  2 06:29:06 2020'
+
+
+8. os.path.getmtime(path) :Return the time of last modification of path
+
+>>> time.ctime(os.path.getmtime('/root/python/'))
+'Sun May  3 06:31:38 2020'
+
+9. os.path.getctime(path) : Return the system’s ctime which
+
+
+>>> time.ctime(os.path.getctime('/root/python/'))
+'Sun May  3 06:31:38 2020'
+
+
+10: os.path.getsize(path) : Return the size, in bytes, of path.
+
+>>> os.path.getsize('/root/python/')
+4096
+>>> os.path.getsize('/root/python/ags.txt')
+32
+
+
+11: os.path.isabs(path) : Return True if path is an absolute pathname. On Unix, that means it begins with a slash, 
+
+
+
+>>> os.path.isabs('/root/python/')
+True
+
+12. os.path.isfile(path) :Return True if path is an existing regular file.
+
+>>> os.path.isfile('/root/python/ags.txt')
+True
+
+
+13. os.path.isdir(path) : Return True if path is an existing directory.
+
+>>> os.path.isdir('/root/python/dir1')
+True
+
+
+14. os.path.islink(path) :Return True if path refers to an existing directory entry that is a symbolic link. 
+
+
+
+15. os.path.ismount(path) : Return True if pathname path is a mount point:
+
+
+16. os.path.join(path, *paths) : Join one or more path components intelligently.
+
+
+>>> os.path.join('/root/python/','dir1')
+'/root/python/dir1'
+
+
+17. os.path.split(path)
+Split the pathname path into a pair, (head, tail) where tail is the last pathname component and head is everything leading up to that.
+
+>>> os.path.split('/root/python/dir1')
+('/root/python', 'dir1')
+
+
+

@@ -1,0 +1,54 @@
+bool:
+-----
+
+True and False     : T and F should be capital only
+
+True+True =2
+True+False =1
+
+True =>1
+False =>0
+
+
+
+all fundamentel data types are immutable only
+int,float,bool,str,complex
+
+range():
+======
+
+to define range between 2 values.
+
+
+operators :
+
+Arithmetic Operators:  +,-,*,/,%    => devision operator always going to generate 
+                                        float value only
+
+//=> floor division  (return int value
+** ==> exponent operator
+
+10/5===> 5.0
+and 10//5 ===> 5  
+
+10**2 ===>100
+
+ex : 'Amit'+'kumar' ===> Amitkumar
+  'Amit'*3 ===> AmitAmitAmit
+
+relational Operators: 
+<,<=,>,>= ,== ,!=    (applicable on String also)
+
+
+logical Operator:
+   and ==> if both arguments are true then only tru
+   or ==>if atleast one argument is true then true
+    not==>
+
+
+
+Betwise Operstors:
+ &,|,^,~,<<,>>    these operator applicable only for int and boolean 
+
+ 
+

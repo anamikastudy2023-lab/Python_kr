@@ -1,0 +1,191 @@
+Send mail from your Gmail account using Python:
+------------------------------------------
+
+1.Steps to send mail from Gmail account:
+
+First of all, “smtplib” library needs to be imported.
+
+2.After that, to create a session, we will be using its 
+instance SMTP to encapsulate an SMTP connection.
+s = smtplib.SMTP('smtp.gmail.com', 587)
+
+In this, you need to pass the first parameter of the server 
+location and the second parameter of the port to use. 
+For Gmail, we use port number 587.
+
+3.For security reasons, now put the SMTP connection in the 
+TLS mode. TLS (Transport Layer Security) encrypts all the 
+SMTP commands. After that, for security and authentication, 
+you need to pass your Gmail account credentials in the login instance.
+
+The compiler will show an authentication error if you enter invalid 
+email id or password.
+
+4.Store the message you need to send in a variable say, message. 
+Using the sendmail() instance, send your message. sendmail() uses 
+three parameters: sender_email_id, receiver_email_id and message_to_be_sent. 
+The parameters need to be in the same sequence.
+
+
+import smtplib 
+
+try :  
+   # creates SMTP session 
+   s = smtplib.SMTP('smtp.gmail.com', 587) 
+  
+   # start TLS for security 
+   s.starttls() 
+  
+   # Authentication 
+   s.login("s93.nishantkumar@gmail.com", "nn@4xchange!") 
+  
+   # message to be sent 
+   message = "Message_you_need_to_send welcome to kr"
+  
+   # sending the mail 
+   s.sendmail("s93.nishantkumar@gmail.com", "nishi4ca@gmail.com", message) 
+  
+   # terminating the session
+except Exception as ex:
+    print(ex)
+finally :
+    if s!=None:
+      s.quit()
+
+
+-----------------------------------------------
+Sending same message to multiple people:
+
+import smtplib 
+emails=['abcd@gmail.com','xyz@gmail.com']
+try :
+   for x in range(len(emails)):
+      s = smtplib.SMTP('smtp.gmail.com', 587) 
+      s.starttls() 
+      s.login("s93.nishantkumar@gmail.com", "nn@4xchange!") 
+      message = "Message_you_need_to_send welcome to kr"
+      s.sendmail("s93.nishantkumar@gmail.com", emails[x], message) 
+except Exception as ex:
+    print(ex)
+finally :
+    if s!=None:
+      s.quit() 
+
+
+------------------------------------------------------------------------
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
+from email.utils import formataddr
+from email.utils import make_msgid
+from email.utils import formatdate
+
+
+email = MIMEMultipart()
+email['From'] = formataddr(('Nishant Kumar', 's93.nishantkumar@gmail.com'))
+email['Subject'] = u'Test email'
+email['To']="nishi4ca@gmail.com"
+email['Message-Id'] = make_msgid()
+email['Date'] = formatdate(localtime=True)
+email.attach(MIMEText(u'This is your email contents.'))
+f=open("d:\\Django2.txt","rb")
+data=f.read()
+email.attach(MIMEApplication(data))
+
+s=None
+try :
+      s = smtplib.SMTP('smtp.gmail.com', 587) 
+      s.starttls() 
+      s.login("s93.nishantkumar@gmail.com", "nn@4xchange!") 
+     
+      s.sendmail("s93.nishantkumar@gmail.com","nishi4ca@gmail.com",email.as_string()) 
+except Exception as ex:
+    print(ex)
+finally :
+    if s!=None:
+      s.quit()
+
+
+
+ 
+---------------------------------------
+import smtplib, ssl
+import getpass
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email import encoders
+from email.mime.base import MIMEBase
+from email import encoders
+import os
+
+
+smtp_server = "smtp.gmail.com"
+port = 587  # For starttls
+sender_email = "amit10123kumar@gmail.com"
+password = getpass.getpass("Enter password :")
+receiver_email = "nishi4ca@gmail.com"
+subject = "An email with attachment from Python"
+body = "This is an email with attachment sent from Python"
+# Create a secure SSL context
+context = ssl.create_default_context()
+
+message = MIMEMultipart("alternative")
+message["Subject"] = "multipart test"
+message["From"] = sender_email
+message["To"] = receiver_email
+message["Subject"] = subject
+message["Bcc"] = receiver_email
+
+message.attach(MIMEText(body, "plain"))
+
+filename = "D:\\log.txt" 
+basename=os.path.basename(filename)
+with open(filename, "rb") as attachment:
+    part = MIMEBase("application", "octet-stream")
+    part.set_payload(attachment.read())
+    # Add file as application/octet-stream
+    # Email client can usually download this automatically as attachment
+                     
+# Encode file in ASCII characters to send by email    
+encoders.encode_base64(part)
+
+# Add header as key/value pair to attachment part
+part.add_header(
+    "Content-Disposition",
+    f"attachment; filename= {basename}",
+)
+
+# Add attachment to message and convert message to string
+message.attach(part)
+
+
+# Try to log in to server and send email
+try:
+    server = smtplib.SMTP(smtp_server,port)
+    server.ehlo() # Can be omitted
+    server.starttls(context=context) # Secure the connection
+    server.ehlo() # Can be omitted
+    server.login(sender_email, password)
+    # TODO: Send email here
+    
+    server.sendmail(sender_email, receiver_email, message.as_string())
+except Exception as e:
+    # Print any error messages to stdout
+    print(e)
+finally:
+    server.quit() 
+
+
+
+
+
+                                                              |---content-type  
+                                                  +---header---+---content disposition  
+              +----.attach()-----+----MIMEBase----|  
+                                 |                +---payload (to be encoded in Base64)
+
+
+
+
+A MIME attachment with the content type "application/octet-stream" is a binary file. Typically, it will be an application or a document that must be opened in an application, such as a spreadsheet or word processor. If the attachment has a filename extension associated with it, you may be able to tell what kind of file it is. A .exe extension, for example, indicates it is a Windows or DOS program (executable), while a file ending in .doc is probably meant to be opened in Microsoft Word.

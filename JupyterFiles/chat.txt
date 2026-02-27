@@ -1,0 +1,67 @@
+13:53:22	 From Host : import logging
+logging.basicConfig(level=logging.DEBUG,filename='/Users/admin/Movies/test/log.txt',
+                    format='%(name)s-%(levelname)s-%(message)s-%(asctime)s',
+                     datefmt='%d/%B/%Y %I:%M:%S' )
+
+logging.debug("debug message") 
+logging.info("info message")
+logging.warning("warning message")
+logging.error("error message")
+logging.critical("critical message")
+14:00:29	 From Host : import logging
+import os
+logging.basicConfig(level=logging.DEBUG,filename='/Users/admin/Movies/test/log.txt',
+                    format='%(name)s-%(levelname)s-%(message)s-%(asctime)s',
+                     datefmt='%d/%B/%Y %I:%M:%S' )
+
+
+
+
+try:
+    file=input("Enter file name :")
+    if os.path.isfile(file):
+        logging.info(f"file {file} exsits")
+        with open(file,'w') as f:
+            data=f.read()
+            print(data)
+    else:
+        logging.warning(f"file {file} does not exsits")
+
+except Exception as ex:
+    #logging.error(ex,exc_info=True)
+    logging.exception(ex)
+14:13:56	 From Host : import logging
+
+
+logger = logging.getLogger('root')
+logger.setLevel(logging.DEBUG)
+
+
+
+fmt = '%(asctime)s - %(process)d - %(levelname)s - %(module)s - %(message)s'
+formatter = logging.Formatter(fmt)
+
+#logger.propagate = False
+
+
+file_handler = logging.FileHandler("/Users/admin/Movies/test/log.txt")
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+
+logger.error('This is an error')
+14:20:20	 From Host : import logging
+import logging.config
+
+logging.config.fileConfig('/Users/admin/logconfig.config', disable_existing_loggers=False)
+logger = logging.getLogger()
+
+
+
+logger.warning("hello this is file config logging system")

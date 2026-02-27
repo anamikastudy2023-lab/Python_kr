@@ -1,0 +1,67 @@
+Generators: to generat a sequence of value.
+yield keyword
+
+A generator-function is defined like a normal 
+function, but whenever it needs to generate a 
+value, it does so with the yield keyword rather
+than return. If the body of a def contains yield, 
+the function automatically becomes a generator function.
+
+def mygen():
+    yield 'A'
+    yield 'B'
+    yield 'C'
+
+g=mygen()
+print(type(g))
+print(next(g))
+print(next(g))
+print(next(g)
+----------------
+second option is :
+l=['A','B',"c'] 
+
+now diff between list and Generators:
+-------------------------------------
+l=[x*x for x in range(1000000000000000000000000000000)]
+print(l)
+
+if it will do like this :
+
+l=(x*x for x in range(1000000000000000000000000000000))
+print(l)
+
+then it will become generator object:
+g=(x*x for x in range(1000000000000000000000000000000))
+while True:
+    print(next(g))
+---------------------------
+import time
+def countdown(num):
+    print('Count Down starting...')
+    while num>0:
+        yield num
+        num=num-1
+values=countdown(10)
+for x in values:
+    print(x)
+    time.sleep(1)
+print('Count Down end...')
+
+-----------------------------
+to generate first n numbers
+
+def firstn(num):
+    n=1
+    while n<=num:
+      yield n
+      n=n+1
+
+
+for x in firstn(100):
+    print(x)
+
+
+
+
+

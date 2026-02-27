@@ -1,0 +1,428 @@
+1.Steps to send mail from Gmail account:
+
+First of all, “smtplib” library needs to be imported.
+
+2.After that, to create a session, we will be using its 
+instance SMTP to encapsulate an SMTP connection.
+s = smtplib.SMTP('smtp.gmail.com', 587)
+
+In this, you need to pass the first parameter of the server 
+location and the second parameter of the port to use. 
+For Gmail, we use port number 587.
+
+3.For security reasons, now put the SMTP connection in the 
+TLS mode. TLS (Transport Layer Security) encrypts all the 
+SMTP commands. After that, for security and authentication, 
+you need to pass your Gmail account credentials in the login instance.
+
+The compiler will show an authentication error if you enter invalid 
+email id or password.
+
+4.Store the message you need to send in a variable say, message. 
+Using the sendmail() instance, send your message. sendmail() uses 
+three parameters: sender_email_id, receiver_email_id and message_to_be_sent. 
+The parameters need to be in the same sequence.
+
+
+
+
+
+
+
+-----------------------------------------------------
+
+
+import smtplib 
+
+try :  
+   # creates SMTP session 
+   s = smtplib.SMTP('smtp.gmail.com', 587) 
+  
+   # start TLS for security 
+   s.starttls() 
+  
+   # Authentication 
+   s.login("s93.nishantkumar@gmail.com", "nn@4xchange!") 
+  
+   # message to be sent 
+   message = "Message_you_need_to_send welcome to kr"
+  
+   # sending the mail 
+   s.sendmail("s93.nishantkumar@gmail.com", "nishi4ca@gmail.com", message) 
+  
+   # terminating the session
+except Exception as ex:
+    print(ex)
+finally :
+    if s!=None:
+      s.quit()
+---------------------------------------------------
+
+#create your own mail sever by using
+#run this on cmd
+#python -m smtpd -c DebuggingServer -n localhost:1025
+
+#then send mail
+
+import smtplib
+
+with smtplib.SMTP('localhost', 1025) as smtp:
+   subject="Test mail Server"
+   body="welcome to kr this is test mail"
+
+   msg=f"Subject: {subject}\n\n{body}"
+   smtp.sendmail("amit10123kumar@gmail.com","nishi4ca@gmail.com",msg)
+
+#output
+#---------- MESSAGE FOLLOWS ----------
+#b'Subject: Test mail Server'
+#b'X-Peer: ::1'
+#b''
+#b'welcome to kr this is test mail'
+#------------ END MESSAGE ------------
+
+
+
+--------------------------------------------------
+
+import smtplib,ssl
+import getpass
+smtp_server = "smtp.gmail.com"
+port = 587  # For starttls
+sender_email = "amit10123kumar@gmail.com"
+password = getpass.getpass("Enter password :")
+receiver_email = "nishi4ca@gmail.com"
+# Create a secure SSL context
+context = ssl.create_default_context()
+
+# Try to log in to server and send email
+try:
+    server = smtplib.SMTP(smtp_server,port)
+    server.ehlo() # Can be omitted
+    server.starttls(context=context) # Secure the connection
+    server.ehlo() # Can be omitted its to identify connection 
+    server.login(sender_email, password)
+    # TODO: Send email here
+    message = """\
+    Subject: Hi there
+
+    This message is sent from Python kr network cloud."""
+    server.sendmail(sender_email, receiver_email, message)
+except Exception as e:
+    # Print any error messages to stdout
+    print(e)
+finally:
+    server.quit() 
+
+
+
+connection secured with .starttls(). The server.ehlo() lines may be omitted, as they are called implicitly by .starttls() and .sendmail(), if required:
+
+
+The message string starts with "Subject: Hi there" followed by two newlines (\n). This ensures Hi there shows up as the subject of the email, and the text following the newlines will be treated as the message body.
+
+HELO/EHLO
+The HELO command initiates the SMTP session conversation. The client greets the server and introduces itself. As a rule, HELO is attributed with an argument that specifies the domain name or IP address of the SMTP client.
+
+Example: HELO client.net
+
+EHLO is an alternative to HELO for servers that support the SMTP service extensions (ESMTP). If the server does not support ESMTP, it will reply with an error. 
+
+
+ssl.create_default_context
+
+Return a new SSLContext object with default settings for the given purpose. The settings are chosen by the ssl module, and usually represent a higher security level than when calling the SSLContext constructor directly.
+
+--------------------------------------------
+Sending Fancy Emails
+
+Python’s built-in email package allows you to structure more fancy emails, which can then be transferred with smtplib.
+
+
+Including HTML Content
+
+Today’s most common type of email is the MIME (Multipurpose Internet Mail Extensions) Multipart email, combining HTML and plain-text. MIME messages are handled by Python’s email.mime module. 
+
+our MIMEText() objects will contain the HTML and plain-text versions of our message, and the MIMEMultipart("alternative") instance combines these into a single message with two alternative rendering options:
+
+
+
+import smtplib,ssl
+import getpass
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+
+
+smtp_server = "smtp.gmail.com"
+port = 587  # For starttls
+sender_email = "amit10123kumar@gmail.com"
+password = getpass.getpass("Enter password :")
+receiver_email = "nishi4ca@gmail.com"
+# Create a secure SSL context
+context = ssl.create_default_context()
+
+message = MIMEMultipart("alternative")
+message["Subject"] = "multipart test"
+message["From"] = sender_email
+message["To"] = receiver_email
+
+text = """\
+Hi,
+How are you?
+Kr provide many great tutorial:
+https://www.krnetworkcloud.org/"""
+
+html = """\
+<html>
+  <body>
+    <p>Hi,<br>
+       How are you?<br>
+       <a href="https://www.krnetworkcloud.org">kr Network</a> 
+       has many great Courses.
+    </p>
+  </body>
+</html>
+"""
+
+# Turn these into plain/html MIMEText objects
+part1 = MIMEText(text, "plain")
+part2 = MIMEText(html, "html")
+
+# Add HTML/plain-text parts to MIMEMultipart message
+# The email client will try to render the last part first
+message.attach(part1)
+#message.attach(part2)
+
+
+# Try to log in to server and send email
+try:
+    server = smtplib.SMTP(smtp_server,port)
+    server.ehlo() # Can be omitted
+    server.starttls(context=context) # Secure the connection
+    server.ehlo() # Can be omitted
+    server.login(sender_email, password)
+    # TODO: Send email here
+    server.sendmail(sender_email, receiver_email, message.as_string())
+except Exception as e:
+    # Print any error messages to stdout
+    print(e)
+finally:
+    server.quit() 
+
+------------------------------------------------
+
+
+An SMTP_SSL instance behaves exactly the same as instances of SMTP. SMTP_SSL should be used for situations where SSL is required from the beginning of the connection and using starttls() is not appropriate. If host is not specified, the local host is used. If port is zero, the standard SMTP-over-SSL port (465) is used.
+
+SSL :
+Secure Sockets Layer (SSL) is a networking protocol designed for securing connections between web clients and web servers over an insecure network, such as the internet.
+
+
+import smtplib,os
+import img #pip install img
+import imghdr
+from email.message import EmailMessage #pip install emails
+
+sender_email = "amit10123kumar@gmail.com"
+receiver_email = "nishi4ca@gmail.com"
+password = getpass.getpass("Enter password :")
+msg=EmailMessage()
+msg["Subject"] = "test mail"
+msg["From"] = sender_email
+msg["To"] = receiver_email
+msg.set_content('Image attached...')
+
+with open("D:\\img.jpg",'rb') as f1:
+    file_data=f1.read()
+    file_type=imghdr.what(f1.name)
+    file_name=os.path.basename(f1.name)
+msg.add_attachment(file_data,maintype='image',subtype=file_type,filename=file_name)
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+ 
+   smtp.login(sender_email,password) 
+   smtp.send_message(msg)
+
+
+-------------------------------------
+send multiple image
+
+import smtplib,os
+import img #pip install img
+import imghdr,getpass
+from email.message import EmailMessage #pip install email
+
+sender_email = "amit10123kumar@gmail.com"
+receiver_email = "nishi4ca@gmail.com"
+password = getpass.getpass("Enter password :")
+msg=EmailMessage()
+msg["Subject"] = "test mail"
+msg["From"] = sender_email
+msg["To"] = receiver_email
+msg.set_content('Image attached...')
+files=["D:\\img.jpg","D:\\img2.jpg"]
+for file in files:
+   with open(file,'rb') as f1:
+      file_data=f1.read()
+      file_type=imghdr.what(f1.name)
+      file_name=os.path.basename(f1.name)
+   msg.add_attachment(file_data,maintype='image',subtype=file_type,filename=file_name)
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+ 
+   smtp.login(sender_email,password) 
+   smtp.send_message(msg)
+------------------------------------------------------
+for other type file
+
+import smtplib,os
+import getpass
+from email.message import EmailMessage #pip install email
+
+sender_email = "amit10123kumar@gmail.com"
+receiver_email = "nishi4ca@gmail.com"
+#password = getpass.getpass("Enter password :")
+msg=EmailMessage()
+msg["Subject"] = "test mail"
+msg["From"] = sender_email
+msg["To"] = receiver_email
+msg.set_content('text attached...')
+files=["D:\\log.txt"]
+for file in files:
+   with open(file,'rb') as f1:
+      file_data=f1.read()
+      file_name=os.path.basename(f1.name)
+      
+   msg.add_attachment(file_data,maintype='application',subtype="octet-stream",filename=file_name)
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+ 
+   smtp.login(sender_email,password) 
+   smtp.send_message(msg)
+
+
+---------------------------------
+to send multiple persons
+
+import smtplib,os
+import getpass
+from email.message import EmailMessage #pip install email
+
+sender_email = "amit10123kumar@gmail.com"
+contacts=["nishi4ca@gmail.com",'abc@gmail.com']
+password = getpass.getpass("Enter password :")
+msg=EmailMessage()
+msg["Subject"] = "test mail"
+msg["From"] = sender_email
+msg["To"] = ', '.join(contacts)
+msg.set_content('Image attached...')
+files=["D:\\log.txt"]
+for file in files:
+   with open(file,'r') as f1:
+      file_data=f1.read()
+      file_name=os.path.basename(f1.name)
+      
+   msg.add_attachment(file_data,maintype='application',subtype="octet-stream",filename=file_name)
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+ 
+   smtp.login(sender_email,password) 
+   smtp.send_message(msg)
+---------------------------------------------------
+
+
+HTML MAIL
+
+import smtplib,os
+import img #pip install img
+import imghdr
+from email.message import EmailMessage #pip install email
+
+sender_email = "amit10123kumar@gmail.com"
+#password = getpass.getpass("Enter password :")
+msg=EmailMessage()
+msg["Subject"] = "test mail"
+msg["From"] = sender_email
+msg["To"] = "nishi4ca@gmail.com"
+msg.set_content('This is a HTML test mail')
+msg.add_alternative("""\
+
+<!DOCTYPE HTML>
+   <html>
+      <body>
+      <h1 style="color:red">This is HTML Email:</h1>
+      </body>
+   </html>
+""",subtype='html')
+
+with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+ 
+   smtp.login(sender_email,'redhat@123') 
+   smtp.send_message(msg)
+
+
+--------------------------------------------------------------------------------------------------
+
+Sending Multiple Personalized Emails :
+
+
+Make a CSV File With Relevant Personal Info
+
+data.csv
+
+name,email,grade
+Rohan,nishi4ca@gmail.com,B+
+Killer,nishi4ca@gmail.com,A
+Amit Kumar,nishi4ca@gmail.com,C
+
+
+
+
+import csv
+
+with open("D:\\data.csv") as file:
+    reader = csv.reader(file)
+    next(reader)  # Skip header row
+    for name, email, grade in reader:
+        print(f"Sending email to {name}")
+        # Send email here
+
+=>
+
+import smtplib, ssl
+import getpass
+import csv
+
+smtp_server = "smtp.gmail.com"
+port = 587  # For starttls
+sender_email = "amit10123kumar@gmail.com"
+password = getpass.getpass("Enter password :")
+#receiver_email = "nishi4ca@gmail.com"
+# Create a secure SSL context
+context = ssl.create_default_context()
+
+
+
+# Try to log in to server and send email
+try:
+    server = smtplib.SMTP(smtp_server,port)
+    server.ehlo() # Can be omitted
+    server.starttls(context=context) # Secure the connection
+    server.ehlo() # Can be omitted
+    server.login(sender_email, password)
+    # TODO: Send email here
+    
+    with open("D:\\data.csv") as file:
+       reader = csv.reader(file)
+       next(reader)  # Skip header row
+       for name, email, grade in reader:
+           
+           message=f"""Subject: Your grade
+
+           Hi {name}, your grade is {grade}"""
+           
+           server.sendmail(sender_email,email, message)
+except Exception as e:
+    # Print any error messages to stdout
+    print(e)
+finally:
+    server.quit() 
+
+

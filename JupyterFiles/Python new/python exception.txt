@@ -1,0 +1,162 @@
+Exception :  Exception is an abnormal condition that 
+             distrupts the normal flow of the program.
+
+try :the try block contains a block of program statements
+within which an exception might occure. a try block is always
+followed by a except block or finally block or both,which
+handales the exception that occurs in associated try block.
+
+except :except block must be associated with a try block.
+        the corresponding except block executes if an exception 
+of a perticular type occurs within the try block.
+
+finally :
+the finally block always executes immediately after try-except block exits.
+the finally block is executed incase even if an unexpected exception occures.
+the main use   ge of finally block is to do clean up jobs. keeping cleanup
+code in a finally block is always a good practice, even when no exceptions are occurred.
+
+x,y=10,0
+print("begin")
+try :
+   res=x/y
+   print(res)
+except ArithmeticError :
+    print("except execute")
+print("end")
+
+
+note : you can print the exception name like this :
+x,y=10,2
+print("begin")
+l=[12,34,56]
+try :
+   res=x/y
+   print(l[4])
+   print(res)
+except Exception as Argument :
+    print("except execute",Argument)
+print("end")
+
+Nested try-except block :
+x,y=10,0
+print("begin")
+l=[12,34,56]
+try :
+   res=x/y
+   try :
+    print(l[4])
+   except IndexError as ex:
+       print(ex)
+   print(res)
+except Exception as Argument :
+    print("except execute",Argument)
+print("end")
+
+or
+
+x,y=10,2
+print("begin")
+l=[12,34,56]
+try :
+   res=x/y
+   print(l[4])
+   print(ex)
+   print(res)
+except ArithmeticError as Argument:
+    print("except execute",Argument)
+except IndexError as ex:
+    print(ex)
+print("end")
+
+or
+
+x,y=10,2
+print("begin")
+l=[12,34,56]
+try :
+   res=x/y
+   print(l[4])
+   print(ex)
+   print(res)
+except (ArithmeticError ,IndexError )as Argument:
+    print("except execute :",Argument)
+
+print("end")
+
+-------------------------------------------
+raise your own exception :
+
+def m1(age):
+    if age<18:
+        raise ValueError('age can not be smaller then 18')
+    else :
+        print("you are valid")
+
+try :
+  m1(2)
+except ValueError as ex :
+    print(ex)
+
+try with else :
+
+try :
+    risky code
+except :
+    will be executed if exception in try
+else :
+    will be execute if no exception in try
+finally :
+    will be executed always whether exception raised
+    or not raised and handle or not handled
+
+ex :
+ try :
+    print("try")
+    print(10/0)
+except :
+    print("except")
+else :
+    print("else")
+finally :
+     print("finally")
+
+
+Note :
+try :
+    print("try")
+    print(10/0)
+else :
+    print("else")
+
+invalid code : must be except block require
+without except we can't write else block
+
+note : try-except-else-finally  : only1-mul-only1-only1
+
+
+user define Exception :
+
+class invalidAgeError(Exception):
+    ''' age is invalid '''
+    def __init__(self,msg="invalid age exception"):
+        self.msg=msg
+    def __str__(self):
+        return self.msg
+
+def m1(age):
+    if age<18:
+        raise invalidAgeError("age can't be smaller then 18")
+    else :
+        print("valid")
+        
+try :
+  m1(3)
+except Exception as ex:
+    print(ex) 
+
+
+
+
+           
+  

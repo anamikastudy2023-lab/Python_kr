@@ -1,0 +1,274 @@
+Reguler Expression :
+--------------------
+if we want to represent a group of Strings according to a
+perticuler pattern then we should go for REs.
+
+where we can use RE:
+
+re module:
+1.compile() function :
+----------------------
+pattern re.compile('python')
+
+2.finditer():
+------------
+matcher =pattern.finditer('Learning python is veary easy')
+
+1.start()=> start index of the match
+2.end=> end+1 index of the match
+3. group()=> return matched string
+
+import re
+pattern =re.compile('python')
+matcher =pattern.finditer('Learning python is very easy')
+count=0;
+for match in matcher:
+    count+=1
+    print('match is available at start index : ',match.start())
+    print('match is end at index : ',match.end())
+    print('string matched : ',match.group())
+print("The number of occurrences :",count)
+
+------------------------------------------ 
+character classes :
+--------------------
+[abc]==> either a or b or c
+[^abc]==> Except a and b and c
+[a-z]==> any lower case alphabet symbols
+[A-Z]==> any Upper case alphabet symbols
+[a-zA-Z]==> any alphabet symbols
+[0-9]==> any digit
+[a-zA-Z0-9]
+
+-------------------------------
+import re
+matcher=re.finditer('[abc]','a7b@k9z')
+for m in matcher:
+    print(m.start(),'....',m.group())
+--------------
+
+predefined character classes:
+-----------------------------
+
+\s ==> space character
+\S==> Except space character
+\d==> [0-9] any digit
+\D==> Except digits
+\w==> any word character [a-zA-Z0-9]
+\W==> Any charater except word(special characters)
+.==> anything
+
+------------------
+import re
+matcher=re.finditer('\s','a7b @k9z')
+for m in matcher:
+    print(m.start(),'....',m.group(
+
+
+-------------------------
+Quantifiers:
+------------
+a==> exactly one a 
+a+ ==> atleast one a
+a* ==> any number of a including zero number also
+a?==> atmost one a
+      either one a or zero number of a's
+a{n}==> Exactly n number of 1's
+a{m,n} => Minimum m number of a'ss and maximum n muber of a's
+
+-------------------------------
+import re
+matcher=re.finditer('a{2,3}','abaabaaab')
+for m in matcher:
+    print(m.start(),'....',m.group())
+
+------------------------
+^a
+
+[^a]==> except a
+
+or
+^a ==> it will check whether the given target string starts with a or not
+a$==> it will check whether the target string ends with a or not
+-------------------
+
+importent function of re module:
+--------------------
+1.match() :
+-----------
+to check the given pattern at the begning of the target string
+if it is available then we get match object otherwise None
+
+import re
+s=input('Enter pattern to check :')
+m=re.match(s,'abcdef')
+if m!= None:
+    print('match is available at the begning of the string')
+    print('Start index :{} and End index :{}'.format(m.start(),m.end()))
+else:
+    print('match is not available')
+      
+ 
+2.fullmatch() :
+--------------
+complet String matched then it will return obj  
+
+import re
+s=input('Enter pattern to check :')
+m=re.fullmatch(s,'abcdef')
+if m!= None:
+    print('full match is available ')
+    print('Start index :{} and End index :{}'.format(m.start(),m.end()))
+else:
+    print('match is not available')
+      
+
+
+
+3.search() :
+------------
+to search the given pattern in target string
+return match object of the first occurrence
+
+import re
+s=input('Enter pattern to check :')
+m=re.search(s,'abaabaaab')
+if m!= None:
+    print('match is available')
+    print('Start index :{} and End index :{}'.format(m.start(),m.end()))
+else:
+    print('match is not available')
+        
+
+
+4.findall() :
+-------------
+find all the match and return to the list 
+
+import re
+data=re.findall("\d","ad4k7k9j3")
+print(data)
+
+
+5.finditer() :
+--------------
+it returns iterator object of matched objets.
+
+import re
+matcher=re.finditer('[a-z]','a5b8k3 u9')
+for m in matcher:
+    print(m.start(),'...',m.end(),'...',m.group())
+
+
+6.sub() :
+---------
+substitution or replacement
+
+
+import re
+s=re.sub('\d','#','a4g6i9dsf')
+print(s)
+
+
+
+7.subn() :
+----------
+if you want to know number of replacement
+t=re.subn(regex,replacement,targetstring)
+
+return type is tuple
+(resultstring,number of replacement) 
+t1[0] =result string 
+t[1]= number of replacement
+
+import re
+t=re.subn('\d','#','a4g6i9dsf')
+print('The Result String :',t[0])
+print('The Niumber of replacement :',t[1])
+
+
+8.split() :
+-----------
+
+import re
+l=re.split('-','10-20-30-40-50')
+print(l)
+
+9.compile()
+
+
+--------------------
+
+^ symbol :
+----------
+
+import re
+s='Learning Python is very easy'
+res=re.search('^Learn',s)
+if res!=None:
+    print('Target String start with Learning')
+else :
+    print('Target String not start with Learning')
+          
+
+Note : it is case sensitive
+
+so we have one attribute
+re.IGNORECASE
+
+import re
+s='Learning Python is very easy'
+res=re.search('^learn',s,re.IGNORECASE)
+if res!=None:
+    print('Target String start with Learning')
+else :
+    print('Target String not start with Learning')
+          
+
+-----------------------------------------------
+mobile no :
+[6789][0-9]{9}
+[6-9]\d{9}
+
+
+-----------------------------
+import re
+f1=open('input.txt','r')
+f2=open('output.txt','w')
+
+for lines in f1:
+  list1=re.findall('[6-9]\d{9}',lines)
+  for number in list1:
+    f2.write(number+"\n")
+
+print('Extract all mobile numbers into output.txt')
+f1.close()
+f2.close()
+
+-------------------------------------
+web screaping by using Regular Expression:
+-----------------------------------------
+
+
+import re,urllib
+import urllib.request
+sites=['https://google.com','https://rediff.com']
+for s in sites:
+    print('Searching...',s)
+    u=urllib.request.urlopen(s)
+    text=u.read()
+    title=re.findall("<title>.*</title>",str(text),re.IGNORECASE)
+    print(title[0])
+
+
+--------------------------
+read all mobile number present in redbus.in
+
+import re,urllib
+import urllib.request
+u=urllib.request.urlopen("https://www.redbus.in/info/contactus")
+text=u.read()
+numbers=re.findall('[0-9]{3}[-][0-9]{8}',str(text),re.IGNORECASE)
+for n in numbers:
+    print(n)
+    

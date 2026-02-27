@@ -1,0 +1,178 @@
+paramiko:
+
+The primary client of Paramiko as documented in the API, is Paramiko.SSHClient. An instance of the Paramiko.SSHClient can be used to make connections to the remote server and transfer files
+
+=>SSHClient
+A high-level representation of a session with an SSH server.
+
+
+=>connect(hostname, port=22, username=None, password=None, pkey=None, key_filename=None, timeout=None)
+
+Connect to an SSH server and authenticate to it. The server’s host key is checked against the system host keys (see load_system_host_keys) and any local host keys (load_host_keys).
+
+
+The pkey or key_filename passed in (if any)
+key_filename may contain OpenSSH public certificate paths as well as regular private-key paths;
+
+Parameters:
+
+hostname (str) – the server to connect to
+port (int) – the server port to connect to
+username (str) – the username to authenticate as (defaults to the current local username)
+password (str) – Used for password authentication; is also used for private key decryption if passphrase is not given.
+pkey (PKey) – an optional private key to use for authentication
+key_filename (str) – the filename, or list of filenames, of optional private key(s) and/or certs to try for authentication.
+timeout (float) – an optional timeout (in seconds) for the TCP connect
+
+
+for all Parameters : http://docs.paramiko.org/en/stable/api/client.html
+
+
+Errors :
+
+
+Raises:	
+BadHostKeyException – if the server’s host key could not be verified
+
+Raises:	
+AuthenticationException – if authentication failed
+
+Raises:	
+SSHException – if there was any other error connecting or establishing an SSH session
+
+Raises:	
+socket.error – if a socket error occurred while connecting
+
+
+=>exec_command(command, bufsize=-1, timeout=None, get_pty=False, environment=None)
+
+Execute a command on the SSH server. A new Channel is opened and the requested command is executed. The command’s input and output streams are returned as Python file-like objects representing stdin, stdout, and stderr.
+
+
+Parameters:	
+command (str) – the command to execute
+bufsize (int) – interpreted the same way as by the built-in file() function in Python
+timeout (int) – set command’s channel timeout. See Channel.settimeout
+get_pty (bool) – Request a pseudo-terminal from the server (default False). See Channel.get_pty
+environment (dict) –
+a dict of shell environment variables, to be merged into the default environment that the remote command executes within.
+
+
+
+Note :the stdin, stdout, and stderr of the executing command, as a 3-tuple
+
+
+
+=>set_missing_host_key_policy(policy)
+Set policy to use when connecting to servers without a known host key.
+
+
+-------------------------------------------------------
+import paramiko
+ssh_client=paramiko.SSHClient()
+ssh_client.connect(hostname=’hostname’,username=’mokgadi’,password=’mypassword’)
+
+output:
+#Raises BadHostKeyException,AuthenticationException,SSHException,socket error
+
+when you try this, you get the following error:
+missing_host_key raise SSHException(‘Server %r not found in known_hosts’ % hostname)
+
+Because :
+You see this error because you have not informed your machine that the remote server you “trust” the server you are trying to access. If you go onto you command line or terminal and try to connect to a server for the first time, You will get a message similar to this:
+
+This validation is handled by calling set_missing_host_key_policy() on the SSHClient an passing the policy you want implemented when accessing a new remote machine. By default, the paramiko.SSHclient sets the policy to the RejectPolicy. The policy rejects connection without validating as we saw above. Paramiko does however give you a way to sort of “Trust all” key policy, the AutoAddPolicy. Parsing an instance of the AutoAddPolicy to set_missing_host_key_policy() changes it to allow any host.
+
+
+Now :
+
+import paramiko
+ssh_client =paramiko.SSHClient()
+ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh_client.connect(hostname=’hostname’,username=’mokgadi’,password=’mypassword’)
+
+
+
+
+------------------------------
+RUNNING COMMANDS ON THE REMOTE MACHINE
+To run a command exec_command is called on the SSHClient with the command passed. The response is returned as a tuple (stdin,stdout,stderr)
+For example to list all the files in a directory:
+
+stdin,stdout,stderr=ssh_client.exec_command(“ls”)
+
+
+Now :
+
+
+import paramiko
+ip='host or ip'
+port=22
+username='root'
+password='your password'
+ssh=paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(ip,port,username,password)
+stdin,stdout,stderr=ssh.exec_command('mkdir demo')
+outlines=stdout.readlines()
+print(outlines)
+
+
+
+
+
+----------------------------------------------
+
+FILE TRANSFERS
+File transfers are handled by the paramiko.SFTPClient which you get from calling open_sftp() on an instance of Paramiko.SSHClient.
+
+Downloading a file from remote machine :
+
+ftp_client=ssh_client.open_sftp()
+ftp_client.get(‘remotefileth’,’localfilepath’)
+ftp_client.close()
+
+
+
+Uploading file from local to remote machine :
+
+
+ftp_client=ssh.open_sftp()
+ftp_client.put(‘localfilepath’,remotefilepath’)
+ftp_client.close()
+
+
+
+import paramiko
+ip='ip'
+port=22
+user_name='root'
+passwd='pass'
+ssh=paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(hostname=ip,username=user_name,password=passwd)
+ftp_client=ssh.open_sftp()
+ftp_client.get('/root/abc.txt','/root/python/abc.txt')
+#ftp_client.get('/root/python/hello.py',os.path.join('D:\\python','hello.py')) #for windows
+ftp_client.close()
+
+--------------------------------------------------
+ssh using private-key
+
+import paramiko
+ssh = paramiko.SSHClient()
+ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh.connect(hostname='<hostname>', username='<username>', password='<password>', key_filename='D:\\python\\id.dsa')
+stdin, stdout, stderr = ssh.exec_command('ls')
+print(stdout.readlines())
+ssh.close()
+
+
+
+
+
+
+
+
+
+

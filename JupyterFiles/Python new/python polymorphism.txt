@@ -1,0 +1,166 @@
+Polymorphism :
+--------------
+
+poly means many
+morphs means forms
+
+one name but multiple forms
+
+overloading:
+10+20==>30
+'Amit'+'kumar==>Amitkumar
+
+same operator work for diff operation operator overloading
+
+class Book:
+   def __init__(self,pages):
+       self.pages=pages
+       
+   def __add__(self,other):
+       return self.pages+other.pages
+   
+b1=Book(100)
+b2=Book(200)
+print(b1+b2)
+
+
+
+magic function :
++==> __add__()
+-==> __sub__()
+*==> __mul__()
+/==> __div__()
+%==> __mod__()
+//==> __floordiv__()
+**==> __pow__()
+
++=  => __iadd__()
+-=  => __isub__()
+*=  => __imul__()
+/=  => __idiv__()
+%=  => __imod__()
+//= => __ifloordiv__()
+**= => __ipow__()
+
+> ==> __gt__()
+>= ==> __ge__()
+< ==> __lt__()
+<= ==>__le__()
+== ==>__eq__()
+!= ==> __ne__()
+----------------------------------------------
+
+__str__() : ==> method in python:
+
+whenever we are printing an object of a class then automatically 
+pvm will call __str__() method.. so overriding the str method will return the 
+string representation of an object.
+
+Note : return type String only
+
+class Book:
+   def __init__(self,pages):
+       self.pages=pages
+       
+   def __str__(self):
+       return 'The Number of page :'+str(self.pages)
+   
+t=Book(100)
+t1=Book(200)
+print(t)
+
+---------------------------
+
+class Test:
+   def __init__(self,id,name):
+       self.id=id
+       self.name=name
+   def __str__(self):
+       return str(self.id)+" "+self.name
+t=Test(101,"Amit")
+print(t)
+
+---------------------------------------
+class Book:
+   def __init__(self,pages):
+       self.pages=pages
+       
+   def __str__(self):
+       return 'The Number of page :'+str(self.pages)
+   def __add__(self,other):
+       total=self.pages+other.pages
+       b=Book(total)
+       return b
+
+t=Book(100)
+t1=Book(200)
+t2=Book(300)
+print(t+t1+t2)
+
+-------------------------------------
+class Employee:
+   def __init__(self,name,salary):
+      self.name=name
+      self.salary=salary
+   def __mul__(self,other):
+      return self.salary*other.days
+
+class TimeSheet:
+   def __init__(self,name,days):
+      self.name=name
+      self.days=days
+
+e=Employee('Amit',500)
+t=TimeSheet('Amit',25)
+print('This Month Salary :',e*t)
+
+
+---------------------------------
+method overloading:
+method name same but with diff argument.
+Note: method overloading is not present in python
+
+but we can achieve like this :
+
+class Test:
+   def sum(self,a=None,b=None,c=None):
+      if a!=None and b!=None and c!=None:
+         print('The sum of 3 numbers :',a+b+c)
+      elif a!=None and b!=None:
+         print('The sum of 2 Numbers :',a+b)
+      else :
+         print('please provide 2 or 3 arguments')
+
+t=Test()
+t.sum(2,3,4)
+t.sum(5,6)
+t.sum(23)
+
+
+or :
+class Test:
+   def sum(self,*a):
+      total=0
+      for x in a:
+         total+=x
+      print('The sum :',total)
+     
+t=Test()
+t.sum(2,3,4,5,6,7)
+t.sum(5,6,6,78)
+t.sum(23,45)
+
+-----------------------------
+overriding 
+
+
+class Test:
+    def m1(self):
+        print("class Test")
+
+class Demo(Test):
+    def m1(self):
+        print("class Demo")
+
+d=Demo()
+d.m1()

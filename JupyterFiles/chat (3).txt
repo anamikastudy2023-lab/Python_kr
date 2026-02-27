@@ -1,0 +1,61 @@
+13:21:53	 From Host : import boto3
+
+sess=boto3.session.Session()
+
+clnt=sess.client('ec2')
+
+
+resp=clnt.create_key_pair(KeyName='testkey')
+
+with open("/Users/admin/Downloads/testkey.pem","w") as f:
+    f.write(resp['KeyMaterial'])
+13:49:11	 From Host : import boto3
+
+sess=boto3.session.Session()
+
+clnt=sess.client('s3')
+
+res=sess.resource('s3')
+
+#bk=res.Bucket('sumitbucket101')
+#bk.create(CreateBucketConfiguration={'LocationConstraint':'ap-south-1'})
+#clnt.create_bucket(Bucket='sumitbucket102',CreateBucketConfiguration={'LocationConstraint':'ap-south-1'})
+
+#bkts=res.buckets.all()
+#print(list(bkts))
+
+bk=res.Bucket('sumitbucket101')
+#bk.put_object(Key="file1.txt",Body=b"hello this is my first object")
+#bk.upload_file("/Users/admin/Documents/abc123.txt","file2.txt")
+#with open("/Users/admin/Documents/abc123.txt","rb") as f:
+#    bk.upload_fileobj(f,'file3.txt')
+13:49:17	 From Host : #objs=bk.objects.all()
+#print(list(objs))
+ob1=bk.Object("file1.txt")
+#obj2=res.Object("sumitbucket101","file2.txt")
+
+#resp=ob1.get()
+#print(resp['Body'].read().decode())
+#ob1.download_file("/Users/admin/Desktop/s3.txt")
+#with open('/Users/admin/Downloads/s3.txt', 'wb') as data:
+#    ob1.download_fileobj(data)
+
+
+
+
+copy_source = {
+    'Bucket': 'sumitbucket101',
+    'Key': 'file2.txt'
+}
+
+
+bucket = res.Bucket('sumitbucket102')
+
+#bucket.copy(copy_source,"copy.txt")
+13:49:23	 From Host : obj=bucket.objects.all()
+
+
+for ob in obj:
+    ob.delete()
+
+bucket.delete()

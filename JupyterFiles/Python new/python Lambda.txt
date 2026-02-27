@@ -1,0 +1,60 @@
+Python lambda :
+
+In Python, anonymous function means that a function is without a name. 
+As we already know that def keyword is used to define the normal functions
+and the lambda keyword is used to create anonymous functions
+
+Lambda definition does not include a return statement, it always 
+contains an expression which is returned. We can also put a lambda 
+definition anywhere a function is expected, and we don’t have to assign 
+it to a variable at all. 
+
+
+lambda arguments: expression
+
+1.This function can have any number of arguments but only one expression, 
+which is evaluated and returned.
+2.One is free to use lambda functions wherever function objects are required.
+3.You need to keep in your knowledge that lambda functions are syntactically restricted to a single expression.
+4.It has various uses in particular fields of programming besides other 
+types of expressions in functions.
+
+
+def cube(y): 
+    return y*y*y; 
+  
+g = lambda x: x*x*x 
+print(g(7)) 
+  
+print(cube(5)) 
+
+The filter() function in Python takes in a function and a list as arguments.
+
+my_list = [1, 5, 4, 6, 8, 11, 3, 12]
+
+
+new_list = list(filter(lambda x: (x%2 == 0) , my_list))
+
+
+# Output: [4, 6, 8, 12]
+
+print(new_list)
+
+
+Example use with map() :
+
+The map() function in Python takes in a function and a list.
+
+The function is called with all the items in the list and a new list is 
+returned which contains items returned by that function for each item
+
+my_list = [1, 5, 4, 6, 8, 11, 3, 12]
+
+
+new_list = list(map(lambda x: x * 2 , my_list))
+
+
+# Output: [2, 10, 8, 12, 16, 22, 6, 24]
+
+print(new_list)
+

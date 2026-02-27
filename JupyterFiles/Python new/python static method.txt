@@ -1,0 +1,12 @@
+static method :
+just general utility method 
+if you don't want to use any instance variable or any static variable
+you can decalre it by using @staticmethod decorator
+
+
+
+For classmethod , @classmethod decorator is mandatory.
+For staticmethod, @staticmethod decorator is optional
+without any decorator the method can be either instance method or static method.
+if we are calling by using object reference then it should be instance method.
+if we are calling by using class name then it should be static method. 

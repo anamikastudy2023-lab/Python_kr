@@ -1,0 +1,309 @@
+Built-in Functions:
+
+1. abs(x)
+Return the absolute value of a number. The argument may be an integer or a floating point number and complex.
+
+Ex:
+>>> abs(2+4j)
+4.47213595499958
+>>> abs(-23)
+23
+
+
+2. all(iterable)
+Return True if all elements of the iterable are true (or if the iterable is empty)
+
+Ex:
+# will return True and the same will be printed 
+print (all([True, True, True, True]))
+
+lis1 = [10, 5, 15, 77]
+print(all(lis1)) #True
+
+# first item (False) and will return False. 
+print (all([False, True, True, False]))
+
+lis3 = [10, 0, 40]
+print(all(lis3)) #False
+
+
+3.any(iterable)
+Return True if any element of the iterable is true. If the iterable is empty, return False.
+
+Ex:
+# Since all are false, false is returned 
+print (any([False, False, False, False])) 
+  
+# Here the method will short-circuit at the 
+# second item (True) and will return True. 
+print (any([False, True, False, False])) 
+
+
+
+4. ascii(object)
+
+ascii() returns a string containing a printable representation of an object and escape the non-ASCII characters in the string using \x, \u or \U escapes.
+
+>>> ascii("¥")
+"'\\xa5'"
+
+5. bin(x)
+Convert an integer number to a binary string prefixed with “0b”.
+
+Ex:
+
+>>> bin(3)
+'0b11'
+>>> bin(0o123)
+'0b1010011'
+
+
+6. bool([x])
+Return a Boolean value.
+
+Ex:
+>>>bool(1)
+True
+
+
+7.breakpoint(*args, **kws)
+That’s why Python 3.7 has introduced breakpoint() method that allows us to write loosely coupled debugging code.
+Python breakpoint() function calls sys.breakpointhook() function. By default, sys.breakpointhook() calls pdb.set_trace()
+
+Ex:
+x = 10
+y = 'Hi'
+z = 'Hello'
+print(y)
+breakpoint()
+print(z)
+
+>>>Hi
+> c:\users\user\appdata\local\programs\python\python38-32\module1.py(6)<module>()
+-> print(z)
+(Pdb)
+
+8. bytearray(source, encoding, errors)
+bytearray() method returns a bytearray object which is an array of given bytes.
+
+Ex:
+>>> bytearray("krnetowk", 'utf-8')
+bytearray(b'krnetowk')
+>>> bytearray("krnetowk", 'utf-16')
+bytearray(b'\xff\xfek\x00r\x00n\x00e\x00t\x00o\x00w\x00k\x00')
+
+9.bytes([source[, encoding[, errors]]])
+
+The bytes() function returns a bytes object.
+
+It can convert objects into bytes objects, or create empty bytes object of the specified size.
+
+The difference between bytes() and bytearray() is that bytes() returns an object that cannot be modified, and bytearray() returns an object that can be modified.
+
+
+Ex:
+>>> bytes('Hello Server..','utf-8')
+b'Hello Server..'
+
+
+10. callable(object)
+Return True if the object argument appears callable, False if not.
+
+returns True, if the object appears to be callable.
+returns False, if the object is not callable.
+
+Ex:
+def m1():
+    print('Hello..')
+
+x=2*4
+
+print(callable(m1))
+print(callable(x))
+
+output: 
+
+True
+False
+
+12.chr(i)
+Return the string representing a character whose Unicode code point is the integer
+
+>>>chr(97)
+'a'
+
+
+13. @classmethod
+Transform a method into a class method.
+
+Ex:
+@classmethod
+def m1(cls):
+  print('class method')
+
+14.ompile(source, filename, mode, flags=0, dont_inherit=False, optimize=-1)
+Compile the source into a code or AST object.
+
+filename	Required. The name of the file that the source comes from. If the source does not come from a file, you can write whatever you like
+
+mode	Required. Legal values:
+eval - if the source is a single expression
+exec - if the source is a block of statements
+single - if the source is a single interactive statement
+
+
+x = compile('print(55)\nprint(88)', 'test', 'exec')
+exec(x)
+
+55
+
+88 
+
+15.complex([real[, imag]])
+Return a complex number with the value real + imag*1j 
+
+>>>complex(2,3)
+2+3j
+
+16.delattr(object, name) 
+The delattr() method is used to delete the named attribute from the object,
+
+object :  from which 
+the name attribute is to be removed.
+name :  of the attribute 
+which is to be removed.
+
+Ex: 
+class Demo:
+    id=101
+    name="Amit"
+
+print(Demo.id)
+print(Demo.name)
+delattr(Demo.id)
+print(Demo.id) #wii raise an error and same as del Demo.i
+
+
+17.class dict(iterable, **kwarg)
+Create a new dictionary. 
+
+
+18.dir([object])
+returns list of the attributes and methods of any object (say functions , modules, strings, lists, dictionaries etc.)
+
+>>> import json
+>>> dir(json)
+
+19. divmod(x, y)
+The divmod() method in python takes two numbers and returns a pair of numbers consisting of their quotient and remainder.
+
+x and y : x is numerator and y is denominator
+x and y must be non complex
+
+Ex:
+>>> divmod(12,3)
+(4, 0)
+>>> divmod(14,3)
+(4, 2)
+
+20. enumerate(iterable, start=0)
+A lot of times when dealing with iterators, we also get a need to keep a count of iterations.
+Iterable: any object that supports iteration
+Start: the index value from which the counter is 
+              to be started, by default it is 0 
+
+Ex:
+
+>>> data=[101,"Amit",23,12000.0,"Delhi"]
+>>> e=enumerate(data)
+>>> list(e)
+[(0, 101), (1, 'Amit'), (2, 23), (3, 12000.0), (4, 'Delhi')]
+
+
+21. eval(expression[, globals[, locals]]) 
+The eval() method parses the expression passed to it and runs python expression(code)
+To evaluate the python expression
+Note: accept only string
+
+Ex:
+>>> eval('2+5*7/2')
+19.5
+
+
+22.exec(object[, globals[, locals]])
+exec() function is used for the dynamic execution of Python program which can either be a string or object code. If it is a string, the string is parsed as a suite of Python statements which is then executed unless a syntax error occurs and if it is an object code, it is simply executed.
+
+
+Ex:
+>>> st="print('sum of 2 and 3 is :',(2+3))"
+>>> exec(st)
+sum of 2 and 3 is : 5
+
+23. filter(function, iterable)
+Construct an iterator from those elements of iterable for which function returns true
+
+Ex:
+data=[23,12,35,8,9,22]
+list(filter(lambda num:num%2==0,data))
+
+24.float([x])
+Return a floating point number constructed from a number or string x.
+
+Ex:
+>>> float(12)
+12.0
+
+25. format(value[, format_spec])
+
+The format() function returns a formatted representation of a given value specified by the format specifier.
+
+file all formatte specifier:
+https://docs.python.org/3/library/string.html#formatspec
+
+Ex:
+format(12, "b") #binary format
+format(123.4567898, "f")#float arguments
+
+26.frozenset([iterable])
+Return a new frozenset object, optionally with elements taken from iterable.
+Note: collection of unique objects
+
+>>> frozenset([2,3,4,52,3])
+frozenset({2, 3, 4, 52})
+
+27. getattr(object, name[, default])
+Return the value of the named attribute of object. name must be a string. 
+
+Ex:
+class Demo:
+    id=101
+    name="Amit"
+
+d=Demo()
+print(getattr(d,'name')
+
+28. globals()
+Return a dictionary representing the current global symbol table.
+
+Ex:
+x=23
+y=12
+def m1():
+    a=10
+    b=20
+
+print(globals())
+
+29. hasattr(object, name)
+The arguments are an object and a string. The result is True if the string is the name of one of the object’s attributes, False if not.
+
+class Demo:
+    id=101
+    name="Amit"
+
+d=Demo()
+print(hasattr(d,'name'))
+
+
+ 
+ 
