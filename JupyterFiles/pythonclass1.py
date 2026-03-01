@@ -26,7 +26,7 @@ ig=res.create_internet_gateway()
 vpc.attach_internet_gateway(InternetGatewayId=ig.id)
 print(ig.id)
 
-
+ 
 #rote table
 
 route_table = vpc.create_route_table()

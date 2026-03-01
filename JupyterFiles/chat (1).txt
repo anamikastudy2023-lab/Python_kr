@@ -5,8 +5,8 @@
 out=os.popen("ls")
 print(out.read())
 13:29:23	 From Host : import subprocess as sb
-
-
+--------------
+import subprocess as sb
 
 #out=sb.run('date')
 #out=sb.run(['ls', '-l'])
@@ -25,8 +25,9 @@ out=sb.run('date',shell=True,stdout=sb.PIPE,stderr=sb.PIPE,universal_newlines=Tr
 13:36:30	 From Harsh : yes sir
 13:36:37	 From Host : import subprocess as sb
 
+-------------------
 
-
+import subprocess as sb
 
 #out=sb.Popen("date")
 #out=sb.Popen("ls -l",shell=True)
@@ -39,18 +40,26 @@ p2=sb.Popen("awk '{print $3}'",shell=True,stdout=sb.PIPE,stderr=sb.PIPE,universa
             stdin=p1.stdout)
 
 print(p2.communicate()[0])
-13:42:41	 From Ashish Gautam : #!/bin/bash# Accessing command-line argumentsecho "The first argument is: $1"echo "The second argument is: $2"
-13:49:46	 From Host : import sys
+13:42:41	 From Ashish Gautam : #!/bin/bash
+
+# Accessing command-line arguments
+echo "The first argument is: $1"
+echo "The second argument is: $2"
+13:49:46	 
+From Host : import sys
 
 print(sys.argv) #list ['script name','','','','']
-13:58:56	 From Host : import argparse
+13:58:56	 
 
-
+From Host : import argparse
 
 parse=argparse.ArgumentParser()
 
-parse.add_argument('host',help='host name')
-parse.add_argument('port',help='port number',type=int)
+#parse.add_argument('host')
+#parse.add_argument('port')
+#or 
+parse.add_argument('host',help='host name')     help is optional, used to display help text
+parse.add_argument('port',help='port number',type=int)  type is optional, used to display type of the argument
 
 args=parse.parse_args()
 
@@ -99,7 +108,7 @@ if args.longlist:
     if os.path.isdir(args.dir):
          data=os.listdir(args.dir)
          for file in data:
-             s=os.path.getsize(os.path.join(args.dir,file))
+             s=os.path.getsize(os.path.join(args.dir,file))     # in the file is in current directory just use file name , else use os.path.join(args.dir,file)
              t=time.ctime(os.path.getctime(os.path.join(args.dir,file)))
              print(file,'\t',s,'\t',t)
     else:
@@ -112,4 +121,12 @@ else:
              print(file)
     else:
         print(f"dir {args.dir} does not exists")
+
+
+        script and notes :
 14:21:35	 From Host : https://github.com/kry496/python-usermanagement/blob/master/user_management.py
+
+
+also code in the Demo.py file 
+
+Ref PSutil module text for explaination of demo.py code methods keywords etc 

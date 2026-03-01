@@ -9,6 +9,12 @@ resp=clnt.create_key_pair(KeyName='testkey')
 
 with open("/Users/admin/Downloads/testkey.pem","w") as f:
     f.write(resp['KeyMaterial'])
+
+-----------------
+
+S3 service   ----
+
+
 13:49:11	 From Host : import boto3
 
 sess=boto3.session.Session()
@@ -16,15 +22,16 @@ sess=boto3.session.Session()
 clnt=sess.client('s3')
 
 res=sess.resource('s3')
-
+# using resource - creating bucket
 #bk=res.Bucket('sumitbucket101')
 #bk.create(CreateBucketConfiguration={'LocationConstraint':'ap-south-1'})
+# using client - creating bucket
 #clnt.create_bucket(Bucket='sumitbucket102',CreateBucketConfiguration={'LocationConstraint':'ap-south-1'})
 
-#bkts=res.buckets.all()
+#bkts=res.buckets.all() ----- gets all buckets available 
 #print(list(bkts))
 
-bk=res.Bucket('sumitbucket101')
+bk=res.Bucket('sumitbucket101')     ----    if we want to work on specific bucket
 #bk.put_object(Key="file1.txt",Body=b"hello this is my first object")
 #bk.upload_file("/Users/admin/Documents/abc123.txt","file2.txt")
 #with open("/Users/admin/Documents/abc123.txt","rb") as f:

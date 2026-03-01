@@ -3,11 +3,10 @@
 Logging :
 ---------
 
-
 Logging is a means of tracking events that happen
 when some software runs. Logging is important for 
 software developing, debugging and running. If you 
-don’t have any logging record and your program crashes,
+donï¿½t have any logging record and your program crashes,
 there are very little chances that you detect the cause
 of the problem. And if you detect the cause, it will 
 consume a lot of time. 
@@ -31,9 +30,10 @@ total info divided into 6
 6. NOTSET==>0==>
 
 
+ in python loggin is inbuilt
 -----------------------
-
-Basic Configurations
+for logging - 
+Basic Configurations 
 You can use the basicConfig(**kwargs) method to configure the logging:
 
 Some of the commonly used parameters for basicConfig() are the following:
@@ -59,9 +59,11 @@ logging.critical(message)
 
 
 -------------------------------
+run this section by putting in a python file in idle - run module
+
 import logging
-logging.basicConfig(filename="D:\\log.txt")
-print("Python logging demo")
+logging.basicConfig(filename="D:\\log.txt"). #-- if file name not given prints the logs on the terminal or console.
+print("Python logging demo").  
 logging.debug("debug message") 
 logging.info("info message")
 logging.warning("warning message")
@@ -69,18 +71,32 @@ logging.error("error message")
 logging.critical("critical message") 
 
 
-Notice that the debug() and info() messages didn’t get logged. This is because, by default, the logging module logs the messages with a severity level of WARNING or above.
+Notice that the debug() and info() messages didnï¿½t get logged. 
+This is because, by default, the logging module logs the messages with a severity level of WARNING or above.
+
+default format - 
+Level : logger : message 
+eg:
+WARNING:root:warning message
+
+setting level of priority : 
+logging.basicConfig(level=info). #-- mentioned level aur uske upar ke level ka hi warning dikhayega 
+
+default mode is append mode - a mode , can be changed 
+
+
 
 -----------------------------------------------------------------
 
 import logging
 
-logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s') 
+                          #---- these attributes can be modified as needed , check attributes list for it 
 logging.warning('This will get logged to a file')
 
 
 =>
-The filemode is set to w, which means the log file is opened in “write mode” each time basicConfig() is called, and each run of the program will rewrite the file
+The filemode is set to w, which means the log file is opened in ï¿½write modeï¿½ each time basicConfig() is called, and each run of the program will rewrite the file
 default filemode is a,
 
 ------------------------------------------------------------
@@ -96,13 +112,13 @@ logging.warning('This is a Warning')
 
 Attributes :
 
-%(asctime)s => Human-readable time when the LogRecord was created.
-%(created)f => Time when the LogRecord was created (as returned by time.time()).
+%(asctime)s => Human-readable time when the LogRecord was created.  ---- s-> string 
+%(created)f => Time when the LogRecord was created (as returned by time.time()).  ---- f-> float
 %(filename)s => Filename portion of pathname.
 %(funcName)s => Name of function containing the logging call.
 %(levelname)s => Text logging level for the message ('DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').
 %(levelno)s => Numeric logging level for the message (DEBUG, INFO, WARNING, ERROR, CRITICAL).
-%(line-no)d => Source line number where the logging call was issued (if available).
+%(line-no)d => Source line number where the logging call was issued (if available).    ---- d-> decimal/integer
 %(message)s => The logged message,
 %(module)s => Module (name portion of filename).
 %(msecs)d => Millisecond portion of the time when the LogRecord was created.
@@ -114,8 +130,22 @@ Attributes :
 %(threadName)s => Thread name (if available).
 
 
-
-Here’s another example where you can add the date and time info:
+----------------------
+example : 
+import logging import os
+logging.basicConfig(level=logging.DEBUG, filename='/Users/admin/Movies/test/log.txt'
+format='%(name)s-%(levelname)s-%(message)s-%(asctime)s' , datefmt='%d/%B/%Y %I:&M:%S' )
+try:
+file=input("Enter file name :") if os.path.isfile(file):
+logging.info(f"file {file} exsits") with open(file,'w') as f: data=f.readO
+print(data)
+else:
+logging.warning(f"file {file} does not exsits")
+except Exception as ex:
+#logging.error(ex,exc_info=True)    # --- exc_info=True - for traceback info 
+logging.exception(ex)         another way of traceback info , but lable will remain error , no seperate lable for this 
+-------------------
+Hereï¿½s another example where you can add the date and time info:
 
 import logging
 
@@ -180,7 +210,7 @@ ERROR:root:Exception occurred
 
 or you can use logging.exception():
 
-if you’re logging from an exception handler, use the logging.exception() method, which logs a message with level ERROR and adds exception information to the message. 
+if youï¿½re logging from an exception handler, use the logging.exception() method, which logs a message with level ERROR and adds exception information to the message. 
 
 
 import logging
@@ -229,20 +259,43 @@ except ValueError as msg:
 logging.info("Request Processing Completed")
 
 ------------------------------
+by default , logger is root . can we change it ?
+
 Loggers :
 A logger is the entry point into the logging system. Each logger is a named bucket to which messages can be written for processing.
 
 Each message that is written to the logger is a Log Record. Each log record also has a log level indicating the severity of that specific message. A log record can also contain useful metadata that describes the event that is being logged. This can include details such as a stack trace or an error code.
 
 
-Handlers
+Handlers:
 The handler is the engine that determines what happens to each message in a logger. It describes a particular logging behavior, such as writing a message to the screen, to a file, or to a network socket.
 
-Like loggers, handlers also have a log level. If the log level of a log record doesn’t meet or exceed the level of the handler, the handler will ignore the message.
+Like loggers, handlers also have a log level. If the log level of a log record doesnt meet or exceed the level of the handler, the handler will ignore the message.
 
+so mostly keep same logger level for both logger and handler
 
-Formatters
+Formatters:
 Ultimately, a log record needs to be rendered as text. Formatters describe the exact format of that text. 
+
+eg:
+import logging
+logger = logging.getLogger('root')   ---loger name can be changed 
+logger.setLevel(logging.DEBUG)
+fmt = '%(asctime)s - %(process)d - %(levelname)s - %(module)s - %(message)s'
+
+formatter = logging. Formatter(fmt)
+#logger .propagate = False
+file_handler = logging. FileHandler("/Users/admin/Movies/test/log.txt") - set o/p on file
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+console_handler = logging. StreamHandler  - set o/p on console
+console_handler.setLevel(logging.DEBUG) console_handler.setFormatter(formatter)
+logger.addHandler(console_handler)
+logger. error('This is an error')
+
+
+
 
 import logging
 create_file='D:\\log.txt'
@@ -369,35 +422,14 @@ Although basicConfig() makes it quick and easy to get started with logging, usin
 
 A logging configuration file needs to contain three sections:
 
-[loggers]: the names of the loggers you’ll configure.
+[loggers]: the names of the loggers youï¿½ll configure.
 [handlers]: the handler(s) these loggers should use (e.g., consoleHandler, fileHandler).
 [formatters]: the format(s) you want each logger to follow when generating a log.
 
 
-Each section should include a comma-separated list of one or more keys: keys=handler1,handler2,[...]. The keys determine the names of the other sections you’ll need to configure, formatted as [<SECTION_NAME>_<KEY_NAME>], where the section name is logger, handler, or formatter.
+Each section should include a comma-separated list of one or more keys: keys=handler1,handler2,[...]. The keys determine the names of the other sections youï¿½ll need to configure, formatted as [<SECTION_NAME>_<KEY_NAME>], where the section name is logger, handler, or formatter.
 
-
-=>
-
-logging.ini :
-
-[loggers]
-keys=root
-
-[handlers]
-keys=fileHandler
-
-[formatters]
-keys=simpleFormatter
-
-[logger_root]
-level=DEBUG
-handlers=fileHandler
-
-[handler_fileHandler]
-class=FileHandler
-level=DEBUG
-formatter=simpleFormatter
+rmrmatter
 args=("root.txt",)
 
 [formatter_simpleFormatter]
@@ -427,7 +459,7 @@ word_count("D:\\log.txt")
 we configured a root logger and let it propagate  in our application. loggers will output DEBUG and higher-priority logs, in the specified format (formatter_simpleFormatter), and append them to a log file (file.log). This removes the need to include 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(name)s %(levelname)s:%(message)s') )
 
-Instead, once you’ve created this logging configuration file, you can add logging.config.fileConfig() to your code like so:
+Instead, once youï¿½ve created this logging configuration file, you can add logging.config.fileConfig() to your code like so:
 
 This setting defaults to True, which will disable any non-root loggers.
 
@@ -436,18 +468,18 @@ This setting defaults to True, which will disable any non-root loggers.
 ------------------------------------------------
 Capturing unhandled exceptions :
 
-You’ll never be able to anticipate and handle every possible exception, but you can make sure that you log uncaught exceptions so you can investigate them later on.
+Youï¿½ll never be able to anticipate and handle every possible exception, but you can make sure that you log uncaught exceptions so you can investigate them later on.
 
-You can use Python’s standard traceback library to format the traceback and include it in the log message. 
+You can use Pythonï¿½s standard traceback library to format the traceback and include it in the log message. 
 
 
-We’ve provided the wrong number of arguments in the write() function, it will raise an exception:
+Weï¿½ve provided the wrong number of arguments in the write() function, it will raise an exception:
 
 import logging
 import logging.config
 import traceback
 logging.config.fileConfig('D:\\logging.ini', disable_existing_loggers=False)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__) 
 
 def word_count(myfile):
     
@@ -472,13 +504,58 @@ word_count("D:\\log.txt")
 ------------------------------------------------------
 Log in JSON format :
 
+
+.config file 
+for Linux =>
+
+[section]
+key=value
+
+
+[section2]
+key=value
+key=value
+.
+.
+.
+.
+
+.config file 
+
+-------------------------
+
 pip install python-json-logger
 
-
+for windows =>
 
 logging.ini =>
+eg1 :
+
+logging.in1 :
+[loggers]
+ keys=root
+
+[handlers] 
+keys=fileHandler,
+
+[formatters] 
+keys=simpleFormatter
+
+[logger_root] 
+level=DEBUG
+handlers=f1leHandler
+
+[handler_fileHandler]
+class=FileHandler
+level=DEBUG
+formatter=simpleFormatter 
+args=("/Users/admin/Movies/log.txt",)
+
+[formatter_simpleFormatter]
+format=%(asctime)s %(name)s - %(levelname)s:%(message)s
 
 
+eg2 :
 [loggers]
 keys=root,lowermodule
 
@@ -516,8 +593,6 @@ format=%(asctime)s %(name)s %(levelname)s %(message)s
 [formatter_simpleFormatter]
 format=%(asctime)s %(name)s - %(levelname)s:%(message)s
 
-
-
 -----------------------------
 if you are not using  config file :
 
@@ -528,10 +603,12 @@ logger = logging.getLogger()
 logHandler = logging.StreamHandler()
 formatter = jsonlogger.JsonFormatter()
 logHandler.setFormatter(formatter)
-logger.addHandler(logHandler)
+logger.addHandler(logHandler) 
 
 -----------------------------------
 
 Examples :
 
 https://www.programcreek.com/python/example/472/logging.FileHandler
+
+in Windows, the format of the file .ini, and in a Linux system it is the.config file . 
